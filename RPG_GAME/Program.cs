@@ -8,9 +8,9 @@ namespace RPG_GAME
     {
         static void Main(string[] args)
         {
-            int try_hard = 0;
-            Hero Dash = new Hero("Dash", 10, 15);
-            int try_again=1;
+            int tryHard = 0;
+            Hero hero = new Hero("Warrior", 10, 15);
+            int tryAgain=1;
             Archer Sworn = new Archer("Sworn Archer", 1, 5, "Archer");
             Archer Beastly = new Archer("Beastly Archer", 2, 8, "Archer");
 
@@ -32,49 +32,42 @@ namespace RPG_GAME
 
             try 
             {
-                while (try_again == 1)
+                while (tryAgain == 1)
                 {
-                    if (try_hard > 0)
+                    if (tryHard > 0)
                     {
                         Console.Clear();
                         Console.WriteLine("Let's try again");
                         ResetEnemies(listOfEnemies);
-                        UpgradeEnemies(listOfEnemies, new UpgradeEnemy("Archer", try_hard+2, try_hard+3, try_hard+1));
-                        UpgradeEnemies(listOfEnemies, new UpgradeEnemy("Knight", try_hard + 4, try_hard + 4, try_hard + 2));
-                        UpgradeEnemies(listOfEnemies, new UpgradeEnemy("Dragon", try_hard + 5, try_hard + 6, try_hard + 7));
+                        UpgradeEnemies(listOfEnemies, new UpgradeEnemy("Archer", tryHard+2, tryHard+3, tryHard+1));
+                        UpgradeEnemies(listOfEnemies, new UpgradeEnemy("Knight", tryHard + 4, tryHard + 4, tryHard + 2));
+                        UpgradeEnemies(listOfEnemies, new UpgradeEnemy("Dragon", tryHard + 5, tryHard + 6, tryHard + 7));
                     }
 
                     Story.Begin();
-                    FindEnemies(listOfEnemies, "Archer").ForEach(t => Battle.WithArcher(Dash, t as Archer));
-                    //  Battle.WithArcher(Dash, Sworn);
-                    //  Battle.WithArcher(Dash, Beastly);
+                    FindEnemies(listOfEnemies, "Archer").ForEach(t => Battle.WithArcher(hero, t as Archer));
 
                     Story.BeforeKnights();
-                    FindEnemies(listOfEnemies, "Knight").ForEach(t => Battle.WithKnight(Dash, t as Knight));
-                    //  Battle.WithKnight(Dash, Fearless);
-                    //  Battle.WithKnight(Dash, Invincible);
+                    FindEnemies(listOfEnemies, "Knight").ForEach(t => Battle.WithKnight(hero, t as Knight));
 
                     Story.BeforeDragons();
-                    FindEnemies(listOfEnemies, "Dragon").ForEach(t => Battle.WithDragon(Dash, t as Dragon));
-                    //  Battle.WithDragon(Dash, BlueDrag);
-                    //  Battle.WithDragon(Dash, RedDrag);
-                    //  Battle.WithDragon(Dash, BlackDrag);
+                    FindEnemies(listOfEnemies, "Dragon").ForEach(t => Battle.WithDragon(hero, t as Dragon));
 
                     Story.TheEnd();
                     Console.ReadLine();
-                    try_hard++;
+                    tryHard++;
 
                     Console.WriteLine("Do you wish to continue? 1=Yes, 2=No (Default No)");
                     switch (Console.ReadLine())
                     {
                         case "1":
-                            try_again = 1;
+                            tryAgain = 1;
                             break;
                         case "2":
-                            try_again = 2;
+                            tryAgain = 2;
                             break;
                         default:
-                            try_again = 2;
+                            tryAgain = 2;
                             break;
                     }
                 }
