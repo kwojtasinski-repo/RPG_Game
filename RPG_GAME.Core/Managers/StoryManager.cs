@@ -35,7 +35,7 @@ namespace RPG_GAME.Service.Managers
                 foreach (var archer in archers)
                 {
                     currentEnemy = archer;
-                    BattleWithArcher(_hero, archer);
+                    BattleWithArcher(_hero, archer as Archer);
                 }
                     
 
@@ -44,7 +44,7 @@ namespace RPG_GAME.Service.Managers
                 foreach (var knight in knights)
                 {
                     currentEnemy = knight;
-                    BattleWithKnight(_hero, knight);
+                    BattleWithKnight(_hero, knight as Knight);
                 }
                     
 
@@ -53,7 +53,7 @@ namespace RPG_GAME.Service.Managers
                 foreach (var dragon in dragons)
                 {
                     currentEnemy = dragon;
-                    BattleWithDragon(_hero, dragon);
+                    BattleWithDragon(_hero, dragon as Dragon);
                 }
                     
                 TheEnd();
@@ -192,7 +192,7 @@ namespace RPG_GAME.Service.Managers
             }
         }
 
-        public void BattleWithArcher(Hero hero, Enemy archer)
+        public void BattleWithArcher(Hero hero, Archer archer)
         {
             if (IsHeroDead(hero))
                 return;
@@ -211,7 +211,7 @@ namespace RPG_GAME.Service.Managers
             Console.ReadLine();
         }
 
-        public void BattleWithKnight(Hero hero, Enemy knight)
+        public void BattleWithKnight(Hero hero, Knight knight)
         {
             if (IsHeroDead(hero))
                 return;
@@ -230,7 +230,7 @@ namespace RPG_GAME.Service.Managers
             Console.ReadLine();
         }
 
-        public void BattleWithDragon(Hero hero, Enemy dragon)
+        public void BattleWithDragon(Hero hero, Dragon dragon)
         {
             if (IsHeroDead(hero))
                 return;
