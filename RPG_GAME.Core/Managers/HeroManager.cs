@@ -1,4 +1,5 @@
 ﻿using RPG_GAME.Core.Entity;
+using RPG_GAME.Service.Abstract;
 using RPG_GAME.Service.Concrete;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,12 @@ namespace RPG_GAME.Service.Managers
     public class HeroManager
     {
         private readonly MenuActionService _actionService;
-        private HeroService _heroService;
+        private IService<Hero> _heroService;
 
-        public HeroManager(MenuActionService actionService)
+        public HeroManager(MenuActionService actionService, IService<Hero> heroService)
         {
-            _heroService = new HeroService();
             _actionService = actionService;
+            _heroService = heroService;
         }
 
         public int AddNewHero()
@@ -60,12 +61,12 @@ namespace RPG_GAME.Service.Managers
                 {
                     Console.WriteLine($"This name for {addNewHeroMenu[typeId - 1].Name} already occurs in game.");
                 }
-                else if (name.Replace(" ", "").Count() < 3)
+                else if (!HeroHasAtLeastThreeCharacters(name))
                 {
                     Console.WriteLine($"You entered a name too short for the {addNewHeroMenu[typeId - 1].Name}, name should have at least 3 characters (not include spaces).");
                 }
             }
-            while (name.Replace(" ", "").Count() < 3 || checkHeroName);
+            while (!HeroHasAtLeastThreeCharacters(name) || checkHeroName);
 
             Console.WriteLine($"\nYou can cancel adding Hero {name} {addNewHeroMenu[typeId - 1].Name} by pressing -1");
             Int32.TryParse(Console.ReadLine(), out goBack);
@@ -80,6 +81,32 @@ namespace RPG_GAME.Service.Managers
                 typeId);
             _heroService.AddObject(hero);
             return hero.Id;
+        }
+
+        public int AddNewHero(string name, int typeId)
+        {
+            var addNewHeroMenu = _actionService.GetMenuActionsByMenuName("CreateHero");
+            int lastTypeId = addNewHeroMenu.OrderBy(o => o.Id).LastOrDefault().Id;
+            bool checkHeroName = CheckIfHeroHasTheSameName(name);
+
+            if (typeId < 1 || typeId > lastTypeId)
+            {
+                return 0;
+            }
+
+            if(checkHeroName || !HeroHasAtLeastThreeCharacters(name))
+            {
+                return 0;
+            }
+            else
+            {
+                int lastId = _heroService.GetLastId();
+                Hero hero = new Hero(lastId + 1, name, GetHeroInitialStats(addNewHeroMenu[typeId - 1].Name,
+                    "health"), GetHeroInitialStats(addNewHeroMenu[typeId - 1].Name, "attack"), addNewHeroMenu[typeId - 1].Name,
+                    typeId);
+                _heroService.AddObject(hero);
+                return hero.Id;
+            }
         }
 
         public int GetHeroInitialStats(string character, string stat)
@@ -125,6 +152,12 @@ namespace RPG_GAME.Service.Managers
                 Console.WriteLine($"\nThere is no Hereo with id {id}");
 
             return id;
+        }
+
+        public void RemoveHeroById(int id)
+        {
+            var hero = _heroService.GetObjectById(id);
+            _heroService.RemoveObject(hero);
         }
 
         public void HeroDetails()
@@ -215,7 +248,7 @@ namespace RPG_GAME.Service.Managers
 
         public bool CheckIfHeroHasTheSameName(string name)
         {
-            List<Hero> sortedHeroes = GetAllHeroes().OrderBy(o => o.Name).ToList();
+            var sortedHeroes = GetAllHeroes().OrderBy(o => o.Name).ToList();
             
             foreach (Hero hero in sortedHeroes)
             {
@@ -228,12 +261,24 @@ namespace RPG_GAME.Service.Managers
             return false;
         }
 
+        public bool HeroHasAtLeastThreeCharacters(string name)
+        {
+            if (name.Replace(" ", "").Count() < 3)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         public int ChangeHeroName(Hero hero, string name)
         {
             bool checkedName = CheckIfHeroHasTheSameName(name);
             int heroNameChangedId = 0;
 
-            if (!checkedName && name.Replace(" ", "").Count() > 2) 
+            if (!checkedName && HeroHasAtLeastThreeCharacters(name)) 
             {
                 hero.Name = name;
                 heroNameChangedId = hero.Id;

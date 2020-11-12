@@ -7,7 +7,9 @@ namespace RPG_GAME.Service.Abstract
         List<T> Objects { get; set; }
 
         List<T> GetAllObjects();
+        T GetObjectById(int id);
         int AddObject(T obj);
         void RemoveObject(T obj);
+        int GetLastId();
     }
 }

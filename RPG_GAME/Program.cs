@@ -3,6 +3,9 @@ using RPG_GAME.Service.Managers;
 using System;
 using RPG_GAME.Helpers;
 using RPG_GAME.Core.Entity;
+using System.IO;
+using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace RPG_GAME
 {
@@ -11,7 +14,8 @@ namespace RPG_GAME
         static void Main(string[] args)
         {
             MenuActionService menuActionService = new MenuActionService();
-            HeroManager heroManager = new HeroManager(menuActionService);
+            HeroService heroService = new HeroService();
+            HeroManager heroManager = new HeroManager(menuActionService, heroService);
             StoryManager storyManager;
             int tryHard = 0;
 
