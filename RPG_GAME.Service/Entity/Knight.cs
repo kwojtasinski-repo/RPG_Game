@@ -5,7 +5,7 @@ namespace RPG_GAME.Core.Entity
 {
     public class Knight : Enemy
     {
-        public Knight(string name, int attack, int health, string category, int diffLvl, int healLvl = 0) : base(name, attack, health, category, diffLvl, healLvl)
+        public Knight(int id, string name, int attack, int health, string category, int diffLvl, int healLvl = 0) : base(id, name, attack, health, category, diffLvl, healLvl)
         {
         }
 

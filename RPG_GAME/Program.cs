@@ -18,6 +18,10 @@ namespace RPG_GAME
             HeroManager heroManager = new HeroManager(menuActionService, heroService);
             StoryManager storyManager;
             int tryHard = 0;
+            bool choseLvlOne = false;
+            bool choseLvlTwo = false;
+            bool choseLvlThree = false;// po bitwie aktualizacja bohaterow w xml
+            // dodaj mozliwosc wczytywania bohaterow z xml
 
             Console.WriteLine("Welcome to RPG Game app!");
             while (true)
@@ -78,10 +82,39 @@ namespace RPG_GAME
                             {
                                 Console.WriteLine($"You chose Hero {hero.Name}, level:{hero.Level}, profession:{hero.Profession}");
                                 storyManager = new StoryManager(menuActionService, hero);
-                                storyManager.UpgradeEnemies(tryHard);
                                 storyManager.Start();
                                 hero.Reset();
-                                tryHard++;
+                                
+                                switch(storyManager.DiffLvl)
+                                {
+                                    case 1:
+                                        choseLvlOne = true;
+                                        break;
+                                    case 2:
+                                        choseLvlTwo = true;
+                                        break;
+                                    case 3:
+                                        choseLvlThree = true;
+                                        break;
+                                }
+
+                                if(storyManager.ChoseSameLvl)
+                                {
+                                    tryHard++;
+                                    storyManager.UpgradeEnemiesByDiffLvl(tryHard, storyManager.DiffLvl);
+                                }
+                                else
+                                {
+                                    tryHard = 0;
+                                }
+
+                                if (choseLvlOne && choseLvlTwo && choseLvlThree)
+                                {
+                                    storyManager.UpgradeEnemies(1);
+                                    choseLvlOne = false;
+                                    choseLvlTwo = false;
+                                    choseLvlThree = false;
+                                }
                             }
                         }
                         else
@@ -89,6 +122,20 @@ namespace RPG_GAME
                         break;
                     case '6':
                         exit = 1;
+                        var hs = heroManager.GetAllHeroes();
+                        TextWriter writer = null;
+                        try
+                        {
+                            var serializer = new XmlSerializer(typeof(List<Hero>));
+                            var filePath = Directory.GetCurrentDirectory() + "\\heroes.xml";
+                            writer = new StreamWriter(filePath, false);
+                            serializer.Serialize(writer, hs);
+                        }
+                        finally
+                        {
+                            if (writer != null)
+                                writer.Close();
+                        }
                         break;
                     default:
                         Console.WriteLine("Action you entered does not exist");

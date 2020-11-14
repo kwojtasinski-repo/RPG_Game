@@ -9,11 +9,13 @@ using System.Runtime.Serialization;
 namespace RPG_GAME.Service.Managers
 {
     public class StoryManager
-    {
+    {//wrzucic funkcje z raportem po walce mysle ze mozna ograniczyc sie do 1 bitwy i tyle sprawdz czy mozna to zapisac np w pdf bedzie ciekawie 
         private readonly MenuActionService _actionService;
         private Hero _hero;
         List<Enemy> enemies;
         private EnemyService _enemyService;
+        public bool ChoseSameLvl { get; private set; }
+        public int DiffLvl { get; private set; }
 
         public StoryManager(MenuActionService actionService, Hero hero)
         {
@@ -25,8 +27,17 @@ namespace RPG_GAME.Service.Managers
 
         public void Start()
         {
-            int diffLvl = ChooseDifficultyLevel();
-            enemies = _enemyService.GetEnemiesByDiffLvl(diffLvl);
+            int diffLvlBefore = DiffLvl;
+            DiffLvl = ChooseDifficultyLevel();
+            if (DiffLvl == diffLvlBefore)
+            {
+                ChoseSameLvl = true;
+            }
+            else
+            {
+                ChoseSameLvl = false;
+            }
+            enemies = _enemyService.GetEnemiesByDiffLvl(DiffLvl);
             Enemy currentEnemy = null;
             try
             {
@@ -37,7 +48,7 @@ namespace RPG_GAME.Service.Managers
                     currentEnemy = archer;
                     BattleWithArcher(_hero, archer as Archer);
                 }
-                    
+
 
                 var knights = _enemyService.FindEnemiesByCategory(enemies, "Knight");
                 BeforeKnights(knights.Count);
@@ -46,7 +57,7 @@ namespace RPG_GAME.Service.Managers
                     currentEnemy = knight;
                     BattleWithKnight(_hero, knight as Knight);
                 }
-                    
+
 
                 var dragons = _enemyService.FindEnemiesByCategory(enemies, "Dragon");
                 BeforeDragons(dragons.Count);
@@ -55,10 +66,10 @@ namespace RPG_GAME.Service.Managers
                     currentEnemy = dragon;
                     BattleWithDragon(_hero, dragon as Dragon);
                 }
-                    
+
                 TheEnd();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("Enemy stats: ");
                 currentEnemy.PrintStats();
@@ -73,29 +84,23 @@ namespace RPG_GAME.Service.Managers
         public int ChooseDifficultyLevel()
         {
             var difficultyLevelMenu = _actionService.GetMenuActionsByMenuName("DifficultyLevel");
-            Console.WriteLine("\nPlease select difficulty level:");
-            foreach (MenuAction menuAction in difficultyLevelMenu)
-            {
-                Console.WriteLine($"{menuAction.Id}. {menuAction.Name}");
-            }
-
-            var operation = Console.ReadKey();
             int diffLvl;
-            Int32.TryParse(operation.KeyChar.ToString(), out diffLvl);
+            int diffLvlMax = difficultyLevelMenu.OrderBy(o => o.Id).LastOrDefault().Id;
 
-            while (diffLvl < 1 || diffLvl > difficultyLevelMenu.OrderBy(o => o.Id).LastOrDefault().Id)
+            do
             {
-                Console.WriteLine("\nBad Type difficulty level");
-                Console.WriteLine("Please select difficulty level:");
-                foreach (MenuAction menuAction in difficultyLevelMenu)
-                {
-                    Console.WriteLine($"{menuAction.Id}. {menuAction.Name}");
-                }
+                Console.WriteLine("\nPlease select difficulty level:");
+                ShowMenuAction(difficultyLevelMenu);
 
-                operation = Console.ReadKey();
-                Int32.TryParse(operation.KeyChar.ToString(), out diffLvl);
+                diffLvl = EnterValue(Console.ReadKey().KeyChar.ToString());
+                Console.WriteLine();
+
+                if(diffLvl < 1 || diffLvl > diffLvlMax)
+                {
+                    Console.WriteLine("\nBad Type difficulty level");
+                }
             }
-            Console.WriteLine();
+            while (diffLvl < 1 || diffLvl > diffLvlMax);
 
             return diffLvl;
         }
@@ -124,56 +129,61 @@ namespace RPG_GAME.Service.Managers
         public int ChoiceAction()
         {
             Console.WriteLine("What would you like to do?");
+            int battle = ReturnProperEnteredBattleId();
+            return battle;
+        }
+
+        private int ReturnProperEnteredBattleId()
+        {
             var fightMenu = _actionService.GetMenuActionsByMenuName("Battle");
-            foreach (MenuAction menuAction in fightMenu)
-            {
-                Console.WriteLine($"{menuAction.Id}. {menuAction.Name}");
-            }
-
-            var operation = Console.ReadKey();
             int battle;
-            Int32.TryParse(operation.KeyChar.ToString(), out battle);
+            int lastBattleId = fightMenu.OrderBy(o => o.Id).LastOrDefault().Id;
 
-            while (battle < 1 || battle > fightMenu.OrderBy(o => o.Id).LastOrDefault().Id)
+            do
             {
-                Console.WriteLine("\nBad battle attack");
                 Console.WriteLine("Please select battle attack:");
-                foreach (MenuAction menuAction in fightMenu)
-                {
-                    Console.WriteLine($"{menuAction.Id}. {menuAction.Name}");
-                }
+                ShowMenuAction(fightMenu);
 
-                operation = Console.ReadKey();
-                Int32.TryParse(operation.KeyChar.ToString(), out battle);
+                battle = EnterValue(Console.ReadKey().KeyChar.ToString());
+                Console.WriteLine();
+
+                if (battle < 1 || battle > lastBattleId)
+                {
+                    Console.WriteLine("Bad battle attack");
+                }
             }
+            while (battle < 1 || battle > lastBattleId);
 
             if (battle == 3)
             {
-                Console.WriteLine(". Please select special attack:");
                 fightMenu = _actionService.GetMenuActionsByMenuName("SpecialAttack");
-                foreach (MenuAction menuAction in fightMenu)
+                lastBattleId = fightMenu.OrderBy(o => o.Id).LastOrDefault().Id;
+                do
                 {
-                    Console.WriteLine($"{menuAction.Id}. {menuAction.Name}");
-                }
+                    Console.WriteLine("\n3. Please select special attack:");
+                    ShowMenuAction(fightMenu);
 
-                operation = Console.ReadKey();
-                Int32.TryParse(operation.KeyChar.ToString(), out battle);
+                    battle = EnterValue(Console.ReadKey().KeyChar.ToString());
 
-                while (battle < 4 || battle > fightMenu.OrderBy(o => o.Id).LastOrDefault().Id)
-                {
-                    Console.WriteLine("\nBad special attack");
-                    Console.WriteLine("3. Please select special attack:");
-                    foreach (MenuAction menuAction in fightMenu)
+                    if (battle < 4 || battle > lastBattleId)
                     {
-                        Console.WriteLine($"{menuAction.Id}. {menuAction.Name}");
+                        Console.WriteLine("\nBad special attack");
                     }
-
-                    operation = Console.ReadKey();
-                    Int32.TryParse(operation.KeyChar.ToString(), out battle);
+                       
                 }
+                while (battle < 4 || battle > lastBattleId);           
             }
             Console.WriteLine();
+
             return battle;
+        }
+
+        private void ShowMenuAction(List<MenuAction> menuAction)
+        {
+            foreach (MenuAction action in menuAction)
+            {
+                Console.WriteLine($"{action.Id}. {action.Name}");
+            }
         }
 
         public void Fight(Hero hero, Enemy enemy)
@@ -287,6 +297,17 @@ namespace RPG_GAME.Service.Managers
         public void UpgradeEnemies(int upgrade)
         {
             _enemyService.UpgradeEnemies(upgrade);
+        }
+
+        public void UpgradeEnemiesByDiffLvl(int upgrade, int diffLvl)
+        {
+            _enemyService.UpgradeEnemiesByDiffLvl(upgrade, diffLvl);
+        }
+
+        private int EnterValue(string value)
+        {
+            Int32.TryParse(value, out int typedValue);
+            return typedValue;
         }
     }
 
