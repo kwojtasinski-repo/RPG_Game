@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPG_GAME", "RPG_GAME\RPG_GAME.csproj", "{36A8D0C0-9BDB-4BF0-9111-9A3E6F904BA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPG_GAME.Service", "RPG_GAME.Core\RPG_GAME.Service.csproj", "{6E064A79-FB4E-4F37-B763-65D80482AAB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPG_GAME.Service", "RPG_GAME.Core\RPG_GAME.Service.csproj", "{6E064A79-FB4E-4F37-B763-65D80482AAB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPG_GAME.Core", "RPG_GAME.Service\RPG_GAME.Core.csproj", "{9CB6D00C-312C-4BBA-A37D-D6C36067188E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPG_GAME.Core", "RPG_GAME.Service\RPG_GAME.Core.csproj", "{9CB6D00C-312C-4BBA-A37D-D6C36067188E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPG_GAME.Tests", "RPG_GAME.Tests\RPG_GAME.Tests.csproj", "{434B329E-4108-4D85-A5A3-42626FAAA11D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{9CB6D00C-312C-4BBA-A37D-D6C36067188E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CB6D00C-312C-4BBA-A37D-D6C36067188E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CB6D00C-312C-4BBA-A37D-D6C36067188E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{434B329E-4108-4D85-A5A3-42626FAAA11D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{434B329E-4108-4D85-A5A3-42626FAAA11D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{434B329E-4108-4D85-A5A3-42626FAAA11D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{434B329E-4108-4D85-A5A3-42626FAAA11D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
