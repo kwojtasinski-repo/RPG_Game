@@ -15,9 +15,14 @@ namespace RPG_GAME.Core.Entity
         public int HealLvl { get; set; }
         public int DiffLvl { get; set; }
 
-        public Enemy(string name, int attack, int health, string category, int diffLvl, int healLvl = 0)
+        public Enemy()
         {
-            Id++;
+
+        }
+
+        public Enemy(int id, string name, int attack, int health, string category, int diffLvl, int healLvl = 0)
+        {
+            Id = id;
             Name = name;
             Attack = attack;
             Health = health;

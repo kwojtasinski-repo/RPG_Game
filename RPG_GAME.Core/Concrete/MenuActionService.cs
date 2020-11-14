@@ -1,7 +1,7 @@
 ﻿using RPG_GAME.Core.Entity;
 using RPG_GAME.Service.Common;
 using System.Collections.Generic;
-
+using System.Linq;
 
 namespace RPG_GAME.Service.Concrete
 {
@@ -14,15 +14,7 @@ namespace RPG_GAME.Service.Concrete
 
         public List<MenuAction> GetMenuActionsByMenuName(string menuName)
         {
-            List<MenuAction> result = new List<MenuAction>();
-            foreach (var menuAction in Objects)
-            {
-                if (menuAction.MenuName == menuName)
-                {
-                    result.Add(menuAction);
-                }
-            }
-            return result;
+            return Objects.Where(menuAction => menuAction.MenuName == menuName).ToList();
         }
 
         private void Initialize()
