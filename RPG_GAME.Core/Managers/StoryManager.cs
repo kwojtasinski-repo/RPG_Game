@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 namespace RPG_GAME.Service.Managers
 {
     public class StoryManager
-    {//wrzucic funkcje z raportem po walce mysle ze mozna ograniczyc sie do 1 bitwy i tyle sprawdz czy mozna to zapisac np w pdf bedzie ciekawie 
+    {
         private readonly MenuActionService _actionService;
         private Hero _hero;
         List<Enemy> enemies;
