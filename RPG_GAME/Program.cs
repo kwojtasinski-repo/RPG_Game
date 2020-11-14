@@ -20,8 +20,7 @@ namespace RPG_GAME
             int tryHard = 0;
             bool choseLvlOne = false;
             bool choseLvlTwo = false;
-            bool choseLvlThree = false;// po bitwie aktualizacja bohaterow w xml
-            // dodaj mozliwosc wczytywania bohaterow z xml
+            bool choseLvlThree = false;
 
             Console.WriteLine("Welcome to RPG Game app!");
             while (true)
