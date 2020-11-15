@@ -3,8 +3,10 @@ using RPG_GAME.Core.Entity;
 using RPG_GAME.Service.Concrete;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace RPG_GAME.Service.Managers
 {
@@ -14,31 +16,22 @@ namespace RPG_GAME.Service.Managers
         private Hero _hero;
         List<Enemy> enemies;
         private EnemyService _enemyService;
-        public bool ChoseSameLvl { get; private set; }
         public int DiffLvl { get; private set; }
 
-        public StoryManager(MenuActionService actionService, Hero hero)
+        public StoryManager(MenuActionService actionService, Hero hero, EnemyService enemyService)
         {
             _actionService = actionService;
             _hero = hero;
             enemies = new List<Enemy>();
-            _enemyService = new EnemyService();
+            _enemyService = enemyService;
         }
 
         public void Start()
         {
-            int diffLvlBefore = DiffLvl;
             DiffLvl = ChooseDifficultyLevel();
-            if (DiffLvl == diffLvlBefore)
-            {
-                ChoseSameLvl = true;
-            }
-            else
-            {
-                ChoseSameLvl = false;
-            }
             enemies = _enemyService.GetEnemiesByDiffLvl(DiffLvl);
             Enemy currentEnemy = null;
+            var enemiesKilledByHero = new List<Enemy>();
             try
             {
                 var archers = _enemyService.FindEnemiesByCategory(enemies, "Archer");
@@ -47,6 +40,7 @@ namespace RPG_GAME.Service.Managers
                 {
                     currentEnemy = archer;
                     BattleWithArcher(_hero, archer as Archer);
+                    enemiesKilledByHero.Add(currentEnemy);
                 }
 
 
@@ -56,6 +50,7 @@ namespace RPG_GAME.Service.Managers
                 {
                     currentEnemy = knight;
                     BattleWithKnight(_hero, knight as Knight);
+                    enemiesKilledByHero.Add(currentEnemy);
                 }
 
 
@@ -65,6 +60,7 @@ namespace RPG_GAME.Service.Managers
                 {
                     currentEnemy = dragon;
                     BattleWithDragon(_hero, dragon as Dragon);
+                    enemiesKilledByHero.Add(currentEnemy);
                 }
 
                 TheEnd();
@@ -75,10 +71,80 @@ namespace RPG_GAME.Service.Managers
                 currentEnemy.PrintStats();
                 Console.WriteLine(e.Message);
             }
+
+            DidEnemyKillHero(currentEnemy, _hero, enemiesKilledByHero);
             Console.WriteLine("Press enter to continue");
             _enemyService.ResetEnemies();
             Console.ReadLine();
             Console.Clear();
+        }
+
+        private void DidEnemyKillHero(Enemy enemy, Hero hero, List<Enemy> enemies)
+        {
+            if (enemy.Health > 0)
+            {
+                try
+                {
+                    XmlRootAttribute xmlRootAttribute = SetNameOfNode("EnemyWhoKilledHero");
+                    SaveObjectToXml<Enemy>(xmlRootAttribute, _enemyService.ConvertDiffEnemies(new List<Enemy> { enemy }), false);
+                    xmlRootAttribute = SetNameOfNode("ChosenHero");
+                    SaveObjectToXml<Hero>(xmlRootAttribute, new List<Hero> { _hero }, true);
+                    xmlRootAttribute = SetNameOfNode("EnemiesKilledByHero");
+                    SaveObjectToXml<Enemy>(xmlRootAttribute, _enemyService.ConvertDiffEnemies(enemies), true);
+                    Console.WriteLine("\nSaved Report.xml after battle check in main program");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"\n{e.Message}");
+                }
+            }
+            else
+            {
+                try
+                {
+                    XmlRootAttribute xmlRootAttribute = SetNameOfNode("ChosenHero");
+                    SaveObjectToXml<Hero>(xmlRootAttribute, new List<Hero> { _hero }, false);
+                    xmlRootAttribute = SetNameOfNode("EnemiesKilledByHero");
+                    SaveObjectToXml<Enemy>(xmlRootAttribute, _enemyService.ConvertDiffEnemies(enemies), true);
+                    Console.WriteLine("\nSaved Report.xml after battle check in main program");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"\n{e.Message}");
+                }
+            }
+        }
+
+        private XmlRootAttribute SetNameOfNode(string nameOfNode)
+        {
+            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute();
+            xmlRootAttribute.ElementName = nameOfNode;
+            xmlRootAttribute.IsNullable = true;
+            return xmlRootAttribute;
+        }
+
+        private void SaveObjectToXml<T>(XmlRootAttribute xmlRootAttribute, List<T> listOfObojects, bool doYouWantAppend)
+        {
+            TextWriter writer = null;
+            try
+            {
+                string path = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\"));
+                string fileName = "reportAfterLastBattle";
+                string filePath = path + "\\" + fileName + ".xml";
+                var serializer = new XmlSerializer(typeof(List<T>), xmlRootAttribute);
+                writer = new StreamWriter(filePath, doYouWantAppend);
+                serializer.Serialize(writer, listOfObojects);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return;
+            }
+            finally
+            {
+                if (writer != null)
+                    writer.Close();
+            }
         }
 
         public int ChooseDifficultyLevel()
@@ -129,11 +195,11 @@ namespace RPG_GAME.Service.Managers
         public int ChoiceAction()
         {
             Console.WriteLine("What would you like to do?");
-            int battle = ReturnProperEnteredBattleId();
+            int battle = ReturnProperlyEnteredBattleId();
             return battle;
         }
 
-        private int ReturnProperEnteredBattleId()
+        private int ReturnProperlyEnteredBattleId()
         {
             var fightMenu = _actionService.GetMenuActionsByMenuName("Battle");
             int battle;
@@ -308,6 +374,11 @@ namespace RPG_GAME.Service.Managers
         {
             Int32.TryParse(value, out int typedValue);
             return typedValue;
+        }
+
+        public void SetLastDiffLvl(int lastDiffLvl)
+        {
+            DiffLvl = lastDiffLvl;
         }
     }
 

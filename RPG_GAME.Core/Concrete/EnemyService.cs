@@ -163,7 +163,7 @@ namespace RPG_GAME.Service.Concrete
             return objectsXml;
         }
 
-        private List<Enemy> ConvertDiffEnemies(List<Enemy> enemies)
+        public List<Enemy> ConvertDiffEnemies(List<Enemy> enemies)
         {
             var convertedEnemies = new List<Enemy>();
             foreach (var enemy in enemies)
@@ -171,6 +171,7 @@ namespace RPG_GAME.Service.Concrete
                 if (enemy.GetType() != typeof(Enemy))
                 {
                     var en = new Enemy(enemy.Id, enemy.Name, enemy.Attack, enemy.Health, enemy.Category, enemy.DiffLvl, enemy.HealLvl);
+                    en.MaxHealth = enemy.MaxHealth;
                     convertedEnemies.Add(en);
                 }
                 else

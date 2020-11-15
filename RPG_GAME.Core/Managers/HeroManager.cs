@@ -31,8 +31,8 @@ namespace RPG_GAME.Service.Managers
                 return 0;
             }
 
-            typeId = ReturnProperEnteredTypeId();
-            string name = ReturnProperEnteredName(typeId);
+            typeId = ReturnProperlyEnteredTypeId();
+            string name = ReturnProperlyEnteredName(typeId);
 
             Console.WriteLine($"\nYou can cancel adding Hero {name} {addNewHeroMenu[typeId - 1].Name} by pressing -1");
             goBack = EnterValue(Console.ReadLine());
@@ -138,7 +138,7 @@ namespace RPG_GAME.Service.Managers
             var chooseMenu = _actionService.GetMenuActionsByMenuName("CreateHero");
             int lastTypeId = chooseMenu.OrderBy(o => o.Id).LastOrDefault().Id;
 
-            typeId = ReturnProperEnteredTypeId();
+            typeId = ReturnProperlyEnteredTypeId();
             Console.WriteLine();
 
             var heroes = _heroService.GetAllObjects();
@@ -212,7 +212,7 @@ namespace RPG_GAME.Service.Managers
             return typedValue;
         }
 
-        private int ReturnProperEnteredTypeId()
+        private int ReturnProperlyEnteredTypeId()
         {
             int typeId;
             var chooseMenu = _actionService.GetMenuActionsByMenuName("CreateHero");
@@ -238,7 +238,7 @@ namespace RPG_GAME.Service.Managers
             return typeId;
         }
 
-        private string ReturnProperEnteredName(int typeId)
+        private string ReturnProperlyEnteredName(int typeId)
         {
             string name;
             var addNewHeroMenu = _actionService.GetMenuActionsByMenuName("CreateHero");

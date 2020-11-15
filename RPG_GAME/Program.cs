@@ -1,11 +1,11 @@
-﻿using RPG_GAME.Service.Concrete;
-using RPG_GAME.Service.Managers;
-using System;
+﻿using System;
 using RPG_GAME.Helpers;
 using RPG_GAME.Core.Entity;
 using System.IO;
 using System.Xml.Serialization;
 using System.Collections.Generic;
+using RPG_GAME.Service.Concrete;
+using RPG_GAME.Service.Managers;
 
 namespace RPG_GAME
 {
@@ -16,11 +16,14 @@ namespace RPG_GAME
             MenuActionService menuActionService = new MenuActionService();
             HeroService heroService = new HeroService();
             HeroManager heroManager = new HeroManager(menuActionService, heroService);
+            EnemyService enemyService = new EnemyService();
             StoryManager storyManager;
             int tryHard = 0;
             bool choseLvlOne = false;
             bool choseLvlTwo = false;
             bool choseLvlThree = false;
+            int lastDiffLvl = 0;
+            List<Hero> heroes = null;
 
             Console.WriteLine("Welcome to RPG Game app!");
             while (true)
@@ -55,7 +58,7 @@ namespace RPG_GAME
                             a => a.Profession, a => a.TypeId));
                         break;
                     case '5':
-                        var heroes = heroManager.GetAllHeroes();
+                        heroes = heroManager.GetAllHeroes();
                         if (heroes.Count > 0)
                         {
                             Console.WriteLine();
@@ -80,8 +83,21 @@ namespace RPG_GAME
                             if (chosenHero != -1)
                             {
                                 Console.WriteLine($"You chose Hero {hero.Name}, level:{hero.Level}, profession:{hero.Profession}");
-                                storyManager = new StoryManager(menuActionService, hero);
+                                storyManager = new StoryManager(menuActionService, hero, enemyService);
+                                storyManager.SetLastDiffLvl(lastDiffLvl);
                                 storyManager.Start();
+                                
+                                if (storyManager.DiffLvl == lastDiffLvl) 
+                                {
+                                    tryHard++;
+                                    enemyService.UpgradeEnemiesByDiffLvl(tryHard, storyManager.DiffLvl);
+                                }
+                                else
+                                {
+                                    tryHard = 0;
+                                }
+
+                                lastDiffLvl = storyManager.DiffLvl; 
                                 hero.Reset();
                                 
                                 switch(storyManager.DiffLvl)
@@ -97,19 +113,9 @@ namespace RPG_GAME
                                         break;
                                 }
 
-                                if(storyManager.ChoseSameLvl)
-                                {
-                                    tryHard++;
-                                    storyManager.UpgradeEnemiesByDiffLvl(tryHard, storyManager.DiffLvl);
-                                }
-                                else
-                                {
-                                    tryHard = 0;
-                                }
-
                                 if (choseLvlOne && choseLvlTwo && choseLvlThree)
                                 {
-                                    storyManager.UpgradeEnemies(1);
+                                    enemyService.UpgradeEnemies(1);
                                     choseLvlOne = false;
                                     choseLvlTwo = false;
                                     choseLvlThree = false;
@@ -121,20 +127,14 @@ namespace RPG_GAME
                         break;
                     case '6':
                         exit = 1;
-                        var hs = heroManager.GetAllHeroes();
-                        TextWriter writer = null;
-                        try
+                        if(heroes != null)
                         {
-                            var serializer = new XmlSerializer(typeof(List<Hero>));
-                            var filePath = Directory.GetCurrentDirectory() + "\\heroes.xml";
-                            writer = new StreamWriter(filePath, false);
-                            serializer.Serialize(writer, hs);
+                            bool IsFileCreated = CreateXmlFileWithAllHeroes(heroes);
+                            if (IsFileCreated)
+                                Console.WriteLine("\nSaved all Heroes in file listOfAllHeroes.xml");
                         }
-                        finally
-                        {
-                            if (writer != null)
-                                writer.Close();
-                        }
+                        Console.WriteLine("Press Entere to continue");
+                        Console.ReadLine();
                         break;
                     default:
                         Console.WriteLine("Action you entered does not exist");
@@ -147,5 +147,37 @@ namespace RPG_GAME
             }
         }
 
+        static XmlRootAttribute SetNameOfNode(string nameOfNode)
+        {
+            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute();
+            xmlRootAttribute.ElementName = nameOfNode;
+            xmlRootAttribute.IsNullable = true;
+            return xmlRootAttribute;
+        }
+
+        static bool CreateXmlFileWithAllHeroes(List<Hero> heroes)
+        {
+            TextWriter writer = null;
+            try
+            {
+                string path = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\"));
+                string fileName = "listOfAllHeroes";
+                string filePath = path + "\\" + fileName + ".xml";
+                var serializer = new XmlSerializer(typeof(List<Hero>), SetNameOfNode("ListOfAllHeroes"));
+                writer = new StreamWriter(filePath, false);
+                serializer.Serialize(writer, heroes);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+            finally
+            {
+                if (writer != null)
+                    writer.Close();
+            }
+            return true;
+        }
     }
 }

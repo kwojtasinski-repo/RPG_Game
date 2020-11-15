@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Moq;
 using RPG_GAME.Core.Entity;
 using RPG_GAME.Service.Concrete;
 using RPG_GAME.Service.Managers;
@@ -13,7 +14,8 @@ namespace RPG_GAME.Tests.ManagersTest
         {
             Hero hero = new Hero(1, "Slaughter", 10, 15, "Warrior", 1);
             Hero hero2 = new Hero(2, "HeroDead", 10, 15, "Warrior", 1);
-            StoryManager storyManager = new StoryManager(new MenuActionService(), hero);
+            var mock = new Mock<EnemyService>();
+            StoryManager storyManager = new StoryManager(new MenuActionService(), hero, mock.Object);
 
             var returnedInformation = storyManager.IsHeroDead(hero);
             hero2.Health = 0;
