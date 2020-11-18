@@ -48,11 +48,10 @@ namespace RPG_GAME.Service.Concrete
 
         public void ResetEnemies()
         {
-            foreach (var enemy in Objects)
+            Objects.Where(enemy => enemy.Health < enemy.MaxHealth).ToList().ForEach(enemy =>
             {
-                if (enemy.Health < enemy.MaxHealth)
-                    enemy.SetHealth(enemy.MaxHealth);
-            }
+                enemy.SetHealth(enemy.MaxHealth);
+            });
         }
 
         private void Initialize()
@@ -210,27 +209,24 @@ namespace RPG_GAME.Service.Concrete
 
         public void UpgradeEnemies(int upgrade)
         {
-            foreach(var enemy in Objects)
+            Objects.ForEach(enemy =>
             {
-                enemy.UpgradeAttack(upgrade*2);
-                enemy.UpgradeMaxHealth(upgrade*5);
+                enemy.UpgradeAttack(upgrade * 2);
+                enemy.UpgradeMaxHealth(upgrade * 5);
                 enemy.SetHealth(enemy.MaxHealth);
                 enemy.UpgradeHeal(upgrade);
-            }
+            });
         }
 
         public void UpgradeEnemiesByDiffLvl(int upgrade, int diffLvl)
         {
-            foreach (var enemy in Objects)
+            Objects.Where(enemy => enemy.DiffLvl == diffLvl).ToList().ForEach(enemy =>
             {
-                if(enemy.DiffLvl == diffLvl)
-                {
-                    enemy.UpgradeAttack(upgrade * 2);
-                    enemy.UpgradeMaxHealth(upgrade * 5);
-                    enemy.SetHealth(enemy.MaxHealth);
-                    enemy.UpgradeHeal(upgrade);
-                }
-            }
+                enemy.UpgradeAttack(upgrade * 2);
+                enemy.UpgradeMaxHealth(upgrade * 5);
+                enemy.SetHealth(enemy.MaxHealth);
+                enemy.UpgradeHeal(upgrade);
+            });
         }
     }
 }

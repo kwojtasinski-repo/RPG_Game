@@ -36,32 +36,30 @@ namespace RPG_GAME.Service.Managers
             {
                 var archers = _enemyService.FindEnemiesByCategory(enemies, "Archer");
                 Begin(archers.Count);
-                foreach (var archer in archers)
+                archers.ForEach(archer =>
                 {
                     currentEnemy = archer;
                     BattleWithArcher(_hero, archer as Archer);
                     enemiesKilledByHero.Add(currentEnemy);
-                }
-
+                });
 
                 var knights = _enemyService.FindEnemiesByCategory(enemies, "Knight");
                 BeforeKnights(knights.Count);
-                foreach (var knight in knights)
+                knights.ForEach(knight =>
                 {
                     currentEnemy = knight;
                     BattleWithKnight(_hero, knight as Knight);
                     enemiesKilledByHero.Add(currentEnemy);
-                }
-
+                });
 
                 var dragons = _enemyService.FindEnemiesByCategory(enemies, "Dragon");
                 BeforeDragons(dragons.Count);
-                foreach (var dragon in dragons)
+                dragons.ForEach(dragon =>
                 {
                     currentEnemy = dragon;
                     BattleWithDragon(_hero, dragon as Dragon);
                     enemiesKilledByHero.Add(currentEnemy);
-                }
+                });
 
                 TheEnd();
             }
