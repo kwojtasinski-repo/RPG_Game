@@ -207,10 +207,13 @@ namespace RPG_GAME.Tests.ManagersTest
 
             returnInitialWarriorAttack.Should().NotBe(0);
             returnInitialWarriorAttack.Should().Be(hero.Attack);
+
             returnInitialWarriorHealth.Should().NotBe(0);
             returnInitialWarriorHealth.Should().Be(hero.Health);
+
             returnInitialPaladinAttack.Should().NotBe(0);
             returnInitialPaladinAttack.Should().Be(hero2.Attack);
+
             returnInitialPaladinHealth.Should().NotBe(0);
             returnInitialPaladinHealth.Should().Be(hero2.Health);
         }
@@ -230,10 +233,13 @@ namespace RPG_GAME.Tests.ManagersTest
 
             returnInitialWarriorAttack.Should().Be(0);
             returnInitialWarriorAttack.Should().NotBe(hero.Attack);
+
             returnInitialWarriorHealth.Should().Be(0);
             returnInitialWarriorHealth.Should().NotBe(hero.Health);
+
             returnInitialPaladinAttack.Should().Be(0);
             returnInitialPaladinAttack.Should().NotBe(hero2.Attack);
+
             returnInitialPaladinHealth.Should().Be(0);
             returnInitialPaladinHealth.Should().NotBe(hero2.Health);
         }
@@ -247,14 +253,45 @@ namespace RPG_GAME.Tests.ManagersTest
             mock.Setup(m => m.GetAllObjects()).Returns(new List<Hero>() { hero, hero2 });
             var manager = new HeroManager(new MenuActionService(), mock.Object);
 
-            var returnHero2Id = manager.ChangeHeroName(hero2, "Slaughter");
             var returnHero2IdAfterChange = manager.ChangeHeroName(hero2, "Hero Slaughter");
 
-            returnHero2Id.Should().NotBe(hero2.Id);
-            returnHero2Id.Should().Be(0);
             returnHero2IdAfterChange.Should().NotBe(0);
             returnHero2IdAfterChange.Should().Be(hero2.Id);
         }
-        
+
+        [Fact]
+        public void CantChangeHeroName()
+        {
+            Hero hero = new Hero(1, "Slaughter", 10, 15, "Warrior", 1);
+            Hero hero2 = new Hero(2, "Hero", 14, 11, "Paladin", 1);
+            var mock = new Mock<IService<Hero>>();
+            mock.Setup(m => m.GetAllObjects()).Returns(new List<Hero>() { hero, hero2 });
+            var manager = new HeroManager(new MenuActionService(), mock.Object);
+
+            var returnHero2IdAfterChangeWithOnlySpace = manager.ChangeHeroName(hero2, "              ");
+            var returnHero2IdAfterChangeWithTwoCharacters = manager.ChangeHeroName(hero2, "RS");
+            var returnHero2IdAfterChangeWithSameName = manager.ChangeHeroName(hero2, "Slaughter");
+            var returnHero2IdAfterChangeWithSameNameUpperCase = manager.ChangeHeroName(hero2, "SLAUGHTER");
+            var returnHero2IdAfterChangeWithSameNameUpperCaseAndSpaces = manager.ChangeHeroName(hero2, " S L A U G H T E R ");
+            var returnHero2IdAfterChangeWithSameNameLowCaseAndSpaces = manager.ChangeHeroName(hero2, " s l a u g h t e r ");
+
+            returnHero2IdAfterChangeWithOnlySpace.Should().NotBe(hero2.Id);
+            returnHero2IdAfterChangeWithOnlySpace.Should().Be(0);
+
+            returnHero2IdAfterChangeWithTwoCharacters.Should().NotBe(hero2.Id);
+            returnHero2IdAfterChangeWithTwoCharacters.Should().Be(0);
+
+            returnHero2IdAfterChangeWithSameName.Should().NotBe(hero2.Id);
+            returnHero2IdAfterChangeWithOnlySpace.Should().Be(0);
+
+            returnHero2IdAfterChangeWithSameNameUpperCase.Should().NotBe(hero2.Id);
+            returnHero2IdAfterChangeWithSameNameUpperCase.Should().Be(0);
+
+            returnHero2IdAfterChangeWithSameNameUpperCaseAndSpaces.Should().NotBe(hero2.Id);
+            returnHero2IdAfterChangeWithSameNameUpperCaseAndSpaces.Should().Be(0);
+
+            returnHero2IdAfterChangeWithSameNameLowCaseAndSpaces.Should().NotBe(hero2.Id);
+            returnHero2IdAfterChangeWithSameNameLowCaseAndSpaces.Should().Be(0);
+        }
     }
 }
