@@ -193,7 +193,7 @@ namespace RPG_GAME.Tests.ManagersTest
         }
 
         [Fact] 
-        public void CanAddHeroInitialStats()
+        public void CanAddHeroInitialStatsWithProperParameters()
         {
             HeroService heroService = new HeroService();
             var manager = new HeroManager(new MenuActionService(), heroService);
@@ -214,7 +214,30 @@ namespace RPG_GAME.Tests.ManagersTest
             returnInitialPaladinHealth.Should().NotBe(0);
             returnInitialPaladinHealth.Should().Be(hero2.Health);
         }
-        
+
+        [Fact]
+        public void CantAddHeroInitialStatsWithIncorrectParameters()
+        {
+            HeroService heroService = new HeroService();
+            var manager = new HeroManager(new MenuActionService(), heroService);
+            Hero hero = new Hero(1, "Slaughter", 10, 15, "Warrior", 1);
+            Hero hero2 = new Hero(2, "Hero", 14, 11, "Paladin", 1);
+
+            var returnInitialWarriorHealth = manager.GetHeroInitialStats(hero.Profession, "Hhealth");
+            var returnInitialWarriorAttack = manager.GetHeroInitialStats(hero.Profession, "Aatack");
+            var returnInitialPaladinHealth = manager.GetHeroInitialStats(hero2.Profession, "Hhealth");
+            var returnInitialPaladinAttack = manager.GetHeroInitialStats(hero2.Profession, "Aatack");
+
+            returnInitialWarriorAttack.Should().Be(0);
+            returnInitialWarriorAttack.Should().NotBe(hero.Attack);
+            returnInitialWarriorHealth.Should().Be(0);
+            returnInitialWarriorHealth.Should().NotBe(hero.Health);
+            returnInitialPaladinAttack.Should().Be(0);
+            returnInitialPaladinAttack.Should().NotBe(hero2.Attack);
+            returnInitialPaladinHealth.Should().Be(0);
+            returnInitialPaladinHealth.Should().NotBe(hero2.Health);
+        }
+
         [Fact] 
         public void CanChangeHeroName()
         {
