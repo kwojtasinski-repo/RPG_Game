@@ -19,5 +19,16 @@ namespace RPG_GAME.Tests.ServiceTest
             mainMenu.Should().NotBeNull();
             mainMenu.Should().BeOfType(typeof(List<MenuAction>));
         }
+
+        [Fact]
+        public void CantGetMenuByBadCategory()
+        {
+            var menuActionService = new MenuActionService();
+
+            var mainMenu = menuActionService.GetMenuActionsByMenuName("Game");
+
+            mainMenu.Should().BeEmpty();
+            mainMenu.Should().BeOfType(typeof(List<MenuAction>));
+        }
     }
 }

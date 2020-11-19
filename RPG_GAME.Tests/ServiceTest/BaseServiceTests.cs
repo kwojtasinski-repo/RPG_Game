@@ -58,6 +58,20 @@ namespace RPG_GAME.Tests.ServiceTest
         }
 
         [Fact]
+        public void CantGetObjectByBadId()
+        {
+            Hero hero = new Hero(1, "Heros", 10, 15, "Warrior", 1);
+
+            var baseService = new BaseService<Hero>();
+
+            baseService.AddObject(hero);
+            var heroFromBaseService = baseService.GetObjectById(2);
+
+            heroFromBaseService.Should().BeNull();
+            heroFromBaseService.Should().NotBeSameAs(hero);
+        }
+
+        [Fact]
         public void CanGetLastId()
         {
             Hero hero = new Hero(1, "Heros", 10, 15, "Warrior", 1);

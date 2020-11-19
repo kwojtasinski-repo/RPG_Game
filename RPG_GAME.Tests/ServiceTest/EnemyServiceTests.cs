@@ -22,6 +22,17 @@ namespace RPG_GAME.Tests.ServiceTest
         }
 
         [Fact]
+        public void CantGetEnemiesByIncorrectDiffLvl()
+        {
+            var enemyService = new EnemyService();
+
+            var enemiesByDiffLvl = enemyService.GetEnemiesByDiffLvl(4);
+
+            enemiesByDiffLvl.Should().BeEmpty();
+            enemiesByDiffLvl.Should().BeOfType(typeof(List<Enemy>));
+        }
+
+        [Fact]
         public void CanGetEnemiesByCategory()
         {
             var enemyService = new EnemyService();
@@ -30,6 +41,17 @@ namespace RPG_GAME.Tests.ServiceTest
 
             enemiesByCategory.Should().NotBeNull();
             enemiesByCategory.Should().NotBeEmpty();
+            enemiesByCategory.Should().BeOfType(typeof(List<Enemy>));
+        }
+
+        [Fact]
+        public void CantGetEnemiesByIncorrectCategory()
+        {
+            var enemyService = new EnemyService();
+
+            var enemiesByCategory = enemyService.FindEnemiesByCategory(enemyService.Objects, "Master");
+
+            enemiesByCategory.Should().BeEmpty();
             enemiesByCategory.Should().BeOfType(typeof(List<Enemy>));
         }
 

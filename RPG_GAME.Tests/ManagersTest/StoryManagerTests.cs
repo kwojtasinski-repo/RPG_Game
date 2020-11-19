@@ -10,19 +10,29 @@ namespace RPG_GAME.Tests.ManagersTest
     public class StoryManagerTests
     {
         [Fact] 
-        public void CheckIsHeroDead()
+        public void HeroIsntDead()
         {
             Hero hero = new Hero(1, "Slaughter", 10, 15, "Warrior", 1);
-            Hero hero2 = new Hero(2, "HeroDead", 10, 15, "Warrior", 1);
             var mock = new Mock<EnemyService>();
             StoryManager storyManager = new StoryManager(new MenuActionService(), hero, mock.Object);
 
+            hero.Health = 1;
             var returnedInformation = storyManager.IsHeroDead(hero);
-            hero2.Health = 0;
-            void act() => storyManager.IsHeroDead(hero2);
-            var ex = Record.Exception(act);
 
             returnedInformation.Should().BeFalse();
+        }
+
+        [Fact]
+        public void HeroIsDead()
+        {
+            Hero hero = new Hero(1, "Slaughter", 10, 15, "Warrior", 1);
+            var mock = new Mock<EnemyService>();
+            StoryManager storyManager = new StoryManager(new MenuActionService(), hero, mock.Object);
+
+            hero.Health = 0;
+            void act() => storyManager.IsHeroDead(hero);
+            var ex = Record.Exception(act);
+
             Assert.NotNull(ex);
             Assert.IsType<MyException>(ex);
         }
