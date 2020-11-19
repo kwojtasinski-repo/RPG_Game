@@ -137,7 +137,7 @@ namespace RPG_GAME.Tests.ManagersTest
         }
 
         [Fact] 
-        public void CheckIfHeroesHasSameNames()
+        public void HeroesHasSameNames()
         {
             //Arrange
             Hero hero = new Hero(1, "Slaughter", 10, 15, "Warrior", 1);
@@ -152,6 +152,24 @@ namespace RPG_GAME.Tests.ManagersTest
             //Assert
             returned.Should().NotBe(false);
             returned.Should().BeTrue();
+        }
+
+        [Fact]
+        public void HeroDoesntHaveSameName()
+        {
+            //Arrange
+            Hero hero = new Hero(1, "Slaughter", 10, 15, "Warrior", 1);
+            Hero hero2 = new Hero(2, "MrSlaughter", 14, 11, "Paladin", 2);
+            var mock = new Mock<IService<Hero>>();
+            mock.Setup(m => m.GetAllObjects()).Returns(new List<Hero>() { hero });
+            var manager = new HeroManager(new MenuActionService(), mock.Object);
+
+            //Act
+            var returned = manager.CheckIfHeroHasTheSameName(hero2.Name);
+
+            //Assert
+            returned.Should().BeFalse();
+            returned.Should().NotBe(true);
         }
 
         [Fact] 
