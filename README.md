@@ -1,6 +1,10 @@
 # Project RPG GAME
 Project is divided into 4 folders, which are shown on the figures below:
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/Solution1.PNG">
+</p>
+
 ![](https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/Solution1.PNG)
 
 ![](https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/Solution2.PNG)
