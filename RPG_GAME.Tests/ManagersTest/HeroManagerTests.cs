@@ -29,6 +29,24 @@ namespace RPG_GAME.Tests.ManagersTest
             returnedHero.Should().NotBeNull();
             returnedHero.Should().BeSameAs(hero);
         }
+        
+        [Fact]
+        public void CantReturnHeroWithBadId()
+        {
+            //Arrange
+            Hero hero = new Hero(1, "Slaughter", 10, 15, "Warrior", 1);
+            var mock = new Mock<IService<Hero>>(); // tworzenie symulacji serwisu
+            mock.Setup(s => s.GetObjectById(1)).Returns(hero);
+
+            var manager = new HeroManager(new MenuActionService(), mock.Object);
+
+            //Act
+            var returnedHero = manager.GetHeroById(2);
+
+            //Assert
+            returnedHero.Should().BeNull();
+            returnedHero.Should().NotBeSameAs(hero);
+        }
 
         [Fact] 
         public void CanDeleteHeroWithProperId()
@@ -47,33 +65,73 @@ namespace RPG_GAME.Tests.ManagersTest
             mock.Verify(m => m.RemoveObject(hero)); // sprawdz czy metoda zostala wywolana z parametrem hero
         }
 
+        [Fact]
+        public void CantDeleteHeroWithIncorrectId()
+        {
+            //Arrange
+            Hero hero = new Hero(1, "Slaughter", 10, 15, "Warrior", 1);
+            Hero hero2 = new Hero(2, "Slaughter2", 10, 15, "Warrior", 1);
+            var mock = new Mock<IService<Hero>>();
+            mock.Setup(m => m.GetObjectById(1)).Returns(hero);
+            mock.Setup(m => m.RemoveObject(It.IsAny<Hero>())); // jakikolwiek parametr typu Hero
+            var manager = new HeroManager(new MenuActionService(), mock.Object);
+
+            //Act
+            manager.RemoveHeroById(hero.Id);
+
+            //Assert
+            mock.Verify(m => m.RemoveObject(hero2), Times.Never); // sprawdz czy metoda zostala wywolana z parametrem hero
+        }
+
         [Fact] 
         public void CanAddHero()
         {
             //Arrange
-            Hero hero = new Hero(1, "Slaughter", 10, 15, "Warrior", 1);
-            var heroService = new HeroService();
             var mock = new Mock<IService<Hero>>();
             mock.Setup(m => m.GetAllObjects()).Returns(new List<Hero>());
             var manager = new HeroManager(new MenuActionService(), mock.Object);
-            var mock2 = new Mock<IService<Hero>>();
-            mock2.Setup(m => m.GetAllObjects()).Returns(new List<Hero>() { hero });
-            var manager2 = new HeroManager(new MenuActionService(), mock2.Object);
 
             //Act
             var returnedWarriorId = manager.AddNewHero("Slaughter", 1);
-            var returnedWrongTypeId = manager.AddNewHero("Slaughter", 3);
-            var returnedTooSmallName = manager.AddNewHero("sw", 2);
-            var returnedNameWithSpaces = manager.AddNewHero("   ", 1);
-            var returnHeroWithSameName = manager2.AddNewHero("Slaughter", 1);
-            var returnHeroWithSameName2 = manager2.AddNewHero("Slaughter", 2);
 
             //Assert
             returnedWarriorId.Should().NotBe(0);
-            returnedWarriorId.Should().Be(hero.Id);
+            returnedWarriorId.Should().Be(1);
+        }
+
+        [Fact]
+        public void CantAddHeroWithIncorrectParameters()
+        {
+            //Arrange
+            var mock = new Mock<IService<Hero>>();
+            mock.Setup(m => m.GetAllObjects()).Returns(new List<Hero>());
+            var manager = new HeroManager(new MenuActionService(), mock.Object);
+
+            //Act
+            var returnedWrongTypeId = manager.AddNewHero("Slaughter", 3);
+            var returnedTooSmallName = manager.AddNewHero("sw", 2);
+            var returnedNameWithSpaces = manager.AddNewHero("   ", 1);
+
+            //Assert
             returnedWrongTypeId.Should().Be(0);
             returnedTooSmallName.Should().Be(0);
             returnedNameWithSpaces.Should().Be(0);
+        }
+
+        [Fact]
+        public void CantAddSameHero()
+        {
+            //Arrange
+            Hero hero = new Hero(1, "Slaughter", 10, 15, "Warrior", 1);
+            var mock = new Mock<IService<Hero>>();
+            mock.Setup(m => m.GetAllObjects()).Returns(new List<Hero>() { hero });
+            var manager = new HeroManager(new MenuActionService(), mock.Object);
+
+            //Act
+            var returnHeroWithSameName = manager.AddNewHero("Slaughter", 1);
+            var returnHeroWithSameName2 = manager.AddNewHero("Slaughter", 2);
+
+            //Assert
             returnHeroWithSameName.Should().Be(0);
             returnHeroWithSameName2.Should().Be(0);
         }
