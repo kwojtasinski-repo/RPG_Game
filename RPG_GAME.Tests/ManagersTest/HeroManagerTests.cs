@@ -49,7 +49,7 @@ namespace RPG_GAME.Tests.ManagersTest
         }
 
         [Fact] 
-        public void CanDeleteHeroWithProperId()
+        public void CanDeleteHeroWithBadId()
         {
             //Arrange
             Hero hero = new Hero(1, "Slaughter", 10, 15, "Warrior", 1);
