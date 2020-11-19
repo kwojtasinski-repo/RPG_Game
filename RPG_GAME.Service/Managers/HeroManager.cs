@@ -112,7 +112,10 @@ namespace RPG_GAME.Service.Managers
             Console.WriteLine("\nPlease enter id for hero you want to remove or press Enter to cancel:");
             int id = EnterValue(Console.ReadKey().KeyChar.ToString());
             if (_heroService.Objects.Count > 0)
+            {
                 _heroService.RemoveObject(_heroService.GetObjectById(id));
+                Console.WriteLine();
+            }
             else
                 Console.WriteLine($"\nThere is no Hereo with id {id}");
 

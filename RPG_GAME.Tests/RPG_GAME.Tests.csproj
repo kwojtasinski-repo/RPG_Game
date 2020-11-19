@@ -15,9 +15,4 @@
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\RPG_GAME.Core\RPG_GAME.Service.csproj" />
-    <ProjectReference Include="..\RPG_GAME.Service\RPG_GAME.Core.csproj" />
-  </ItemGroup>
-
 </Project>

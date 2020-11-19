@@ -133,7 +133,7 @@ namespace RPG_GAME
                             if (IsFileCreated)
                                 Console.WriteLine("\nSaved all Heroes in file listOfAllHeroes.xml");
                         }
-                        Console.WriteLine("Press Entere to continue");
+                        Console.WriteLine("Press Enter to continue");
                         Console.ReadLine();
                         break;
                     default:

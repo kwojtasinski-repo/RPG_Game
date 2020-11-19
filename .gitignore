@@ -11,6 +11,8 @@
 *.sln.docstates
 *.json
 *.config
+*.doc
+*.docx
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -342,3 +344,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/kopia
+/schemat_klas_Core.PNG
+/schemat_klas.pdf
