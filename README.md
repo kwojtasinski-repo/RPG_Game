@@ -26,3 +26,46 @@ On the figure below shown scheme of Service classes with their dependencies:
 <p align="center">
   <img src="https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/schemat_klas_ServiceManager.PNG">
 </p>
+
+# Screens RPG GAME
+On the figures below shown screens of game:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/screen1.PNG">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/screen2.PNG">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/screen3.PNG">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/screen4.PNG">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/screen5.PNG">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/screen6.PNG">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/screen7.PNG">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/screen8.PNG">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/screen9.PNG">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/screen10.PNG">
+</p>
