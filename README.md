@@ -1,4 +1,24 @@
-# Project RPG GAME
+# RPG GAME
+> Simple RPG game application
+
+## Table of contents
+* [General info](#general-info)
+* [Technologies](#technologies)
+* [Project](#Project)
+* [Screens](#Screens)
+
+## General info
+RPG_Game is a console app in which player is supposed to defend his kingdom from enemies. Player has to face with enemies like archers, knights, dragons. Game has three difficulty levels: easy, medium and hard. With each battle, it becomes more difficult to kill enemies, regardless of the difficulty level. Player's health, attack and healing are upgraded with each level. Project was created in C#
+
+## Technologies
+* .NET Core
+* LINQ
+* FluentAssertions
+* Moq
+* XUnit
+* Used data format: XML
+
+## Project 
 Project is divided into 4 folders, which are shown on the figures below:
 
 <p align="center">
@@ -27,7 +47,7 @@ On the figure below shown scheme of Service classes with their dependencies:
   <img src="https://raw.githubusercontent.com/kamasjdev/RPG_Game/master/schemat_klas_ServiceManager.PNG">
 </p>
 
-# Screens RPG GAME
+## Screens
 On the figures below shown screens of game:
 
 <p align="center">
