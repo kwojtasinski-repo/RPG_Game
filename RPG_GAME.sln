@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPG_GAME.Service", "RPG_GAM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPG_Game.Infrastructure", "RPG_Game.Infrastructure\RPG_Game.Infrastructure.csproj", "{F115B652-296A-42ED-8DD1-CD78E0231373}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPG_Game.IntegrationTests", "RPG_Game.IntegrationTests\RPG_Game.IntegrationTests.csproj", "{182A5A25-E439-4800-A2D5-27E3CB084263}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
