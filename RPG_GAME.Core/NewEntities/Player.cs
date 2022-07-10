@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace RPG_GAME.Core.NewMappings
+namespace RPG_GAME.Core.NewEntities
 {
     // TODO: Add Base Entity?
-    public class Player
+    public class Player : IIdentifiable<Guid>
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
