@@ -6,6 +6,7 @@ namespace RPG_GAME.Core.NewEntities
     public class Player : IIdentifiable<Guid>
     {
         public Guid Id { get; set; }
+        public CharacterType Character => CharacterType.PLAYER;
         public string Name { get; set; }
         public int Health { get; set; }
         public int Attack { get; set; }

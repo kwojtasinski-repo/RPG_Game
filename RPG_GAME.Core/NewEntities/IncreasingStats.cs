@@ -7,7 +7,7 @@ namespace RPG_GAME.Core.NewEntities
         public Guid Id { get; set; }
         public Guid ObjectId { get; set; }
         public StrategyIncreasing StrategyIncreasing { get; set; }
+        public string Field { get; set; }
         public int Value { get; set; }
-        // TODO: How to assign this values to fields for example Health, Attack?
     }
 }
