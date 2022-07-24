@@ -46,7 +46,7 @@ namespace RPG_Game.Infrastructure.Mappings
                     throw new InvalidOperationException($"Invalid type of class '{entityType.FullName}' please check if everything is correctly implemented");
                 }
 
-                var methodRegister = typeOfBsonClassMap.GetMethod("RegisterClassMap", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod);
+                var methodRegister = typeOfBsonClassMap.GetMethod(nameof(BsonClassMap.RegisterClassMap), BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod);
                 var instance = Activator.CreateInstance(config);
 
                 if (instance is null)
@@ -54,7 +54,7 @@ namespace RPG_Game.Infrastructure.Mappings
                     throw new InvalidOperationException($"Cannot create instance of object '{config.FullName}'");
                 }
 
-                var methodMap = instance.GetType().GetMethod("Map");
+                var methodMap = instance.GetType().GetMethod(nameof(IEntityMapConfiguration<object>.Map));
                 methodMap?.Invoke(instance, new object[] { bsonClassMap });
                 methodRegister?.Invoke(null, new object[] { bsonClassMap });
             }
