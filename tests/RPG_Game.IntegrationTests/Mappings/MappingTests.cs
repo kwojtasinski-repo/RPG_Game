@@ -3,7 +3,6 @@ using MongoDB.Driver;
 using RPG_Game.Infrastructure;
 using RPG_GAME.Core.Entity;
 using Shouldly;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
