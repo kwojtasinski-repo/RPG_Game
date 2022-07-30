@@ -88,22 +88,29 @@ namespace RPG_Game.Infrastructure.Mappings
             ConventionRegistry.Register("camel case with enum string", pack, t => true);
         }
 
-        private void Map()
+        private void Map(IConventionPack? conventionPack)
         {
             RegisterMappings();
-            SetGlobalConvention();
+
+            if (conventionPack is null)
+            {
+                SetGlobalConvention();
+                return;
+            }
+
+            ConventionRegistry.Register("custom convention", conventionPack, t => true);
         }
 
-        public static void RegisterAllMappings(IEnumerable<Assembly> assemblies)
+        public static void RegisterAllMappings(IEnumerable<Assembly> assemblies, IConventionPack? conventionPack = null)
         {
             var mappings = new MongoDbClassMap(assemblies);
-            mappings.Map();
+            mappings.Map(conventionPack);
         }
 
-        internal static void RegisterAllMappings(Assembly assembly)
+        internal static void RegisterAllMappings(Assembly assembly, IConventionPack? conventionPack = null)
         {
             var mappings = new MongoDbClassMap(assembly);
-            mappings.Map();
+            mappings.Map(conventionPack);
         }
     }
 }
