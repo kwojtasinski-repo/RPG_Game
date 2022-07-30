@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using System.Reflection;
 
@@ -83,7 +84,8 @@ namespace RPG_Game.Infrastructure.Mappings
         {
             var pack = new ConventionPack();
             pack.Add(new CamelCaseElementNameConvention());
-            ConventionRegistry.Register("camel case", pack, t => true);
+            pack.Add(new EnumRepresentationConvention(BsonType.String));
+            ConventionRegistry.Register("camel case with enum string", pack, t => true);
         }
 
         private void Map()
