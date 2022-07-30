@@ -1,5 +1,5 @@
 ﻿using MongoDB.Driver;
-using RPG_GAME.Core.NewEntities;
+using RPG_GAME.Core.Entities;
 using System.Linq.Expressions;
 
 namespace RPG_Game.Infrastructure.Repositories

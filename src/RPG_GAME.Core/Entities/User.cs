@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RPG_GAME.Core.NewEntities
+namespace RPG_GAME.Core.Entities
 {
     public class User
     {

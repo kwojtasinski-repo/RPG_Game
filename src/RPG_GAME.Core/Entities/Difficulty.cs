@@ -1,4 +1,4 @@
-﻿namespace RPG_GAME.Core.NewEntities
+﻿namespace RPG_GAME.Core.Entities
 {
     public enum Difficulty
     {

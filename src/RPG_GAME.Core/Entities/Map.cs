@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RPG_GAME.Core.NewEntities
+namespace RPG_GAME.Core.Entities
 {
     public class Map
     {

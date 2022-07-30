@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RPG_GAME.Core.NewEntities
+namespace RPG_GAME.Core.Entities
 {
     // TODO: Add Base Entity?
     public class Player : IIdentifiable<Guid>

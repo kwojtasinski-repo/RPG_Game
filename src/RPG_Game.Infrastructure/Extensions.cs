@@ -4,7 +4,7 @@ using MongoDB.Driver;
 using RPG_Game.Infrastructure.Database;
 using RPG_Game.Infrastructure.Mappings;
 using RPG_Game.Infrastructure.Repositories;
-using RPG_GAME.Core.NewEntities;
+using RPG_GAME.Core.Entities;
 
 namespace RPG_Game.Infrastructure
 {
