@@ -41,7 +41,19 @@ namespace RPG_Game.IntegrationTests
         {
             var database = _mongoClient.GetDatabase(DatabaseName);
             var collection = database.GetCollection<Map>("maps");
-            var map = new Map { Id = Guid.NewGuid(), Difficulty = Difficulty.EASY, Name = "Map #1", Enemies = new List<RequiredEnemy> { new RequiredEnemy { EnemyId = Guid.NewGuid(), Quantity = 1 } } };
+            var map = new Map
+            {
+                Id = Guid.NewGuid(),
+                Difficulty = Difficulty.EASY,
+                Name = "Map #1",
+                Enemies = new List<RequiredEnemy>
+                {
+                    new RequiredEnemy
+                    {
+                        Enemy = new Enemy() { Id = Guid.NewGuid() }, Quantity = 1
+                    }
+                }
+            };
 
             await collection.InsertOneAsync(map);
 
