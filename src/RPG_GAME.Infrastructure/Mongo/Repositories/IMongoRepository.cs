@@ -2,7 +2,7 @@
 using RPG_GAME.Core.Entities;
 using System.Linq.Expressions;
 
-namespace RPG_Game.Infrastructure.Repositories
+namespace RPG_Game.Infrastructure.Mongo.Repositories
 {
 	public interface IMongoRepository<TEntity, in TIdentifiable> where TEntity : IIdentifiable<TIdentifiable>
 	{

@@ -61,7 +61,7 @@ namespace RPG_GAME.Application.Services
             user = new User
             {
                 Id = dto.Id,
-                Email = Email.From(email),
+                Email = email,
                 Password = password,
                 Role = dto.Role?.ToLowerInvariant() ?? "user",
                 CreatedAt = _clock.CurrentDate(),

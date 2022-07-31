@@ -1,10 +1,6 @@
 ﻿using RPG_GAME.Core.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace RPG_GAME.Core.ValueObjects
 {
@@ -51,5 +47,11 @@ namespace RPG_GAME.Core.ValueObjects
         {
             return _password.GetHashCode();
         }
+
+        public static implicit operator string(Password password)
+            => password.Value;
+
+        public static implicit operator Password(string password)
+            => new(password);
     }
 }
