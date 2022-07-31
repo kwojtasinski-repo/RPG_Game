@@ -1,6 +1,4 @@
 using MongoDB.Driver;
-using RPG_Game.Infrastructure;
-using RPG_GAME.Core.Entity;
 using RPG_GAME.Core.Entities;
 using Shouldly;
 using System.Threading.Tasks;
@@ -13,8 +11,17 @@ using System.Linq;
 
 namespace RPG_Game.IntegrationTests
 {
+    [Collection("DbAndMappings")]
     public class MappingTests
-    {
+    { 
+        [Fact]
+        public void bson_class_map_should_contains_mappings()
+        {
+            var mappings = BsonClassMap.GetRegisteredClassMaps();
+
+            mappings.Count().ShouldBeGreaterThan(0);
+        }
+
         [Fact]
         public async Task should_add_document_to_database()
         {
@@ -57,15 +64,14 @@ namespace RPG_Game.IntegrationTests
             mapFromDb.Email.ShouldBe(user.Email);
         }
 
-        private const string ConnectionString = "mongodb://localhost:27017";
-        private const string DatabaseName = "test-rpg-game";
+        private readonly string DatabaseName;
         private const string CollectionName = "enemies";
         private readonly IMongoClient _mongoClient;
 
-        public MappingTests()
+        public MappingTests(MongoDbTestFixture mongoDbTestFixture, MappingFixture mappingFixture)
         {
-            Extensions.RegisterMappings();
-            _mongoClient = new MongoClient(ConnectionString);
+            _mongoClient = mongoDbTestFixture.MongoClient;
+            DatabaseName = MongoDbTestFixture.DatabaseName;
         }
     }
 }
