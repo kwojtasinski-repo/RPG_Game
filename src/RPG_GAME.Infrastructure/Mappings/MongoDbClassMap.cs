@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.Serializers;
 using System.Reflection;
 
 namespace RPG_Game.Infrastructure.Mappings
@@ -58,6 +59,10 @@ namespace RPG_Game.Infrastructure.Mappings
                 methodMap?.Invoke(instance, new object[] { bsonClassMap });
                 BsonClassMap.RegisterClassMap((BsonClassMap) bsonClassMap);
             }
+
+            BsonSerializer.RegisterSerializer(typeof(decimal), new DecimalSerializer(BsonType.Decimal128));
+            BsonSerializer.RegisterSerializer(typeof(decimal?),
+                new NullableSerializer<decimal>(new DecimalSerializer(BsonType.Decimal128)));
         }
 
         private IList<Type> FindAllConfigurations()
@@ -79,27 +84,35 @@ namespace RPG_Game.Infrastructure.Mappings
             return false;
         }
 
+        private class MongoDbConventions : IConventionPack
+        {
+            public IEnumerable<IConvention> Conventions => new List<IConvention>
+            {
+                new IgnoreExtraElementsConvention(true),
+                new EnumRepresentationConvention(BsonType.String),
+                new CamelCaseElementNameConvention()
+            };
+        }
+
         private void SetGlobalConvention()
         {
-            var pack = new ConventionPack
-            {
-                new CamelCaseElementNameConvention(),
-                new EnumRepresentationConvention(BsonType.String)
-            };
-            ConventionRegistry.Register("camel case with enum string", pack, t => true);
+            ConventionRegistry.Register("camel_case_with_enum_string", new MongoDbConventions(), t => true);
         }
 
         private void Map(IConventionPack? conventionPack)
         {
-            RegisterMappings();
-
-            if (conventionPack is null)
+            if (conventionPack is not null)
             {
-                SetGlobalConvention();
+                ConventionRegistry.Register("custom convention", conventionPack, t => true);
                 return;
             }
+            else
+            {
+                SetGlobalConvention();
+            }
 
-            ConventionRegistry.Register("custom convention", conventionPack, t => true);
+            RegisterMappings();
+
         }
 
         public static void RegisterAllMappings(IEnumerable<Assembly> assemblies, IConventionPack? conventionPack = null)

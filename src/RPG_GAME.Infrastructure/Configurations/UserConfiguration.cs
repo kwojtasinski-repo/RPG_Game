@@ -9,8 +9,8 @@ namespace RPG_Game.Infrastructure.Configurations
         public void Map(BsonClassMap<User> bsonClassMap)
         {
             bsonClassMap.MapProperty(u => u.Id);
-            bsonClassMap.MapProperty(u => u.Email).SetElementName("email");
-            bsonClassMap.MapProperty(u => u.Password).SetElementName("password");
+            bsonClassMap.MapProperty(u => u.Email);
+            bsonClassMap.MapProperty(u => u.Password);
         }
     }
 }
