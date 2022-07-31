@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace RPG_GAME.Core.Entities
+﻿namespace RPG_GAME.Core.Entities
 {
     public class RequiredEnemy
     {
-        public Guid EnemyId { get; set; }
+        public Enemy Enemy { get; set; }
         public int Quantity { get; set; }
     }
 }
