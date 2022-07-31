@@ -5,19 +5,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-	<FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
 	
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.16.1" />
   </ItemGroup>
-
+	
   <ItemGroup>
-    <ProjectReference Include="..\RPG_GAME.Core\RPG_GAME.Core.csproj" />
+    <ProjectReference Include="..\RPG_Game.Application\RPG_Game.Application.csproj" />
   </ItemGroup>
 
 </Project>
