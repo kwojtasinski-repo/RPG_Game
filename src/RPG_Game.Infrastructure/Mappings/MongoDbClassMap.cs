@@ -47,7 +47,6 @@ namespace RPG_Game.Infrastructure.Mappings
                     throw new InvalidOperationException($"Invalid type of class '{entityType.FullName}' please check if everything is correctly implemented");
                 }
 
-                var methodRegister = typeOfBsonClassMap.GetMethod(nameof(BsonClassMap.RegisterClassMap), BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod);
                 var instance = Activator.CreateInstance(config);
 
                 if (instance is null)
@@ -57,7 +56,7 @@ namespace RPG_Game.Infrastructure.Mappings
 
                 var methodMap = instance.GetType().GetMethod(nameof(IEntityMapConfiguration<object>.Map));
                 methodMap?.Invoke(instance, new object[] { bsonClassMap });
-                methodRegister?.Invoke(null, new object[] { bsonClassMap });
+                BsonClassMap.RegisterClassMap((BsonClassMap) bsonClassMap);
             }
         }
 
@@ -82,9 +81,11 @@ namespace RPG_Game.Infrastructure.Mappings
 
         private void SetGlobalConvention()
         {
-            var pack = new ConventionPack();
-            pack.Add(new CamelCaseElementNameConvention());
-            pack.Add(new EnumRepresentationConvention(BsonType.String));
+            var pack = new ConventionPack
+            {
+                new CamelCaseElementNameConvention(),
+                new EnumRepresentationConvention(BsonType.String)
+            };
             ConventionRegistry.Register("camel case with enum string", pack, t => true);
         }
 
