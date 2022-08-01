@@ -11,6 +11,8 @@ namespace RPG_Game.Application
         {
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddTransient<IEnemyService, EnemyService>();
+            services.AddTransient<IHeroService, HeroService>();
             return services;
         }
     }

@@ -1,4 +1,4 @@
-﻿using RPG_Game.Infrastructure.Mongo;
+﻿using RPG_Game.Infrastructure.Mongo.Mappings;
 using RPG_Game.Infrastructure.Mongo.Documents;
 using RPG_GAME.Core.Entities;
 using RPG_GAME.Core.Repositories;

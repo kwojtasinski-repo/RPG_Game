@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RPG_GAME.Application.DTO;
 
 namespace RPG_GAME.Application.Services
 {
-    internal interface IEnemyService
+    public interface IEnemyService
     {
+        Task AddAsync(EnemyDetailsDto enemyDto);
+        Task RemoveAsync(Guid id);
+        Task UpdateAsync(EnemyDetailsDto enemyDto);
+        Task<EnemyDetailsDto> GetAsync(Guid id);
+        Task<IEnumerable<EnemyDto>> GetAllAsync();
     }
 }

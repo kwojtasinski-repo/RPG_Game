@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RPG_GAME.Application.DTO;
 
 namespace RPG_GAME.Application.Services
 {
-    internal interface IMapService
+    public interface IMapService
     {
+        Task<MapDto> GetAsync(Guid id);
+        Task<IEnumerable<MapDto>> GetAllAsync(Guid id);
     }
 }

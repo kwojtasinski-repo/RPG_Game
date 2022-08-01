@@ -35,6 +35,8 @@ namespace RPG_Game.Infrastructure
                 return client.GetDatabase(options.Database);
             });
 
+            services.AddRepositories();
+
             return services;
         }
 

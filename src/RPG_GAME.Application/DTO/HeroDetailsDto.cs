@@ -1,0 +1,13 @@
+﻿namespace RPG_GAME.Application.DTO
+{
+    public class HeroDetailsDto
+    {
+        public Guid Id { get; set; }
+        public string HeroName { get; set; }
+        public FieldDto<int> Health { get; set; }
+        public FieldDto<int> Attack { get; set; }
+        public FieldDto<int> HealLvl { get; set; }
+        public FieldDto<decimal> BaseRequiredExperience { get; set; }
+        public IEnumerable<SkillDetailsDto> Skills { get; set; }
+    }
+}

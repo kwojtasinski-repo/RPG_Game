@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace RPG_GAME.Core.Entities
+﻿namespace RPG_GAME.Application.DTO
 {
-    public class Player : IIdentifiable<Guid>
+    public class PlayerDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public Hero Hero { get; set; }
+        public HeroDto Hero { get; set; }
         public int Level { get; set; }
         public decimal CurrentExp { get; set; }
         public decimal RequiredExp { get; set; }

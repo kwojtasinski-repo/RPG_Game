@@ -13,37 +13,29 @@ namespace RPG_Game.Infrastructure.Mongo
 {
     internal static class Extensions
     {
-        public static UserDocument AsDocument(this User user)
-        {
-            return new UserDocument
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Password = user.Password,
-                Role = user.Role,
-                CreatedAt = user.CreatedAt,
-                IsActive = user.IsActive
-            };
-        }
-
-        public static User AsEntity(this UserDocument userDocument)
-        {
-            return new User
-            {
-                Id = userDocument.Id,
-                Email = userDocument.Email,
-                Password = userDocument.Password,
-                Role = userDocument.Role,
-                CreatedAt = userDocument.CreatedAt,
-                IsActive = userDocument.IsActive
-            };
-        }
-
         public static IServiceCollection AddMongo(this IServiceCollection services)
         {
             RegisterConventions();
+            return services;
+        }
+
+        public static IServiceCollection AddRepositories(this IServiceCollection services)
+        {
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddMongoRepository<UserDocument, Guid>("users");
+
+            services.AddTransient<IPlayerRepository, PlayerRepository>();
+            services.AddMongoRepository<PlayerDocument, Guid>("players");
+
+            services.AddTransient<IEnemyRepository, EnemyRepository>();
+            services.AddMongoRepository<EnemyDocument, Guid>("enemies");
+
+            services.AddTransient<IHeroRepository, HeroRepository>();
+            services.AddMongoRepository<HeroDocument, Guid>("heroes");
+
+            services.AddTransient<IMapRepository, MapRepository>();
+            services.AddMongoRepository<MapDocument, Guid>("maps");
+
             return services;
         }
 

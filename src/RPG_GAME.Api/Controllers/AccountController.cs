@@ -6,11 +6,11 @@ namespace RPG_GAME.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountsController : ControllerBase
+    public class AccountController : ControllerBase
     {
         private readonly IIdentityService _identityService;
 
-        public AccountsController(IIdentityService identityService)
+        public AccountController(IIdentityService identityService)
         {
             _identityService = identityService;
         }
