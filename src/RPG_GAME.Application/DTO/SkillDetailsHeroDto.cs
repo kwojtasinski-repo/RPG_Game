@@ -1,16 +1,15 @@
 ﻿namespace RPG_GAME.Application.DTO
 {
-    public class SkillDetailsDto : SkillDetailsDto<int>
+    public class SkillDetailsHeroDto : SkillDetailsHeroDto<int>
     {
     }
     
-    public class SkillDetailsDto<T>
+    public class SkillDetailsHeroDto<T>
         where T : struct
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public virtual T BaseAttack { get; set; }
-        public decimal Probability { get; set; }
         public IncreasingStatsDto<T> IncreasingStats { get; set; }
     }
 }

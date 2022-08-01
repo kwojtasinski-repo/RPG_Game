@@ -12,6 +12,6 @@ namespace RPG_Game.Infrastructure.Mongo.Documents
         public Field<int> BaseHealLvl { get; set; }
         public Field<decimal> Experience { get; set; }
         public Difficulty Difficulty { get; set; }
-        public IEnumerable<Skill> Skills { get; set; }
+        public IEnumerable<SkillEnemy> Skills { get; set; }
     }
 }

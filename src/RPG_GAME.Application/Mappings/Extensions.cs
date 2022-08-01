@@ -79,14 +79,25 @@ namespace RPG_GAME.Application.Mappings
             };
         }
 
-        public static Skill AsSkill(this SkillDetailsDto skill)
+        public static SkillEnemy AsSkill(this SkillDetailsEnemyDto skill)
         {
-            return new Skill()
+            return new SkillEnemy()
             {
                 Id = skill.Id,
                 Name = skill.Name,
                 BaseAttack = skill.BaseAttack,
                 Probability = skill.Probability,
+                IncreasingStats = skill.IncreasingStats.AsIncreasingStats()
+            };
+        }
+
+        public static SkillHero AsSkill(this SkillDetailsHeroDto skill)
+        {
+            return new SkillHero()
+            {
+                Id = skill.Id,
+                Name = skill.Name,
+                BaseAttack = skill.BaseAttack,
                 IncreasingStats = skill.IncreasingStats.AsIncreasingStats()
             };
         }
@@ -137,14 +148,25 @@ namespace RPG_GAME.Application.Mappings
             };
         }
 
-        public static SkillDetailsDto AsDetailsDto(this Skill skill)
+        public static SkillDetailsEnemyDto AsDetailsDto(this SkillEnemy skill)
         {
-            return new SkillDetailsDto()
+            return new SkillDetailsEnemyDto()
             {
                 Id = skill.Id,
                 Name = skill.Name,
                 BaseAttack = skill.BaseAttack,
                 Probability = skill.Probability,
+                IncreasingStats = skill.IncreasingStats.AsDto()
+            };
+        }
+
+        public static SkillDetailsHeroDto AsDetailsDto(this SkillHero skill)
+        {
+            return new SkillDetailsHeroDto()
+            {
+                Id = skill.Id,
+                Name = skill.Name,
+                BaseAttack = skill.BaseAttack,
                 IncreasingStats = skill.IncreasingStats.AsDto()
             };
         }

@@ -12,6 +12,6 @@ namespace RPG_GAME.Core.Entities
         public Field<int> Attack { get; set; }
         public Field<int> HealLvl { get; set; }
         public Field<decimal> BaseRequiredExperience { get; set; }
-        public IEnumerable<Skill> Skills { get; set; }
+        public IEnumerable<SkillHero> Skills { get; set; }
     }
 }

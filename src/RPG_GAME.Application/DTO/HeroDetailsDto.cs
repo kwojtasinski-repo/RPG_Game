@@ -8,6 +8,6 @@
         public FieldDto<int> Attack { get; set; }
         public FieldDto<int> HealLvl { get; set; }
         public FieldDto<decimal> BaseRequiredExperience { get; set; }
-        public IEnumerable<SkillDetailsDto> Skills { get; set; }
+        public IEnumerable<SkillDetailsHeroDto> Skills { get; set; }
     }
 }

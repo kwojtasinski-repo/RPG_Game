@@ -1,18 +1,16 @@
-﻿using System;
-
-namespace RPG_GAME.Core.Entities
+﻿namespace RPG_GAME.Application.DTO
 {
-    public class Skill : Skill<int>
+    public class SkillDetailsEnemyDto : SkillDetailsDto<int>
     {
     }
-
-    public class Skill<T>
+    
+    public class SkillDetailsDto<T>
         where T : struct
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public virtual T BaseAttack { get; set; }
         public decimal Probability { get; set; }
-        public IncreasingStats<T> IncreasingStats { get; set; }
+        public IncreasingStatsDto<T> IncreasingStats { get; set; }
     }
 }
