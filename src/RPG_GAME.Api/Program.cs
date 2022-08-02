@@ -1,5 +1,5 @@
-using RPG_Game.Application;
-using RPG_Game.Infrastructure;
+using RPG_GAME.Application;
+using RPG_GAME.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
