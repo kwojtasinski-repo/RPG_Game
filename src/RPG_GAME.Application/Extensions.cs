@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using RPG_GAME.Application.Services;
-using RPG_GAME.Core.Entities;
+using RPG_GAME.Core.Entities.Users;
 
-namespace RPG_Game.Application
+namespace RPG_GAME.Application
 {
     public static class Extensions
     {

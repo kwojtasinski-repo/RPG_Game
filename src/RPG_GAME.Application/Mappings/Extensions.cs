@@ -1,5 +1,8 @@
 ﻿using RPG_GAME.Application.DTO;
-using RPG_GAME.Core.Entities;
+using RPG_GAME.Core.Entities.Common;
+using RPG_GAME.Core.Entities.Enemies;
+using RPG_GAME.Core.Entities.Heroes;
+using RPG_GAME.Core.Entities.Players;
 
 namespace RPG_GAME.Application.Mappings
 {
@@ -15,7 +18,7 @@ namespace RPG_GAME.Application.Mappings
                 CurrentExp = playerDto.CurrentExp,
                 Level = playerDto.Level,
                 RequiredExp = playerDto.RequiredExp,
-                Hero = playerDto.Hero.AsEntiy(),
+                Hero = playerDto.Hero.AsAssignEntiy(),
             };
         }
 
@@ -38,10 +41,22 @@ namespace RPG_GAME.Application.Mappings
             return new Hero()
             {
                 Id = heroDto.Id,
-                Attack = new Field<int>() { Value = heroDto.Attack },
+                Attack = new State<int>() { Value = heroDto.Attack },
                 HeroName = heroDto.HeroName,
-                HealLvl = new Field<int>() { Value = heroDto.HealLvl },
-                Health = new Field<int>() { Value = heroDto.Health }
+                HealLvl = new State<int>() { Value = heroDto.HealLvl },
+                Health = new State<int>() { Value = heroDto.Health }
+            };
+        }
+
+        public static HeroAssign AsAssignEntiy(this HeroDto heroDto)
+        {
+            return new HeroAssign()
+            {
+                Id = heroDto.Id,
+                Attack = heroDto.Attack,
+                HeroName = heroDto.HeroName,
+                HealLvl =  heroDto.HealLvl,
+                Health = heroDto.Health
             };
         }
 
@@ -59,20 +74,20 @@ namespace RPG_GAME.Application.Mappings
             };
         }
 
-        public static Field<T> AsField<T>(this FieldDto<T> fieldDto)
+        public static State<T> AsField<T>(this FieldDto<T> fieldDto)
             where T : struct
         {
-            return new Field<T>
+            return new State<T>
             {
                 IncreasingStats = fieldDto.IncreasingStats.AsIncreasingStats(),
                 Value = fieldDto.Value
             };
         }
 
-        public static IncreasingStats<T> AsIncreasingStats<T>(this IncreasingStatsDto<T> fieldDto)
+        public static IncreasingState<T> AsIncreasingStats<T>(this IncreasingStatsDto<T> fieldDto)
             where T : struct
         {
-            return new IncreasingStats<T>
+            return new IncreasingState<T>
             {
                 Value = fieldDto.Value,
                 StrategyIncreasing = fieldDto.StrategyIncreasing
@@ -114,6 +129,18 @@ namespace RPG_GAME.Application.Mappings
             };
         }
 
+        public static HeroDto AsDto(this HeroAssign hero)
+        {
+            return new HeroDto()
+            {
+                Id = hero.Id,
+                Attack = hero.Attack,
+                HealLvl = hero.HealLvl,
+                Health = hero.Health,
+                HeroName = hero.HeroName
+            };
+        }
+
         public static HeroDetailsDto AsDetailsDto(this Hero hero)
         {
             return new HeroDetailsDto()
@@ -128,7 +155,7 @@ namespace RPG_GAME.Application.Mappings
             };
         }
 
-        public static FieldDto<T> AsDto<T>(this Field<T> field)
+        public static FieldDto<T> AsDto<T>(this State<T> field)
             where T : struct
         {
             return new FieldDto<T>
@@ -138,7 +165,7 @@ namespace RPG_GAME.Application.Mappings
             };
         }
 
-        public static IncreasingStatsDto<T> AsDto<T>(this IncreasingStats<T> field)
+        public static IncreasingStatsDto<T> AsDto<T>(this IncreasingState<T> field)
             where T : struct
         {
             return new IncreasingStatsDto<T>
