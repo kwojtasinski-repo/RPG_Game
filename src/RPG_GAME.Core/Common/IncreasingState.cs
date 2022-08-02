@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace RPG_GAME.Core.Entities
+namespace RPG_GAME.Core.Entities.Common
 {
-    public class IncreasingStats<T>
+    public class IncreasingState<T>
         where T : struct
     {
         public StrategyIncreasing StrategyIncreasing { get; set; }

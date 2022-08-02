@@ -1,6 +1,7 @@
 ﻿using System;
+using RPG_GAME.Core.Entities.Common;
 
-namespace RPG_GAME.Core.Entities
+namespace RPG_GAME.Core.Entities.Enemies
 {
     public class SkillEnemy : SkillEnemy<int>
     {
@@ -13,6 +14,6 @@ namespace RPG_GAME.Core.Entities
         public string Name { get; set; }
         public virtual T BaseAttack { get; set; }
         public decimal Probability { get; set; }
-        public IncreasingStats<T> IncreasingStats { get; set; }
+        public IncreasingState<T> IncreasingStats { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace RPG_GAME.Core.Entities
+﻿namespace RPG_GAME.Core.Entities.Common
 {
     public enum CharacterType
     {

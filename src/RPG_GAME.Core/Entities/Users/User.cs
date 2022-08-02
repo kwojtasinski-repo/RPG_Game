@@ -1,7 +1,8 @@
 ﻿using RPG_GAME.Core.ValueObjects;
+using RPG_GAME.Core.Entities.Common;
 using System;
 
-namespace RPG_GAME.Core.Entities
+namespace RPG_GAME.Core.Entities.Users
 {
     public class User : IIdentifiable<Guid>
     {

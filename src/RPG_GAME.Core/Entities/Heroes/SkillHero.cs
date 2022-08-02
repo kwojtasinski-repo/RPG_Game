@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RPG_GAME.Core.Entities.Common;
 
-namespace RPG_GAME.Core.Entities
+namespace RPG_GAME.Core.Entities.Heroes
 {
     public class SkillHero : SkillHero<int>
     {
@@ -16,6 +13,6 @@ namespace RPG_GAME.Core.Entities
         public Guid Id { get; set; }
         public string Name { get; set; }
         public virtual T BaseAttack { get; set; }
-        public IncreasingStats<T> IncreasingStats { get; set; }
+        public IncreasingState<T> IncreasingStats { get; set; }
     }
 }
