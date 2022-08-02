@@ -1,4 +1,4 @@
-﻿using RPG_GAME.Application.DTO;
+﻿using RPG_GAME.Application.DTO.Common;
 using RPG_GAME.Application.DTO.Enemies;
 using RPG_GAME.Application.DTO.Heroes;
 using RPG_GAME.Application.DTO.Players;
@@ -35,7 +35,7 @@ namespace RPG_GAME.Application.Mappings
                 Level = player.Level,
                 CurrentExp = player.CurrentExp,
                 RequiredExp = player.RequiredExp,
-                Hero = player.Hero.AsDto()
+                Hero = player.Hero.AsAssignDto()
             };
         }
 
@@ -44,49 +44,74 @@ namespace RPG_GAME.Application.Mappings
             return new Hero()
             {
                 Id = heroDto.Id,
-                Attack = heroDto.Attack.AsField(),
+                Attack = heroDto.Attack.AsEntity(),
                 HeroName = heroDto.HeroName,
-                HealLvl = heroDto.HealLvl.AsField(),
-                Health = heroDto.Health.AsField(),
-                BaseRequiredExperience = heroDto.BaseRequiredExperience.AsField(),
-                Skills = heroDto.Skills.Select(s => s.AsSkill())
+                HealLvl = heroDto.HealLvl.AsEntity(),
+                Health = heroDto.Health.AsEntity(),
+                BaseRequiredExperience = heroDto.BaseRequiredExperience.AsEntity(),
+                Skills = heroDto.Skills.Select(s => s.AsEntity())
             };
         }
 
-        public static HeroAssign AsAssignEntity(this HeroDto heroDto)
+        public static HeroAssign AsAssignEntity(this HeroAssignDto heroDto)
         {
             return new HeroAssign()
-            {//TODO
-                Id = heroDto.Id,
-                HeroName = heroDto.HeroName,
-            };
-        }
-
-        public static Hero AsEntity(this HeroDetailsDto heroDto)
-        {
-            return new Hero()
             {
                 Id = heroDto.Id,
-                Attack = heroDto.Attack.AsField(),
                 HeroName = heroDto.HeroName,
-                HealLvl = heroDto.HealLvl.AsField(),
-                Health = heroDto.Health.AsField(),
-                BaseRequiredExperience = heroDto.BaseRequiredExperience.AsField(),
-                Skills = heroDto.Skills.Select(s => s.AsSkill())
+                Attack = heroDto.Attack,
+                HealLvl = heroDto.HealLvl,
+                Health = heroDto.Health,
+                BaseRequiredExperience = heroDto.BaseRequiredExperience,
+                Skills = heroDto.Skills.Select(s => s.AsAssignEntity())
+            };
+        }
+        
+        public static SkillHeroAssign AsAssignEntity(this SkillHeroAssignDto skillHeroDto)
+        {
+            return new SkillHeroAssign()
+            {
+                Id = skillHeroDto.Id,
+                Name= skillHeroDto.Name,
+                BaseAttack = skillHeroDto.BaseAttack
             };
         }
 
-        public static State<T> AsField<T>(this StateDto<T> fieldDto)
+        public static HeroAssignDto AsAssignDto(this HeroAssign hero)
+        {
+            return new HeroAssignDto()
+            {
+                Id = hero.Id,
+                HeroName = hero.HeroName,
+                Attack = hero.Attack,
+                HealLvl = hero.HealLvl,
+                Health = hero.Health,
+                BaseRequiredExperience = hero.BaseRequiredExperience,
+                Skills = hero.Skills.Select(s => s.AsDto())
+            };
+        }
+
+        public static SkillHeroAssignDto AsDto(this SkillHeroAssign skill)
+        {
+            return new SkillHeroAssignDto()
+            {
+                Id = skill.Id,
+                Name = skill.Name,
+                BaseAttack = skill.BaseAttack
+            };
+        }
+
+        public static State<T> AsEntity<T>(this StateDto<T> fieldDto)
             where T : struct
         {
             return new State<T>
             {
-                IncreasingState = fieldDto.IncreasingStats.AsIncreasingStats(),
+                IncreasingState = fieldDto.IncreasingState.AsEntity(),
                 Value = fieldDto.Value
             };
         }
 
-        public static IncreasingState<T> AsIncreasingStats<T>(this IncreasingStatsDto<T> fieldDto)
+        public static IncreasingState<T> AsEntity<T>(this IncreasingStateDto<T> fieldDto)
             where T : struct
         {
             return new IncreasingState<T>
@@ -96,7 +121,7 @@ namespace RPG_GAME.Application.Mappings
             };
         }
 
-        public static SkillEnemy AsSkill(this SkillDetailsEnemyDto skill)
+        public static SkillEnemy AsEntity(this SkillEnemyDto skill)
         {
             return new SkillEnemy()
             {
@@ -104,27 +129,18 @@ namespace RPG_GAME.Application.Mappings
                 Name = skill.Name,
                 BaseAttack = skill.BaseAttack,
                 Probability = skill.Probability,
-                IncreasingState = skill.IncreasingStats.AsIncreasingStats()
+                IncreasingState = skill.IncreasingState.AsEntity()
             };
         }
 
-        public static SkillHero AsSkill(this SkillDetailsHeroDto skill)
+        public static SkillHero AsEntity(this SkillHeroDto skill)
         {
             return new SkillHero()
             {
                 Id = skill.Id,
                 Name = skill.Name,
                 BaseAttack = skill.BaseAttack,
-                IncreasingState = skill.IncreasingStats.AsIncreasingStats()
-            };
-        }
-
-        public static HeroDto AsDto(this HeroAssign hero)
-        {
-            return new HeroDto()
-            {//TODO
-                Id = hero.Id,
-                HeroName = hero.HeroName
+                IncreasingState = skill.IncreasingState.AsEntity()
             };
         }
 
@@ -138,7 +154,7 @@ namespace RPG_GAME.Application.Mappings
                 Health = hero.Health.AsDto(),
                 HeroName = hero.HeroName,
                 BaseRequiredExperience = hero.BaseRequiredExperience.AsDto(),
-                Skills = hero.Skills.Select(s => s.AsDetailsDto())
+                Skills = hero.Skills.Select(s => s.AsDto())
             };
         }
 
@@ -152,7 +168,7 @@ namespace RPG_GAME.Application.Mappings
                 Health = hero.Health.AsDto(),
                 HeroName = hero.HeroName,
                 BaseRequiredExperience = hero.BaseRequiredExperience.AsDto(),
-                Skills = hero.Skills.Select(s => s.AsDetailsDto()),
+                Skills = hero.Skills.Select(s => s.AsDto()),
                 PlayersAssignedTo = hero.PlayersAssignedTo
             };
         }
@@ -162,41 +178,41 @@ namespace RPG_GAME.Application.Mappings
         {
             return new StateDto<T>
             {
-                IncreasingStats = field.IncreasingState.AsDto(),
+                IncreasingState = field.IncreasingState.AsDto(),
                 Value = field.Value
             };
         }
 
-        public static IncreasingStatsDto<T> AsDto<T>(this IncreasingState<T> field)
+        public static IncreasingStateDto<T> AsDto<T>(this IncreasingState<T> field)
             where T : struct
         {
-            return new IncreasingStatsDto<T>
+            return new IncreasingStateDto<T>
             {
                 Value = field.Value,
                 StrategyIncreasing = field.StrategyIncreasing.ToString()
             };
         }
 
-        public static SkillDetailsEnemyDto AsDetailsDto(this SkillEnemy skill)
+        public static SkillEnemyDto AsDto(this SkillEnemy skill)
         {
-            return new SkillDetailsEnemyDto()
+            return new SkillEnemyDto()
             {
                 Id = skill.Id,
                 Name = skill.Name,
                 BaseAttack = skill.BaseAttack,
                 Probability = skill.Probability,
-                IncreasingStats = skill.IncreasingState.AsDto()
+                IncreasingState = skill.IncreasingState.AsDto()
             };
         }
 
-        public static SkillDetailsHeroDto AsDetailsDto(this SkillHero skill)
+        public static SkillHeroDto AsDto(this SkillHero skill)
         {
-            return new SkillDetailsHeroDto()
+            return new SkillHeroDto()
             {
                 Id = skill.Id,
                 Name = skill.Name,
                 BaseAttack = skill.BaseAttack,
-                IncreasingStats = skill.IncreasingState.AsDto()
+                IncreasingState = skill.IncreasingState.AsDto()
             };
         }
 
@@ -206,12 +222,12 @@ namespace RPG_GAME.Application.Mappings
             {
                 Id = enemyDto.Id,
                 EnemyName = enemyDto.EnemyName,
-                BaseAttack = enemyDto.BaseAttack.AsField(),
-                BaseHealLvl = enemyDto.BaseHealLvl.AsField(),
-                BaseHealth = enemyDto.BaseHealth.AsField(),
+                BaseAttack = enemyDto.BaseAttack.AsEntity(),
+                BaseHealLvl = enemyDto.BaseHealLvl.AsEntity(),
+                BaseHealth = enemyDto.BaseHealth.AsEntity(),
                 Difficulty = Enum.Parse<Difficulty>(enemyDto.Difficulty),
-                Experience = enemyDto.Experience.AsField(),
-                Skills = enemyDto.Skills.Select(s => s.AsSkill())
+                Experience = enemyDto.Experience.AsEntity(),
+                Skills = enemyDto.Skills.Select(s => s.AsEntity())
             };
         }
 
@@ -226,7 +242,7 @@ namespace RPG_GAME.Application.Mappings
                 BaseHealLvl = enemy.BaseHealLvl.AsDto(),
                 BaseHealth = enemy.BaseHealth.AsDto(),
                 Experience = enemy.Experience.AsDto(),
-                Skills = enemy.Skills.Select(s => s.AsDetailsDto())
+                Skills = enemy.Skills.Select(s => s.AsDto())
             };
         }
 
@@ -241,7 +257,7 @@ namespace RPG_GAME.Application.Mappings
                 BaseHealth = enemy.BaseHealth.AsDto(),
                 Difficulty = enemy.Difficulty.ToString(),
                 Experience = enemy.Experience.AsDto(),
-                Skills = enemy.Skills.Select(s => s.AsDetailsDto()),
+                Skills = enemy.Skills.Select(s => s.AsDto()),
                 MapsAssignedTo = enemy.MapsAssignedTo
             };
         }

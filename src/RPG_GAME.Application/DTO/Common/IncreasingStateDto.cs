@@ -1,6 +1,6 @@
-﻿namespace RPG_GAME.Application.DTO
+﻿namespace RPG_GAME.Application.DTO.Common
 {
-    public class IncreasingStatsDto<T>
+    public class IncreasingStateDto<T>
         where T : struct
     {
         public string StrategyIncreasing { get; set; }

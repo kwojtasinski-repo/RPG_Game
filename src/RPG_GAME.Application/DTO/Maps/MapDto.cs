@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public string Name { get; set; }
         public string Difficulty { get; set; }
-        public IList<RequiredEnemyDto> Enemies { get; set; }
+        public IList<Enemies> Enemies { get; set; }
     }
 }

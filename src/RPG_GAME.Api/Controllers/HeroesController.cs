@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RPG_GAME.Application.DTO;
+using RPG_GAME.Application.DTO.Heroes;
 using RPG_GAME.Application.Services;
 
 namespace RPG_GAME.Api.Controllers
@@ -22,16 +22,16 @@ namespace RPG_GAME.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add(HeroDetailsDto heroDetailsDto)
+        public async Task<ActionResult> Add(HeroDto heroDto)
         {
-            await _heroService.AddAsync(heroDetailsDto);
-            return CreatedAtAction(nameof(Get), new { Id = heroDetailsDto.Id }, default);
+            await _heroService.AddAsync(heroDto);
+            return CreatedAtAction(nameof(Get), new { Id = heroDto.Id }, default);
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update(HeroDetailsDto heroDetailsDto)
+        public async Task<ActionResult> Update(HeroDto heroDto)
         {
-            await _heroService.UpdateAsync(heroDetailsDto);
+            await _heroService.UpdateAsync(heroDto);
             return NoContent();
         }
 
