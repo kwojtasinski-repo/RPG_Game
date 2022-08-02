@@ -4,7 +4,7 @@ using RPG_GAME.Core.Entities.Common;
 
 namespace RPG_GAME.Core.Entities.Heroes
 {
-    public class Hero : IIdentifiable<Guid>
+    public class Hero
     {
         public Guid Id { get; set; }
         public CharacterType Character => CharacterType.PLAYER;

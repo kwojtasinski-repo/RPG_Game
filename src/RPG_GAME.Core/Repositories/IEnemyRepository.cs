@@ -1,4 +1,4 @@
-﻿using RPG_GAME.Core.Entities;
+﻿using RPG_GAME.Core.Entities.Enemies;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

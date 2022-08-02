@@ -1,9 +1,8 @@
 ﻿using System;
-using RPG_GAME.Core.Entities.Common;
 
 namespace RPG_GAME.Core.Entities.Players
 {
-    public class Player : IIdentifiable<Guid>
+    public class Player
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace RPG_GAME.Core.Entities.Enemies
 {
-    public class Enemy : IIdentifiable<Guid>
+    public class Enemy
     {
         public Guid Id { get; set; }
         public CharacterType Character => CharacterType.ENEMY;

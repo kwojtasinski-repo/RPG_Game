@@ -1,4 +1,4 @@
-﻿using RPG_GAME.Core.Entities;
+﻿using RPG_GAME.Core.Entities.Users;
 using System.Threading.Tasks;
 
 namespace RPG_GAME.Core.Repositories
