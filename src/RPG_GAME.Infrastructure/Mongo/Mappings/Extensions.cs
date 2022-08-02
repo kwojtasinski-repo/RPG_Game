@@ -136,7 +136,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
         {
             return new StateDocument<T>
             {
-                IncreasingStats = state.IncreasingStats.AsDocument(),
+                IncreasingState = state.IncreasingState.AsDocument(),
                 Value = state.Value
             };
         }
@@ -158,7 +158,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 Id = skillHero.Id,
                 Name = skillHero.Name,
                 BaseAttack = skillHero.BaseAttack,
-                IncreasingStats = skillHero.IncreasingStats.AsDocument()
+                IncreasingState = skillHero.IncreasingState.AsDocument()
             };
         }
 
@@ -183,7 +183,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
             return new State<T>
             {
                 Value = stateDocument.Value,
-                IncreasingStats = stateDocument.IncreasingStats.AsEntity()
+                IncreasingState = stateDocument.IncreasingState.AsEntity()
             };
         }
 
@@ -204,7 +204,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 Id = skillHeroDocument.Id,
                 Name = skillHeroDocument.Name,
                 BaseAttack = skillHeroDocument.BaseAttack,
-                IncreasingStats = skillHeroDocument.IncreasingStats.AsEntity()
+                IncreasingState = skillHeroDocument.IncreasingState.AsEntity()
             };
         }
 
@@ -231,7 +231,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 Id = skillEnemy.Id,
                 Name = skillEnemy.Name,
                 BaseAttack = skillEnemy.BaseAttack,
-                IncreasingStats = skillEnemy.IncreasingStats.AsDocument(),
+                IncreasingState = skillEnemy.IncreasingState.AsDocument(),
                 Probability = skillEnemy.Probability
             };
         }
@@ -260,7 +260,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 Name = skillEnemyDocument.Name,
                 BaseAttack = skillEnemyDocument.BaseAttack,
                 Probability = skillEnemyDocument.Probability,
-                IncreasingStats = skillEnemyDocument.IncreasingStats.AsEntity()
+                IncreasingState = skillEnemyDocument.IncreasingState.AsEntity()
             };
         }
 

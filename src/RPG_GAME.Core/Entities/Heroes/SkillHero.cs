@@ -13,6 +13,6 @@ namespace RPG_GAME.Core.Entities.Heroes
         public Guid Id { get; set; }
         public string Name { get; set; }
         public virtual T BaseAttack { get; set; }
-        public IncreasingState<T> IncreasingStats { get; set; }
+        public IncreasingState<T> IncreasingState { get; set; }
     }
 }

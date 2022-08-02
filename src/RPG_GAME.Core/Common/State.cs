@@ -4,6 +4,6 @@
         where T : struct
     {
         public T Value { get; set; }
-        public IncreasingState<T> IncreasingStats { get; set; }
+        public IncreasingState<T> IncreasingState { get; set; }
     }
 }

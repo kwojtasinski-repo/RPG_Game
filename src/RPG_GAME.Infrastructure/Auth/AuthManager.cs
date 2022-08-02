@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using RPG_GAME.Application.DTO;
+using RPG_GAME.Application.DTO.Auth;
 using Microsoft.IdentityModel.Tokens;
 using RPG_GAME.Application.Time;
 using RPG_GAME.Application.Auth;

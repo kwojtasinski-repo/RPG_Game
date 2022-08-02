@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RPG_GAME.Application.Services;
-using RPG_GAME.Application.DTO;
+using RPG_GAME.Application.DTO.Enemies;
 
 namespace RPG_GAME.Api.Controllers
 {
@@ -28,16 +28,16 @@ namespace RPG_GAME.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add(EnemyDetailsDto enemyDetailsDto)
+        public async Task<ActionResult> Add(EnemyDto enemyDto)
         {
-            await _enemyService.AddAsync(enemyDetailsDto);
-            return CreatedAtAction(nameof(Get), new { Id = enemyDetailsDto.Id }, default);
+            await _enemyService.AddAsync(enemyDto);
+            return CreatedAtAction(nameof(Get), new { Id = enemyDto.Id }, default);
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update(EnemyDetailsDto enemyDetailsDto)
+        public async Task<ActionResult> Update(EnemyDto enemyDto)
         {
-            await _enemyService.UpdateAsync(enemyDetailsDto);
+            await _enemyService.UpdateAsync(enemyDto);
             return NoContent();
         }
 

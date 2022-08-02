@@ -14,6 +14,6 @@ namespace RPG_GAME.Core.Entities.Enemies
         public string Name { get; set; }
         public virtual T BaseAttack { get; set; }
         public decimal Probability { get; set; }
-        public IncreasingState<T> IncreasingStats { get; set; }
+        public IncreasingState<T> IncreasingState { get; set; }
     }
 }

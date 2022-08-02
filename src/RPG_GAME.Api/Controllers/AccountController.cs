@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RPG_GAME.Application.DTO;
+using RPG_GAME.Application.DTO.Auth;
 using RPG_GAME.Application.Services;
 
 namespace RPG_GAME.Api.Controllers

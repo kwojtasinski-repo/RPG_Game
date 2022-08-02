@@ -1,4 +1,4 @@
-﻿using RPG_GAME.Application.DTO;
+﻿using RPG_GAME.Application.DTO.Maps;
 using RPG_GAME.Core.Repositories;
 
 namespace RPG_GAME.Application.Services

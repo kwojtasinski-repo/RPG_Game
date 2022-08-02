@@ -1,4 +1,4 @@
-﻿namespace RPG_GAME.Application.DTO
+﻿namespace RPG_GAME.Application.DTO.Heroes
 {
     public class HeroDetailsDto
     {
@@ -9,5 +9,6 @@
         public FieldDto<int> HealLvl { get; set; }
         public FieldDto<decimal> BaseRequiredExperience { get; set; }
         public IEnumerable<SkillDetailsHeroDto> Skills { get; set; }
+        public IEnumerable<Guid> PlayersAssignedTo { get; set; }
     }
 }

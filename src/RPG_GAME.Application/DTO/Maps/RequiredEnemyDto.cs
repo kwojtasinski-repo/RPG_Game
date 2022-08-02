@@ -1,4 +1,6 @@
-﻿namespace RPG_GAME.Application.DTO
+﻿using RPG_GAME.Application.DTO.Enemies;
+
+namespace RPG_GAME.Application.DTO.Maps
 {
     public class RequiredEnemyDto
     {

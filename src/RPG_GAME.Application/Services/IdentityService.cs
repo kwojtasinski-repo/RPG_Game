@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using RPG_GAME.Application.Auth;
-using RPG_GAME.Application.DTO;
+using RPG_GAME.Application.DTO.Auth;
 using RPG_GAME.Application.Exceptions.Auth;
 using RPG_GAME.Application.Time;
-using RPG_GAME.Core.Entities;
+using RPG_GAME.Core.Entities.Users;
 using RPG_GAME.Core.Repositories;
 using RPG_GAME.Core.ValueObjects;
 

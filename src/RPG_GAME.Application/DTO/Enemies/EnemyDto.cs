@@ -1,8 +1,6 @@
-﻿using RPG_GAME.Core.Entities;
-
-namespace RPG_GAME.Application.DTO
+﻿namespace RPG_GAME.Application.DTO.Enemies
 {
-    public class EnemyDetailsDto
+    public class EnemyDto
     {
         public Guid Id { get; set; }
         public string EnemyName { get; set; }
@@ -10,7 +8,7 @@ namespace RPG_GAME.Application.DTO
         public FieldDto<int> BaseHealth { get; set; }
         public FieldDto<int> BaseHealLvl { get; set; }
         public FieldDto<decimal> Experience { get; set; }
-        public Difficulty Difficulty { get; set; }
+        public string Difficulty { get; set; }
         public IEnumerable<SkillDetailsEnemyDto> Skills { get; set; }
     }
 }

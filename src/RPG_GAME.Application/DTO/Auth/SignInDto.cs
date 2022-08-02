@@ -1,7 +1,7 @@
 ﻿using RPG_GAME.Application.ValidationAttributes;
 using System.ComponentModel.DataAnnotations;
 
-namespace RPG_GAME.Application.DTO
+namespace RPG_GAME.Application.DTO.Auth
 {
     public class SignInDto
     {

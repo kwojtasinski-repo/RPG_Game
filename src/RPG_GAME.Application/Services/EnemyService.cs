@@ -1,4 +1,4 @@
-﻿using RPG_GAME.Application.DTO;
+﻿using RPG_GAME.Application.DTO.Enemies;
 using RPG_GAME.Application.Mappings;
 using RPG_GAME.Core.Repositories;
 
@@ -13,7 +13,7 @@ namespace RPG_GAME.Application.Services
             _enemyRepository = enemyRepository;
         }
 
-        public async Task AddAsync(EnemyDetailsDto enemyDto)
+        public async Task AddAsync(EnemyDto enemyDto)
         {
             await _enemyRepository.AddAsync(enemyDto.AsEntity());
         }
@@ -35,7 +35,7 @@ namespace RPG_GAME.Application.Services
             await _enemyRepository.DeleteAsync(id);
         }
 
-        public async Task UpdateAsync(EnemyDetailsDto enemyDto)
+        public async Task UpdateAsync(EnemyDto enemyDto)
         {
             await _enemyRepository.UpdateAsync(enemyDto.AsEntity());
         }

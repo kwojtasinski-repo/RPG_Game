@@ -1,4 +1,4 @@
-﻿using RPG_GAME.Application.DTO;
+﻿using RPG_GAME.Application.DTO.Heroes;
 using RPG_GAME.Application.Mappings;
 using RPG_GAME.Core.Repositories;
 
@@ -13,7 +13,7 @@ namespace RPG_GAME.Application.Services
             _heroRepository = heroRepository;
         }
 
-        public async Task AddAsync(HeroDetailsDto heroDto)
+        public async Task AddAsync(HeroDto heroDto)
         {
             await _heroRepository.AddAsync(heroDto.AsEntity());
         }
@@ -24,12 +24,18 @@ namespace RPG_GAME.Application.Services
             return hero.AsDetailsDto();
         }
 
+        public async Task<IEnumerable<HeroDto>> GetAllAsync()
+        {
+            var heroes = await _heroRepository.GetAllAsync();
+            return heroes.Select(h => h.AsDto());
+        }
+
         public async Task RemoveAsync(Guid id)
         {
             await _heroRepository.DeleteAsync(id);
         }
 
-        public async Task UpdateAsync(HeroDetailsDto heroDto)
+        public async Task UpdateAsync(HeroDto heroDto)
         {
             var hero = heroDto.AsEntity();
             await _heroRepository.UpdateAsync(hero);

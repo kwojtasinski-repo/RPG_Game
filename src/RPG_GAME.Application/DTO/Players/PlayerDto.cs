@@ -1,4 +1,6 @@
-﻿namespace RPG_GAME.Application.DTO
+﻿using RPG_GAME.Application.DTO.Heroes;
+
+namespace RPG_GAME.Application.DTO.Players
 {
     public class PlayerDto
     {

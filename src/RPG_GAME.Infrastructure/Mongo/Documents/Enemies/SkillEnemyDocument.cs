@@ -11,6 +11,6 @@
         public string Name { get; set; }
         public virtual T BaseAttack { get; set; }
         public decimal Probability { get; set; }
-        public IncreasingStateDocument<T> IncreasingStats { get; set; }
+        public IncreasingStateDocument<T> IncreasingState { get; set; }
     }
 }

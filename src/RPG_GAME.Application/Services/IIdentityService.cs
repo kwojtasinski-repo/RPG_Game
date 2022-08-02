@@ -1,4 +1,4 @@
-﻿using RPG_GAME.Application.DTO;
+﻿using RPG_GAME.Application.DTO.Auth;
 
 namespace RPG_GAME.Application.Services
 {

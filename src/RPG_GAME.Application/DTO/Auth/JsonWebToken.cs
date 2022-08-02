@@ -1,4 +1,4 @@
-﻿namespace RPG_GAME.Application.DTO
+﻿namespace RPG_GAME.Application.DTO.Auth
 {
     public class JsonWebToken
     {
