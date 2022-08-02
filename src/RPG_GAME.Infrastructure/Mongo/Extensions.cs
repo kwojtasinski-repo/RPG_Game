@@ -4,12 +4,15 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
-using RPG_Game.Infrastructure.Mongo.Documents;
-using RPG_Game.Infrastructure.Mongo.Repositories;
-using RPG_GAME.Core.Entities;
+using RPG_GAME.Infrastructure.Mongo.Documents.Enemies;
+using RPG_GAME.Infrastructure.Mongo.Documents.Heroes;
+using RPG_GAME.Infrastructure.Mongo.Documents.Maps;
+using RPG_GAME.Infrastructure.Mongo.Documents.Players;
+using RPG_GAME.Infrastructure.Mongo.Repositories;
 using RPG_GAME.Core.Repositories;
+using RPG_GAME.Infrastructure.Mongo.Documents;
 
-namespace RPG_Game.Infrastructure.Mongo
+namespace RPG_GAME.Infrastructure.Mongo
 {
     internal static class Extensions
     {

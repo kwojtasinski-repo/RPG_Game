@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using RPG_GAME.Application.Auth;
 using System.Text;
 
-namespace RPG_Game.Infrastructure.Auth
+namespace RPG_GAME.Infrastructure.Auth
 {
     internal static class Extensions
     {

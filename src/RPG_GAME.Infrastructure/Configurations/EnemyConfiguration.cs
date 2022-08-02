@@ -1,8 +1,8 @@
 ﻿using MongoDB.Bson.Serialization;
-using RPG_Game.Infrastructure.Mappings;
+using RPG_GAME.Infrastructure.Mappings;
 using RPG_GAME.Core.Entity;
 
-namespace RPG_Game.Infrastructure.Configurations
+namespace RPG_GAME.Infrastructure.Configurations
 {
     internal class EnemyConfiguration : IEntityMapConfiguration<Enemy>
     {

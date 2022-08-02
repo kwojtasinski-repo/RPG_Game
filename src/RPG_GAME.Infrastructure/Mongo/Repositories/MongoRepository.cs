@@ -1,8 +1,8 @@
 ﻿using MongoDB.Driver;
-using RPG_GAME.Core.Entities;
+using RPG_GAME.Infrastructure.Mongo.Documents;
 using System.Linq.Expressions;
 
-namespace RPG_Game.Infrastructure.Mongo.Repositories
+namespace RPG_GAME.Infrastructure.Mongo.Repositories
 {
 	internal class MongoRepository<TEntity, TIdentifiable> : IMongoRepository<TEntity, TIdentifiable>
 		where TEntity : IIdentifiable<TIdentifiable>

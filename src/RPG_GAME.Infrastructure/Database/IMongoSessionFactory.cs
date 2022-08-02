@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 
-namespace RPG_Game.Infrastructure.Database
+namespace RPG_GAME.Infrastructure.Database
 {
     public interface IMongoSessionFactory
     {

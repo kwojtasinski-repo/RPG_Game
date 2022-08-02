@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.Serializers;
 using System.Reflection;
 
-namespace RPG_Game.Infrastructure.Mappings
+namespace RPG_GAME.Infrastructure.Mappings
 {
     internal class MongoDbClassMap
     {

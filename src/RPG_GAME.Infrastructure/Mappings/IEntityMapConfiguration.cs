@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization;
 
-namespace RPG_Game.Infrastructure.Mappings
+namespace RPG_GAME.Infrastructure.Mappings
 {
     public interface IEntityMapConfiguration<T>
         where T : class

@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
-using RPG_Game.Infrastructure.Auth;
-using RPG_Game.Infrastructure.Database;
-using RPG_Game.Infrastructure.Mappings;
-using RPG_Game.Infrastructure.Mongo;
-using RPG_Game.Infrastructure.Time;
+using RPG_GAME.Infrastructure.Auth;
+using RPG_GAME.Infrastructure.Database;
+using RPG_GAME.Infrastructure.Mappings;
+using RPG_GAME.Infrastructure.Mongo;
+using RPG_GAME.Infrastructure.Time;
 
-namespace RPG_Game.Infrastructure
+namespace RPG_GAME.Infrastructure
 {
     public static class Extensions
     {

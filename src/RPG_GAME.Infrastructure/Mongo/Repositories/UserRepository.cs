@@ -1,9 +1,9 @@
-﻿using RPG_Game.Infrastructure.Mongo.Mappings;
-using RPG_Game.Infrastructure.Mongo.Documents;
-using RPG_GAME.Core.Entities;
+﻿using RPG_GAME.Infrastructure.Mongo.Mappings;
+using RPG_GAME.Infrastructure.Mongo.Documents;
 using RPG_GAME.Core.Repositories;
+using RPG_GAME.Core.Entities.Users;
 
-namespace RPG_Game.Infrastructure.Mongo.Repositories
+namespace RPG_GAME.Infrastructure.Mongo.Repositories
 {
     internal sealed class UserRepository : IUserRepository
     {

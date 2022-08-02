@@ -1,4 +1,4 @@
-﻿namespace RPG_Game.Infrastructure.Auth
+﻿namespace RPG_GAME.Infrastructure.Auth
 {
     public class AuthOptions
     {

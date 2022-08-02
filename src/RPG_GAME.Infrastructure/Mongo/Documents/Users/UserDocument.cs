@@ -1,6 +1,4 @@
-﻿using RPG_GAME.Core.Entities;
-
-namespace RPG_Game.Infrastructure.Mongo.Documents
+﻿namespace RPG_GAME.Infrastructure.Mongo.Documents
 {
     internal sealed class UserDocument : IIdentifiable<Guid>
     {

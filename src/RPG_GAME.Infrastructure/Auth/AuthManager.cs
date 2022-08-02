@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using RPG_GAME.Application.Time;
 using RPG_GAME.Application.Auth;
 
-namespace RPG_Game.Infrastructure.Auth
+namespace RPG_GAME.Infrastructure.Auth
 {
     internal sealed class AuthManager : IAuthManager
     {

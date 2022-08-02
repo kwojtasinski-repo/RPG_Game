@@ -1,10 +1,10 @@
 ﻿using MongoDB.Driver;
-using RPG_Game.Infrastructure.Mongo.Documents;
-using RPG_Game.Infrastructure.Mongo.Mappings;
-using RPG_GAME.Core.Entities;
+using RPG_GAME.Infrastructure.Mongo.Documents.Maps;
+using RPG_GAME.Infrastructure.Mongo.Mappings;
+using RPG_GAME.Core.Entities.Maps;
 using RPG_GAME.Core.Repositories;
 
-namespace RPG_Game.Infrastructure.Mongo.Repositories
+namespace RPG_GAME.Infrastructure.Mongo.Repositories
 {
     internal class MapRepository : IMapRepository
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RPG_GAME.Application.Time;
 
-namespace RPG_Game.Infrastructure.Time
+namespace RPG_GAME.Infrastructure.Time
 {
     internal static class Extensions
     {
