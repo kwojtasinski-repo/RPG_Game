@@ -1,6 +1,6 @@
-﻿using RPG_Game.Infrastructure;
+﻿using RPG_GAME.Infrastructure;
 
-namespace RPG_Game.IntegrationTests
+namespace RPG_GAME.IntegrationTests
 {
     public sealed class MappingFixture
     {

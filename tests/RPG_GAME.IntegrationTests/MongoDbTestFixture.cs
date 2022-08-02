@@ -1,7 +1,7 @@
 ﻿using MongoDB.Driver;
 using System;
 
-namespace RPG_Game.IntegrationTests
+namespace RPG_GAME.IntegrationTests
 {
     public sealed class MongoDbTestFixture : IDisposable
     {

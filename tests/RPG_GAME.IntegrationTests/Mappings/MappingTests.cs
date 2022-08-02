@@ -1,5 +1,4 @@
 using MongoDB.Driver;
-using RPG_GAME.Core.Entities;
 using Shouldly;
 using System.Threading.Tasks;
 using Xunit;
@@ -8,8 +7,11 @@ using System.Collections.Generic;
 using RPG_GAME.Core.ValueObjects;
 using MongoDB.Bson.Serialization;
 using System.Linq;
+using RPG_GAME.Core.Entities.Users;
+using RPG_GAME.Core.Entities.Common;
+using RPG_GAME.Core.Entities.Maps;
 
-namespace RPG_Game.IntegrationTests
+namespace RPG_GAME.IntegrationTests
 {
     [Collection("DbAndMappings")]
     public class MappingTests
@@ -46,11 +48,11 @@ namespace RPG_Game.IntegrationTests
                 Id = Guid.NewGuid(),
                 Difficulty = Difficulty.EASY,
                 Name = "Map #1",
-                Enemies = new List<RequiredEnemy>
+                Enemies = new List<Enemies>
                 {
-                    new RequiredEnemy
+                    new Enemies
                     {
-                        Enemy = new Enemy() { Id = Guid.NewGuid() }, Quantity = 1
+                        Enemy = new EnemyAssign() { Id = Guid.NewGuid() }, Quantity = 1
                     }
                 }
             };
