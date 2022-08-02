@@ -10,5 +10,6 @@
         public StateDocument<int> HealLvl { get; set; }
         public StateDocument<decimal> BaseRequiredExperience { get; set; }
         public IEnumerable<SkillHeroDocument> Skills { get; set; }
+        public IEnumerable<Guid> PlayersAssignedTo { get; set; }
     }
 }

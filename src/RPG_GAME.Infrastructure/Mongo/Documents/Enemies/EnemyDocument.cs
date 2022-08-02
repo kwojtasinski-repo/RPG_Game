@@ -11,5 +11,6 @@
         public StateDocument<decimal> Experience { get; set; }
         public Difficulty Difficulty { get; set; }
         public IEnumerable<SkillEnemyDocument> Skills { get; set; }
+        public IEnumerable<Guid> MapsAssignedTo { get; set; }
     }
 }

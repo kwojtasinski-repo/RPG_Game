@@ -127,6 +127,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 Health = hero.Health.AsDocument(),
                 BaseRequiredExperience = hero.BaseRequiredExperience.AsDocument(),
                 Skills = hero.Skills.Select(s => s.AsDocument()),
+                PlayersAssignedTo = hero.PlayersAssignedTo
             };
         }
 
@@ -172,6 +173,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 Health = heroDocument.Health.AsEntity(),
                 BaseRequiredExperience = heroDocument.BaseRequiredExperience.AsEntity(),
                 Skills = heroDocument.Skills.Select(s => s.AsEntity()),
+                PlayersAssignedTo = heroDocument.PlayersAssignedTo
             };
         }
 
@@ -217,7 +219,8 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 BaseHealth = enemy.BaseHealth.AsDocument(),
                 Difficulty = Enum.Parse<Documents.Difficulty>(enemy.Difficulty.ToString()),
                 Experience = enemy.Experience.AsDocument(),
-                Skills = enemy.Skills.Select(s => s.AsDocument())
+                Skills = enemy.Skills.Select(s => s.AsDocument()),
+                MapsAssignedTo = enemy.MapsAssignedTo
             };
         }
 
@@ -244,7 +247,8 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 BaseHealth = enemyDocument.BaseHealth.AsEntity(),
                 Difficulty = Enum.Parse<RPG_GAME.Core.Entities.Common.Difficulty>(enemyDocument.Difficulty.ToString()),
                 Experience = enemyDocument.Experience.AsEntity(),
-                Skills = enemyDocument.Skills.Select(s => s.AsEntity())
+                Skills = enemyDocument.Skills.Select(s => s.AsEntity()),
+                MapsAssignedTo = enemyDocument.MapsAssignedTo
             };
         }
 

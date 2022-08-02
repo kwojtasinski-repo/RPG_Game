@@ -14,5 +14,6 @@ namespace RPG_GAME.Core.Entities.Heroes
         public State<int> HealLvl { get; set; }
         public State<decimal> BaseRequiredExperience { get; set; }
         public IEnumerable<SkillHero> Skills { get; set; }
+        public IEnumerable<Guid> PlayersAssignedTo { get; set; }
     }
 }

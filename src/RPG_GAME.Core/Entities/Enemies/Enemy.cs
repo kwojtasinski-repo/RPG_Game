@@ -15,5 +15,6 @@ namespace RPG_GAME.Core.Entities.Enemies
         public State<decimal> Experience { get; set; }
         public Difficulty Difficulty { get; set; }
         public IEnumerable<SkillEnemy> Skills { get; set; }
+        public IEnumerable<Guid> MapsAssignedTo { get; set; }
     }
 }
