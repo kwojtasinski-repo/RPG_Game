@@ -8,9 +8,16 @@ namespace RPG_GAME.Application.ValidationAttributes
         protected override ValidationResult IsValid(
             object value, ValidationContext validationContext)
         {
-            var email = (string)value!;
-            Email.From(email);
-            return ValidationResult.Success;
+            try
+            {
+                var email = (string)value!;
+                Email.From(email);
+                return ValidationResult.Success;
+            }
+            catch (Exception ex)
+            {
+                return new ValidationResult(ex.Message);
+            }
         }
     }
 }

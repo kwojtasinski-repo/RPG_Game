@@ -8,9 +8,16 @@ namespace RPG_GAME.Application.ValidationAttributes
         protected override ValidationResult IsValid(
             object value, ValidationContext validationContext)
         {
-            var password = (string)value!;
-            Password.From(password);
-            return ValidationResult.Success;
+            try
+            {
+                var password = (string)value!;
+                Password.From(password);
+                return ValidationResult.Success;
+            }
+            catch (Exception ex)
+            {
+                return new ValidationResult(ex.Message);
+            }
         }
     }
 }
