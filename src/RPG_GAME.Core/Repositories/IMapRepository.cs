@@ -7,9 +7,9 @@ namespace RPG_GAME.Core.Repositories
 {
     public interface IMapRepository
     {
-        Task Add(Map map);
-        Task Update(Map map);
-        Task<Map> Get(Guid id);
-        Task<IEnumerable<Map>> GetAll();
+        Task AddAsync(Map map);
+        Task UpdateAsync(Map map);
+        Task<Map> GetAsync(Guid id);
+        Task<IEnumerable<Map>> GetAllAsync();
     }
 }
