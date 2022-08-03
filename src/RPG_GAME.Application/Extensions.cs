@@ -13,6 +13,7 @@ namespace RPG_GAME.Application
             services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddTransient<IEnemyService, EnemyService>();
             services.AddTransient<IHeroService, HeroService>();
+            services.AddTransient<IPlayerService, PlayerService>();
             return services;
         }
     }
