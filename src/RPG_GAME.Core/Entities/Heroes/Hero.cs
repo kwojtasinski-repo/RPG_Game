@@ -8,19 +8,20 @@ namespace RPG_GAME.Core.Entities.Heroes
 {
     public class Hero
     {
-        public Guid Id { get; set; }
-        public string HeroName { get; set; }
-        public State<int> Health { get; set; }
-        public State<int> Attack { get; set; }
-        public State<int> HealLvl { get; set; }
-        public State<decimal> BaseRequiredExperience { get; set; }
-        public IEnumerable<SkillHero> Skills { get; set; }
-        public IEnumerable<Guid> PlayersAssignedTo { get; set; }
+        public Guid Id { get; }
+        public string HeroName { get; private set; }
+        public State<int> Health { get; private set; }
+        public State<int> Attack { get; private set; }
+        public State<int> HealLvl { get; private set;  }
+        public State<decimal> BaseRequiredExperience { get; private set; }
+        public IEnumerable<SkillHero> Skills => _skills;
+        public IEnumerable<Guid> PlayersAssignedTo => _playersAssignedTo;
 
         private IList<Guid> _playersAssignedTo = new List<Guid>();
         private IList<SkillHero> _skills = new List<SkillHero>();
 
-        public Hero(Guid id, string heroName, State<int> health, State<int> attack, State<int> healLvl, State<decimal> baseRequiredExperience, IEnumerable<SkillHero> skills = null, IEnumerable<Guid> playersAssignedTo = null)
+        public Hero(Guid id, string heroName, State<int> health, State<int> attack, State<int> healLvl, State<decimal> baseRequiredExperience,
+            IEnumerable<SkillHero> skills = null, IEnumerable<Guid> playersAssignedTo = null)
         {
             Id = id;
             ChangeHeroName(heroName);
