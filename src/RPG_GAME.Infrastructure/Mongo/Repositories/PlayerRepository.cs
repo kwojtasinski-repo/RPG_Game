@@ -15,28 +15,33 @@ namespace RPG_GAME.Infrastructure.Mongo.Repositories
             _repository = repository;
         }
 
-        public async Task Add(Player player)
+        public async Task AddAsync(Player player)
         {
             var document = player.AsDocument();
             await _repository.AddAsync(document);
         }
 
-        public async Task<Player> Get(Guid id)
+        public async Task<Player> GetAsync(Guid id)
         {
             var player = await _repository.GetAsync(id);
             return player.AsEntity();
         }
 
-        public async Task<IEnumerable<Player>> GetAll()
+        public async Task<IEnumerable<Player>> GetAllAsync()
         {
             var players = await _repository.Collection.AsQueryable().ToListAsync();
             return players.Select(e => e.AsEntity());
         }
 
-        public async Task Update(Player player)
+        public async Task UpdateAsync(Player player)
         {
             var document = player.AsDocument();
             await _repository.UpdateAsync(document);
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            await _repository.DeleteAsync(id);
         }
     }
 }
