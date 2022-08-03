@@ -15,6 +15,6 @@ namespace RPG_GAME.Application.DTO.Auth
         [Password]
         public string Password { get; set; }
 
-        public string? Role { get; set; }
+        public string Role { get; set; }
     }
 }

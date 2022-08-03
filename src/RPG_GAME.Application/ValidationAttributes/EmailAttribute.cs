@@ -5,8 +5,8 @@ namespace RPG_GAME.Application.ValidationAttributes
 {
     internal sealed class EmailAttribute : ValidationAttribute
     {
-        protected override ValidationResult? IsValid(
-            object? value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(
+            object value, ValidationContext validationContext)
         {
             var email = (string)value!;
             Email.From(email);
