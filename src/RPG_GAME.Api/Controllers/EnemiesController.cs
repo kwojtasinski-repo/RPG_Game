@@ -4,9 +4,7 @@ using RPG_GAME.Application.DTO.Enemies;
 
 namespace RPG_GAME.Api.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class EnemiesController : ControllerBase
+    public class EnemiesController : BaseController
     {
         private readonly IEnemyService _enemyService;
 
@@ -21,10 +19,10 @@ namespace RPG_GAME.Api.Controllers
             return await _enemyService.GetAllAsync();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<EnemyDetailsDto>> Get(Guid id)
         {
-            return await _enemyService.GetAsync(id);
+            return OkOrNotFound(await _enemyService.GetAsync(id));
         }
 
         [HttpPost]
@@ -34,14 +32,15 @@ namespace RPG_GAME.Api.Controllers
             return CreatedAtAction(nameof(Get), new { Id = enemyDto.Id }, default);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Update(EnemyDto enemyDto)
+        [HttpPut("{id:guid}")]
+        public async Task<ActionResult> Update(Guid id, EnemyDto enemyDto)
         {
+            enemyDto.Id = id;
             await _enemyService.UpdateAsync(enemyDto);
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Delete(Guid id)
         {
             await _enemyService.RemoveAsync(id);

@@ -4,9 +4,7 @@ using RPG_GAME.Application.Services;
 
 namespace RPG_GAME.Api.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseController
     {
         private readonly IIdentityService _identityService;
 

@@ -22,8 +22,8 @@ namespace RPG_GAME.Core.Entities.Players
                 CurrentExp = decimal.Zero,
                 RequiredExp = requiredExp,
                 Level = 1,
-                UserId = userId;
-            }
+                UserId = userId
+            };
         }
     }
 }

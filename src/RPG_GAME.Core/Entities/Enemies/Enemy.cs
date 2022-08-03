@@ -7,7 +7,6 @@ namespace RPG_GAME.Core.Entities.Enemies
     public class Enemy
     {
         public Guid Id { get; set; }
-        public CharacterType Character => CharacterType.ENEMY;
         public string EnemyName { get; set; }
         public State<int> BaseAttack { get; set; }
         public State<int> BaseHealth { get; set; }

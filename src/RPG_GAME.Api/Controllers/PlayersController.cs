@@ -4,9 +4,7 @@ using RPG_GAME.Application.Services;
 
 namespace RPG_GAME.Api.Controllers
 {
-    [Route("[controller]")]
-    [ApiController]
-    public class PlayersController : ControllerBase
+    public class PlayersController : BaseController
     {
         private readonly IPlayerService _playerService;
 
@@ -21,27 +19,28 @@ namespace RPG_GAME.Api.Controllers
             return await _playerService.GetAllAsync();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<PlayerDto>> Get(Guid id)
         {
-            return Ok(await _playerService.GetAsync(id));
+            return OkOrNotFound(await _playerService.GetAsync(id));
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add(PlayerDto playerDto)
+        public async Task<ActionResult> Add(AddPlayerDto playerDto)
         {
             await _playerService.AddAsync(playerDto);
             return CreatedAtAction(nameof(Get), new { Id = playerDto.Id }, default);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Update(PlayerDto playerDto)
+        [HttpPut("{id:guid}")]
+        public async Task<ActionResult> Update(Guid id, PlayerDto playerDto)
         {
+            playerDto.Id = id;
             await _playerService.UpdateAsync(playerDto);
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Delete(Guid id)
         {
             await _playerService.RemoveAsync(id);

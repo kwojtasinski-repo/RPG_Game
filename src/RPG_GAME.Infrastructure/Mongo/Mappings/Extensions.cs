@@ -164,17 +164,13 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
 
         public static Hero AsEntity(this HeroDocument heroDocument)
         {
-            return new Hero
-            {
-                Id = heroDocument.Id,
-                HeroName = heroDocument.HeroName,
-                Attack = heroDocument.Attack.AsEntity(),
-                HealLvl = heroDocument.HealLvl.AsEntity(),
-                Health = heroDocument.Health.AsEntity(),
-                BaseRequiredExperience = heroDocument.BaseRequiredExperience.AsEntity(),
-                Skills = heroDocument.Skills.Select(s => s.AsEntity()),
-                PlayersAssignedTo = heroDocument.PlayersAssignedTo
-            };
+            return new Hero(heroDocument.Id, heroDocument.HeroName,
+                    heroDocument.Attack.AsEntity(),
+                    heroDocument.HealLvl.AsEntity(), 
+                    heroDocument.Health.AsEntity(), 
+                    heroDocument.BaseRequiredExperience.AsEntity(),
+                    heroDocument.Skills.Select(s => s.AsEntity()), 
+                    heroDocument.PlayersAssignedTo);
         }
 
         public static State<T> AsEntity<T>(this StateDocument<T> stateDocument)

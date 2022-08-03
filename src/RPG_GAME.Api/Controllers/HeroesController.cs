@@ -4,9 +4,7 @@ using RPG_GAME.Application.Services;
 
 namespace RPG_GAME.Api.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class HeroesController : ControllerBase
+    public class HeroesController : BaseController
     {
         private readonly IHeroService _heroService;
 
@@ -15,10 +13,10 @@ namespace RPG_GAME.Api.Controllers
             _heroService = heroService;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<HeroDetailsDto>> Get(Guid id)
         {
-            return await _heroService.GetAsync(id);
+            return OkOrNotFound(await _heroService.GetAsync(id));
         }
 
         [HttpPost]
@@ -28,14 +26,15 @@ namespace RPG_GAME.Api.Controllers
             return CreatedAtAction(nameof(Get), new { Id = heroDto.Id }, default);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Update(HeroDto heroDto)
+        [HttpPut("{id:guid}")]
+        public async Task<ActionResult> Update(Guid id, HeroDto heroDto)
         {
+            heroDto.Id = id;
             await _heroService.UpdateAsync(heroDto);
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Delete(Guid id)
         {
             await _heroService.RemoveAsync(id);

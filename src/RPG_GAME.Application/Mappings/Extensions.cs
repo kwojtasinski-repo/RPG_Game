@@ -41,16 +41,10 @@ namespace RPG_GAME.Application.Mappings
 
         public static Hero AsEntity(this HeroDto heroDto)
         {
-            return new Hero()
-            {
-                Id = heroDto.Id,
-                Attack = heroDto.Attack.AsEntity(),
-                HeroName = heroDto.HeroName,
-                HealLvl = heroDto.HealLvl.AsEntity(),
-                Health = heroDto.Health.AsEntity(),
-                BaseRequiredExperience = heroDto.BaseRequiredExperience.AsEntity(),
-                Skills = heroDto.Skills.Select(s => s.AsEntity())
-            };
+            return new Hero(heroDto.Id, heroDto.HeroName,
+                heroDto.Attack.AsEntity(), heroDto.HealLvl.AsEntity(),
+                heroDto.Health.AsEntity(), heroDto.BaseRequiredExperience.AsEntity(),
+                heroDto.Skills.Select(s => s.AsEntity()));
         }
 
         public static HeroAssign AsAssign(this Hero hero)
