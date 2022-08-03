@@ -53,6 +53,20 @@ namespace RPG_GAME.Application.Mappings
             };
         }
 
+        public static HeroAssign AsAssign(this Hero hero)
+        {
+            return new HeroAssign()
+            {
+                Id = hero.Id,
+                HeroName = hero.HeroName,
+                Attack = hero.Attack.Value,
+                HealLvl = hero.HealLvl.Value,
+                Health = hero.Health.Value,
+                BaseRequiredExperience = hero.BaseRequiredExperience.Value,
+                Skills = hero.Skills.Select(s => s.AsAssign())
+            };
+        }
+
         public static HeroAssign AsAssignEntity(this HeroAssignDto heroDto)
         {
             return new HeroAssign()
@@ -74,6 +88,16 @@ namespace RPG_GAME.Application.Mappings
                 Id = skillHeroDto.Id,
                 Name= skillHeroDto.Name,
                 BaseAttack = skillHeroDto.BaseAttack
+            };
+        }
+
+        public static SkillHeroAssign AsAssign(this SkillHero skillHero)
+        {
+            return new SkillHeroAssign()
+            {
+                Id = skillHero.Id,
+                Name= skillHero.Name,
+                BaseAttack = skillHero.BaseAttack
             };
         }
 

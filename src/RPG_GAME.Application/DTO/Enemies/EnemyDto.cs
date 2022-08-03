@@ -11,6 +11,6 @@ namespace RPG_GAME.Application.DTO.Enemies
         public StateDto<int> BaseHealLvl { get; set; }
         public StateDto<decimal> Experience { get; set; }
         public string Difficulty { get; set; }
-        public IEnumerable<SkillEnemyDto> Skills { get; set; }
+        public IEnumerable<SkillEnemyDto> Skills { get; set; } = new List<SkillEnemyDto>();
     }
 }

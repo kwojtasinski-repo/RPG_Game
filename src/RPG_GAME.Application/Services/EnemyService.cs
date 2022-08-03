@@ -1,5 +1,8 @@
-﻿using RPG_GAME.Application.DTO.Enemies;
+﻿using RPG_GAME.Application.DTO.Common;
+using RPG_GAME.Application.DTO.Enemies;
+using RPG_GAME.Application.Exceptions.Enemies;
 using RPG_GAME.Application.Mappings;
+using RPG_GAME.Core.Entities.Common;
 using RPG_GAME.Core.Repositories;
 
 namespace RPG_GAME.Application.Services
@@ -15,6 +18,8 @@ namespace RPG_GAME.Application.Services
 
         public async Task AddAsync(EnemyDto enemyDto)
         {
+            enemyDto.Id = Guid.NewGuid();
+            Validate(enemyDto);
             await _enemyRepository.AddAsync(enemyDto.AsEntity());
         }
 
@@ -32,12 +37,81 @@ namespace RPG_GAME.Application.Services
 
         public async Task RemoveAsync(Guid id)
         {
+            var enemyExists = await _enemyRepository.GetAsync(id);
+
+            if (enemyExists is null)
+            {
+                throw new EnemyNotFoundException(id);
+            }
+
+            if (enemyExists.MapsAssignedTo.Any())
+            {
+                throw new EnemyCannotBeDeletedException(id);
+            }
+
             await _enemyRepository.DeleteAsync(id);
         }
 
         public async Task UpdateAsync(EnemyDto enemyDto)
         {
+            Validate(enemyDto);
+            var enemyExists = await _enemyRepository.GetAsync(enemyDto.Id);
+
+            if (enemyExists is null)
+            {
+                throw new EnemyNotFoundException(enemyDto.Id);
+            }
+
             await _enemyRepository.UpdateAsync(enemyDto.AsEntity());
+        }
+
+        private static void Validate(EnemyDto enemyDto)
+        {
+            var difficultyLevels = Enum.GetNames<Difficulty>();
+            
+            if (!difficultyLevels.Any(d => d == enemyDto.Difficulty))
+            {
+                throw new InvalidEnemyDifficultyException(enemyDto.Difficulty);
+            }
+
+            ValidateState(enemyDto.BaseAttack);
+            ValidateState(enemyDto.BaseHealLvl);
+            ValidateState(enemyDto.BaseHealth);
+            ValidateState(enemyDto.Experience);
+
+            ValidateStrategyIncresing(enemyDto.BaseAttack.IncreasingState.StrategyIncreasing);
+            ValidateStrategyIncresing(enemyDto.BaseHealLvl.IncreasingState.StrategyIncreasing);
+            ValidateStrategyIncresing(enemyDto.BaseHealth.IncreasingState.StrategyIncreasing);
+            ValidateStrategyIncresing(enemyDto.Experience.IncreasingState.StrategyIncreasing);
+
+            foreach (var skill in enemyDto.Skills)
+            {
+                ValidateStrategyIncresing(skill.IncreasingState.StrategyIncreasing);
+            }
+        }
+
+        private static void ValidateStrategyIncresing(string strategyIncreasing)
+        {
+            var strategiesIncresing = Enum.GetNames<StrategyIncreasing>();
+
+            if (!strategiesIncresing.Any(s => s == strategyIncreasing))
+            {
+                throw new InvalidEnemyStrategyIncreasingException(strategyIncreasing);
+            }
+        }
+
+        private static void ValidateState<T>(StateDto<T> state)
+            where T : struct
+        {
+            if (state is null)
+            {
+                throw new InvalidEnemyStateException();
+            }
+
+            if (state.IncreasingState is null)
+            {
+                throw new InvalidEnemyIncreasingStateException();
+            }
         }
     }
 }
