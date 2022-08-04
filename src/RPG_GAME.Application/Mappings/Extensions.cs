@@ -122,44 +122,29 @@ namespace RPG_GAME.Application.Mappings
         public static State<T> AsEntity<T>(this StateDto<T> fieldDto)
             where T : struct
         {
-            return new State<T>
-            {
-                IncreasingState = fieldDto.IncreasingState.AsEntity(),
-                Value = fieldDto.Value
-            };
+            return new State<T>(fieldDto.Value, fieldDto.IncreasingState.AsEntity());
         }
 
         public static IncreasingState<T> AsEntity<T>(this IncreasingStateDto<T> fieldDto)
             where T : struct
         {
-            return new IncreasingState<T>
-            {
-                Value = fieldDto.Value,
-                StrategyIncreasing = Enum.Parse<StrategyIncreasing>(fieldDto.StrategyIncreasing)
-            };
+            return new IncreasingState<T>(fieldDto.Value, Enum.Parse<StrategyIncreasing>(fieldDto.StrategyIncreasing));
         }
 
         public static SkillEnemy AsEntity(this SkillEnemyDto skill)
         {
-            return new SkillEnemy()
-            {
-                Id = skill.Id,
-                Name = skill.Name,
-                BaseAttack = skill.BaseAttack,
-                Probability = skill.Probability,
-                IncreasingState = skill.IncreasingState.AsEntity()
-            };
+            return new SkillEnemy(
+                skill.Id,
+                skill.Name,
+                skill.BaseAttack,
+                skill.Probability,
+                skill.IncreasingState.AsEntity()
+            );
         }
 
         public static SkillHero AsEntity(this SkillHeroDto skill)
         {
-            return new SkillHero()
-            {
-                Id = skill.Id,
-                Name = skill.Name,
-                BaseAttack = skill.BaseAttack,
-                IncreasingState = skill.IncreasingState.AsEntity()
-            };
+            return new SkillHero(skill.Id, skill.Name, skill.BaseAttack, skill.IncreasingState.AsEntity());
         }
 
         public static HeroDto AsDto(this Hero hero)
@@ -236,17 +221,16 @@ namespace RPG_GAME.Application.Mappings
 
         public static Enemy AsEntity(this EnemyDto enemyDto)
         {
-            return new Enemy()
-            {
-                Id = enemyDto.Id,
-                EnemyName = enemyDto.EnemyName,
-                BaseAttack = enemyDto.BaseAttack.AsEntity(),
-                BaseHealLvl = enemyDto.BaseHealLvl.AsEntity(),
-                BaseHealth = enemyDto.BaseHealth.AsEntity(),
-                Difficulty = Enum.Parse<Difficulty>(enemyDto.Difficulty),
-                Experience = enemyDto.Experience.AsEntity(),
-                Skills = enemyDto.Skills.Select(s => s.AsEntity())
-            };
+            return new Enemy(
+                enemyDto.Id,
+                enemyDto.EnemyName,
+                enemyDto.BaseHealth.AsEntity(),
+                enemyDto.BaseAttack.AsEntity(),
+                enemyDto.BaseHealLvl.AsEntity(),
+                enemyDto.Experience.AsEntity(),
+                Enum.Parse<Difficulty>(enemyDto.Difficulty),
+                enemyDto.Skills.Select(s => s.AsEntity())
+            );
         }
 
         public static EnemyDto AsDto(this Enemy enemy)

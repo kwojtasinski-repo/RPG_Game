@@ -1,6 +1,6 @@
 ﻿namespace RPG_GAME.Core.Exceptions.Heroes
 {
-    internal class HeroHealLvlIncreasingCannotBeNegativeException : DomainException
+    internal sealed class HeroHealLvlIncreasingCannotBeNegativeException : DomainException
     {
         public int IncreasingState { get; }
 

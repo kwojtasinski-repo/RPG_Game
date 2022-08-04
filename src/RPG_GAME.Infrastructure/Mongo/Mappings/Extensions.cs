@@ -176,32 +176,18 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
         public static State<T> AsEntity<T>(this StateDocument<T> stateDocument)
             where T : struct
         {
-            return new State<T>
-            {
-                Value = stateDocument.Value,
-                IncreasingState = stateDocument.IncreasingState.AsEntity()
-            };
+            return new State<T>(stateDocument.Value, stateDocument.IncreasingState.AsEntity());
         }
 
         public static IncreasingState<T> AsEntity<T>(this IncreasingStateDocument<T> increasingStateDocument)
             where T : struct
         {
-            return new IncreasingState<T>
-            {
-                Value = increasingStateDocument.Value,
-                StrategyIncreasing = Enum.Parse<RPG_GAME.Core.Entities.Common.StrategyIncreasing>(increasingStateDocument.StrategyIncreasing.ToString()),
-            };
+            return new IncreasingState<T>(increasingStateDocument.Value, Enum.Parse<RPG_GAME.Core.Entities.Common.StrategyIncreasing>(increasingStateDocument.StrategyIncreasing.ToString()));
         }
 
         public static SkillHero AsEntity(this SkillHeroDocument skillHeroDocument)
         {
-            return new SkillHero
-            {
-                Id = skillHeroDocument.Id,
-                Name = skillHeroDocument.Name,
-                BaseAttack = skillHeroDocument.BaseAttack,
-                IncreasingState = skillHeroDocument.IncreasingState.AsEntity()
-            };
+            return new SkillHero(skillHeroDocument.Id, skillHeroDocument.Name, skillHeroDocument.BaseAttack, skillHeroDocument.IncreasingState.AsEntity());
         }
 
         public static EnemyDocument AsDocument(this Enemy enemy)
@@ -234,30 +220,27 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
 
         public static Enemy AsEntity(this EnemyDocument enemyDocument)
         {
-            return new Enemy
-            {
-                Id = enemyDocument.Id,
-                EnemyName = enemyDocument.EnemyName,
-                BaseAttack = enemyDocument.BaseAttack.AsEntity(),
-                BaseHealLvl = enemyDocument.BaseHealLvl.AsEntity(),
-                BaseHealth = enemyDocument.BaseHealth.AsEntity(),
-                Difficulty = Enum.Parse<RPG_GAME.Core.Entities.Common.Difficulty>(enemyDocument.Difficulty.ToString()),
-                Experience = enemyDocument.Experience.AsEntity(),
-                Skills = enemyDocument.Skills.Select(s => s.AsEntity()),
-                MapsAssignedTo = enemyDocument.MapsAssignedTo
-            };
+            return new Enemy(
+                enemyDocument.Id,
+                enemyDocument.EnemyName,
+                enemyDocument.BaseHealth.AsEntity(),
+                enemyDocument.BaseAttack.AsEntity(),
+                enemyDocument.BaseHealLvl.AsEntity(),
+                enemyDocument.Experience.AsEntity(),
+                Enum.Parse<RPG_GAME.Core.Entities.Common.Difficulty>(enemyDocument.Difficulty.ToString()),
+                enemyDocument.Skills.Select(s => s.AsEntity()),
+                enemyDocument.MapsAssignedTo);
         }
 
         public static SkillEnemy AsEntity(this SkillEnemyDocument skillEnemyDocument)
         {
-            return new SkillEnemy
-            {
-                Id = skillEnemyDocument.Id,
-                Name = skillEnemyDocument.Name,
-                BaseAttack = skillEnemyDocument.BaseAttack,
-                Probability = skillEnemyDocument.Probability,
-                IncreasingState = skillEnemyDocument.IncreasingState.AsEntity()
-            };
+            return new SkillEnemy(
+                skillEnemyDocument.Id,
+                skillEnemyDocument.Name,
+                skillEnemyDocument.BaseAttack,
+                skillEnemyDocument.Probability,
+                skillEnemyDocument.IncreasingState.AsEntity()
+            );
         }
 
         public static MapDocument AsDocument(this Map map)

@@ -4,7 +4,7 @@
     {
         public string HeroName { get; }
 
-        public TooShortHeroNameException(string heroName) : base($"HeroName: '{heroName}' is too short")
+        public TooShortHeroNameException(string heroName) : base($"HeroName: '{heroName}' is too short, expected at least 3 characters")
         {
             HeroName = heroName;
         }
