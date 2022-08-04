@@ -1,4 +1,4 @@
-﻿using RPG_GAME.Core.Exceptions;
+﻿using RPG_GAME.Core.Exceptions.Common;
 using System;
 using System.Text.RegularExpressions;
 

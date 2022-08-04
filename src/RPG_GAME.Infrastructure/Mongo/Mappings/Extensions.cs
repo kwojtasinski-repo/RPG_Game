@@ -29,15 +29,14 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
 
         public static User AsEntity(this UserDocument userDocument)
         {
-            return new User
-            {
-                Id = userDocument.Id,
-                Email = userDocument.Email,
-                Password = userDocument.Password,
-                Role = userDocument.Role,
-                CreatedAt = userDocument.CreatedAt,
-                IsActive = userDocument.IsActive
-            };
+            return new User(
+                userDocument.Id,
+                userDocument.Email,
+                userDocument.Password,
+                userDocument.Role,
+                userDocument.CreatedAt,
+                userDocument.IsActive
+            );
         }
         
         public static PlayerDocument AsDocument(this Player player)
@@ -61,7 +60,6 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 Id = hero.Id,
                 HeroName = hero.HeroName,
                 Attack = hero.Attack,
-                BaseRequiredExperience = hero.BaseRequiredExperience,
                 HealLvl = hero.HealLvl,
                 Health = hero.Health,
                 Skills = hero.Skills.Select(s => s.AsDocument()),
@@ -74,46 +72,42 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
             {
                 Id = skill.Id,
                 Name = skill.Name,
-                BaseAttack = skill.BaseAttack,
+                BaseAttack = skill.Attack,
             };
         }
 
         public static Player AsEntity(this PlayerDocument playerDocument)
         {
-            return new Player
-            {
-                Id = playerDocument.Id,
-                Name = playerDocument.Name,
-                CurrentExp = playerDocument.CurrentExp,
-                Hero = playerDocument.Hero.AsEntity(),
-                Level = playerDocument.Level,
-                RequiredExp = playerDocument.RequiredExp,
-                UserId = playerDocument.UserId
-            };
+            return new Player(
+                playerDocument.Id,
+                playerDocument.Name,
+                playerDocument.Hero.AsEntity(),
+                playerDocument.Level,
+                playerDocument.CurrentExp,
+                playerDocument.RequiredExp,
+                playerDocument.UserId
+            );
         }
 
         public static HeroAssign AsEntity(this HeroAssignDocument heroAssignDocument)
         {
-            return new HeroAssign
-            {
-                Id = heroAssignDocument.Id,
-                HeroName = heroAssignDocument.HeroName,
-                Attack = heroAssignDocument.Attack,
-                BaseRequiredExperience = heroAssignDocument.BaseRequiredExperience,
-                HealLvl = heroAssignDocument.HealLvl,
-                Health = heroAssignDocument.Health,
-                Skills = heroAssignDocument.Skills.Select(s => s.AsEntity())
-            };
+            return new HeroAssign(
+                heroAssignDocument.Id,
+                heroAssignDocument.HeroName,
+                heroAssignDocument.Health,
+                heroAssignDocument.Attack,
+                heroAssignDocument.HealLvl,
+                heroAssignDocument.Skills.Select(s => s.AsEntity())
+            );
         }
 
         public static SkillHeroAssign AsEntity(this SkillHeroAssignDocument skillHeroAssignDocument)
         {
-            return new SkillHeroAssign
-            {
-                Id = skillHeroAssignDocument.Id,
-                Name = skillHeroAssignDocument.Name,
-                BaseAttack = skillHeroAssignDocument.BaseAttack
-            };
+            return new SkillHeroAssign(
+                skillHeroAssignDocument.Id,
+                skillHeroAssignDocument.Name,
+                skillHeroAssignDocument.BaseAttack
+            );
         }
         
         public static HeroDocument AsDocument(this Hero hero)
@@ -256,13 +250,12 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
 
         public static Map AsEntity(this MapDocument mapDocument)
         {
-            return new Map
-            {
-                Id = mapDocument.Id,
-                Name = mapDocument.Name,
-                Difficulty = Enum.Parse<RPG_GAME.Core.Entities.Common.Difficulty>(mapDocument.Difficulty.ToString()),
-                Enemies = mapDocument.Enemies.Select(e => e.AsEntity()).ToList()
-            };
+            return new Map(
+                mapDocument.Id,
+                mapDocument.Name,
+                Enum.Parse<RPG_GAME.Core.Entities.Common.Difficulty>(mapDocument.Difficulty.ToString()),
+                mapDocument.Enemies.Select(e => e.AsEntity()).ToList()
+            );
         }
 
         public static EnemiesDocument AsDocument(this Enemies enemy)
@@ -280,9 +273,9 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
             {
                 Id = enemy.Id,
                 EnemyName = enemy.EnemyName,
-                BaseAttack = enemy.BaseAttack,
-                BaseHealLvl = enemy.BaseHealLvl,
-                BaseHealth = enemy.BaseHealth,
+                BaseAttack = enemy.Attack,
+                BaseHealLvl = enemy.HealLvl,
+                BaseHealth = enemy.Health,
                 Experience = enemy.Experience,
                 Difficulty = Enum.Parse<Documents.Difficulty>(enemy.Difficulty.ToString()),
                 Skills = enemy.Skills.Select(s => s.AsDocument()),
@@ -295,44 +288,41 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
             {
                 Id = skillEnemy.Id,
                 Name = skillEnemy.Name,
-                BaseAttack = skillEnemy.BaseAttack,
+                BaseAttack = skillEnemy.Attack,
                 Probability = skillEnemy.Probability
             };
         }
 
         public static Enemies AsEntity(this EnemiesDocument enemiesDocument)
         {
-            return new Enemies
-            {
-                Enemy = enemiesDocument.Enemy.AsEntity(),
-                Quantity = enemiesDocument.Quantity
-            };
+            return new Enemies(
+                enemiesDocument.Enemy.AsEntity(),
+                enemiesDocument.Quantity
+            );
         }
 
         public static EnemyAssign AsEntity(this EnemyAssignDocument enemyDocument)
         {
-            return new EnemyAssign
-            {
-                Id = enemyDocument.Id,
-                EnemyName = enemyDocument.EnemyName,
-                BaseAttack = enemyDocument.BaseAttack,
-                BaseHealLvl = enemyDocument.BaseHealLvl,
-                BaseHealth = enemyDocument.BaseHealth,
-                Experience = enemyDocument.Experience,
-                Difficulty = Enum.Parse<RPG_GAME.Core.Entities.Common.Difficulty>(enemyDocument.Difficulty.ToString()),
-                Skills = enemyDocument.Skills.Select(s => s.AsEntity()),
-            };
+            return new EnemyAssign(
+                enemyDocument.Id,
+                enemyDocument.EnemyName,
+                enemyDocument.BaseAttack,
+                enemyDocument.BaseHealLvl,
+                enemyDocument.BaseHealth,
+                enemyDocument.Experience,
+                Enum.Parse<RPG_GAME.Core.Entities.Common.Difficulty>(enemyDocument.Difficulty.ToString()),
+                enemyDocument.Skills.Select(s => s.AsEntity())
+            );
         }
 
         public static SkillEnemyAssign AsEntity(this SkillEnemyAssignDocument skillEnemyDocument)
         {
-            return new SkillEnemyAssign
-            {
-                Id = skillEnemyDocument.Id,
-                Name = skillEnemyDocument.Name,
-                BaseAttack = skillEnemyDocument.BaseAttack,
-                Probability = skillEnemyDocument.Probability
-            };
+            return new SkillEnemyAssign(
+                skillEnemyDocument.Id,
+                skillEnemyDocument.Name,
+                skillEnemyDocument.BaseAttack,
+                skillEnemyDocument.Probability
+            );
         }
     }
 }

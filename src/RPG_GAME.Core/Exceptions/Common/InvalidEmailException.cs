@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RPG_GAME.Core.Exceptions
+namespace RPG_GAME.Core.Exceptions.Common
 {
     public class InvalidEmailException : Exception
     {

@@ -43,19 +43,15 @@ namespace RPG_GAME.IntegrationTests
         {
             var database = _mongoClient.GetDatabase(DatabaseName);
             var collection = database.GetCollection<Map>("maps");
-            var map = new Map
-            {
-                Id = Guid.NewGuid(),
-                Difficulty = Difficulty.EASY,
-                Name = "Map #1",
-                Enemies = new List<Enemies>
+            var map = new Map(
+                Guid.NewGuid(),
+                "Map #1",
+                Difficulty.EASY,
+                new List<Enemies>
                 {
-                    new Enemies
-                    {
-                        Enemy = new EnemyAssign() { Id = Guid.NewGuid() }, Quantity = 1
-                    }
+                    new Enemies(new EnemyAssign(Guid.NewGuid(), "Enemy #1", 1, 1, 1, 1, Difficulty.EASY), 1)
                 }
-            };
+            );
 
             await collection.InsertOneAsync(map);
 
@@ -69,7 +65,7 @@ namespace RPG_GAME.IntegrationTests
         {
             var database = _mongoClient.GetDatabase(DatabaseName);
             var collection = database.GetCollection<User>("users");
-            var user = new User { Id = Guid.NewGuid(), Email = Email.From("test@test.com"), Password = "test" };
+            var user = User.Create("test@test.com", "test", DateTime.UtcNow, "user");
 
             await collection.InsertOneAsync(user);
 

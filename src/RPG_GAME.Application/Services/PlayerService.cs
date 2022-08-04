@@ -53,10 +53,9 @@ namespace RPG_GAME.Application.Services
                 throw new PlayerNotFoundException(playerDto.Id);
             }
 
-            player.Level = playerDto.Level;
-            player.Name = playerDto.Name;
-            player.RequiredExp = playerDto.RequiredExp;
-            player.CurrentExp = playerDto.CurrentExp;
+            player.ChangeName(playerDto.Name);
+            player.ChangeCurrentExp(playerDto.CurrentExp);
+            player.ChangeRequiredExp(playerDto.RequiredExp);
 
             await _playerRepository.UpdateAsync(player);
         }

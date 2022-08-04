@@ -47,7 +47,6 @@ namespace RPG_GAME.Application.Services
 
         public async Task SignUpAsync(SignUpDto dto)
         {
-            dto.Id = Guid.NewGuid();
             var email = dto.Email.ToLowerInvariant();
             Password.From(dto.Password);
             var user = await _userRepository.GetAsync(email);
@@ -58,15 +57,9 @@ namespace RPG_GAME.Application.Services
             }
 
             var password = _passwordHasher.HashPassword(default, dto.Password);
-            user = new User
-            {
-                Id = dto.Id,
-                Email = email,
-                Password = password,
-                Role = dto.Role?.ToLowerInvariant() ?? "user",
-                CreatedAt = _clock.CurrentDate(),
-                IsActive = true
-            };
+            user = User.Create(email, password, _clock.CurrentDate(),
+                dto.Role?.ToLowerInvariant() ?? "user");
+
             await _userRepository.AddAsync(user);
         }
 

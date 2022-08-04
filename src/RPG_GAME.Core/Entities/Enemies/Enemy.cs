@@ -8,7 +8,7 @@ namespace RPG_GAME.Core.Entities.Enemies
 {
     public class Enemy
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
         public string EnemyName { get; private set; }
         public State<int> BaseAttack { get; private set; }
         public State<int> BaseHealth { get; private set; }
@@ -22,7 +22,7 @@ namespace RPG_GAME.Core.Entities.Enemies
         private IList<Guid> _mapsAssignedTo = new List<Guid>();
 
         public Enemy(Guid id, string enemyName, State<int> health, State<int> attack, State<int> healLvl, State<decimal> experience,
-            Difficulty difficulty, IEnumerable<SkillEnemy> skills = null, IEnumerable<Guid> mapsAssignedTo = null)
+            string difficulty, IEnumerable<SkillEnemy> skills = null, IEnumerable<Guid> mapsAssignedTo = null)
         {
             Id = id;
             ChangeEnemyName(enemyName);
@@ -42,9 +42,9 @@ namespace RPG_GAME.Core.Entities.Enemies
 
             if (mapsAssignedTo is not null)
             {
-                foreach (var playerAssignedTo in mapsAssignedTo)
+                foreach (var mapAssignedTo in mapsAssignedTo)
                 {
-                    AddMap(playerAssignedTo);
+                    AddMap(mapAssignedTo);
                 }
             }
         }
@@ -71,9 +71,9 @@ namespace RPG_GAME.Core.Entities.Enemies
                 throw new InvalidEnemyHealthException();
             }
 
-            if (health.Value < 0)
+            if (health.Value <= 0)
             {
-                throw new EnemyHealthCannotBeNegativeException(health.Value);
+                throw new EnemyHealthCannotBeZeroOrNegativeException(health.Value);
             }
 
             if (health.IncreasingState.Value < 0)
@@ -91,9 +91,9 @@ namespace RPG_GAME.Core.Entities.Enemies
                 throw new InvalidEnemyAttackException();
             }
 
-            if (attack.Value < 0)
+            if (attack.Value <= 0)
             {
-                throw new EnemyAttackCannotBeNegativeException(attack.Value);
+                throw new EnemyAttackCannotBeZeroOrNegativeException(attack.Value);
             }
 
             if (attack.IncreasingState.Value < 0)
@@ -111,9 +111,9 @@ namespace RPG_GAME.Core.Entities.Enemies
                 throw new InvalidEnemyHealLvlException();
             }
 
-            if (healLvl.Value < 0)
+            if (healLvl.Value <= 0)
             {
-                throw new EnemyHealLvlCannotBeNegativeException(healLvl.Value);
+                throw new EnemyHealLvlCannotBeZeroOrNegativeException(healLvl.Value);
             }
 
             if (healLvl.IncreasingState.Value < 0)
@@ -124,9 +124,16 @@ namespace RPG_GAME.Core.Entities.Enemies
             BaseHealLvl = healLvl;
         }
 
-        public void ChangeDifficulty(Difficulty difficulty)
+        public void ChangeDifficulty(string difficulty)
         {
-            Difficulty = difficulty;
+            var parsed = Enum.TryParse<Difficulty>(difficulty, out var difficultyType);
+
+            if (!parsed)
+            {
+                throw new InvalidEnemyDifficultyException(difficulty);
+            }
+
+            Difficulty = difficultyType;
         }
 
         public void ChangeExperience(State<decimal> experience)
@@ -136,9 +143,9 @@ namespace RPG_GAME.Core.Entities.Enemies
                 throw new InvalidEnemyExperienceException();
             }
 
-            if (experience.Value < 0)
+            if (experience.Value <= 0)
             {
-                throw new EnemyExperienceCannotBeNegativeException(experience.Value);
+                throw new EnemyExperienceCannotBeZeroOrNegativeException(experience.Value);
             }
 
             if (experience.IncreasingState.Value < 0)

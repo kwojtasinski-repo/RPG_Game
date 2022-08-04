@@ -62,7 +62,38 @@ namespace RPG_GAME.Application.Services
                 throw new EnemyNotFoundException(enemyDto.Id);
             }
 
-            await _enemyRepository.UpdateAsync(enemyDto.AsEntity());
+            enemyExists.ChangeEnemyName(enemyDto.EnemyName);
+            enemyExists.ChangeAttack(enemyDto.BaseAttack.AsEntity());
+            enemyExists.ChangeDifficulty(enemyDto.Difficulty);
+            enemyExists.ChangeHealth(enemyDto.BaseHealth.AsEntity());
+            enemyExists.ChangeHealLvl(enemyDto.BaseHealLvl.AsEntity());
+            enemyExists.ChangeExperience(enemyDto.Experience.AsEntity());
+
+            foreach (var enemySkill in enemyDto.Skills)
+            {
+                var exists = enemyExists.Skills.Any(s => s.Id == enemySkill.Id);
+
+                if (!exists)
+                {
+                    continue;
+                }
+
+                enemyExists.AddSkill(enemySkill.AsEntity());
+            }
+
+            foreach (var enemySkill in enemyExists.Skills)
+            {
+                var exists = enemyDto.Skills.Any(s => s.Id == enemySkill.Id);
+
+                if (!exists)
+                {
+                    continue;
+                }
+
+                enemyExists.RemoveSkill(enemySkill);
+            }
+
+            await _enemyRepository.UpdateAsync(enemyExists);
         }
 
         private static void Validate(EnemyDto enemyDto)
