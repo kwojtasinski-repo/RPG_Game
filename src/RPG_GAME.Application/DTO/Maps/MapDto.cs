@@ -2,9 +2,9 @@
 {
     public class MapDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Difficulty { get; set; }
-        public IList<Enemies> Enemies { get; set; }
+        public IEnumerable<EnemiesDto> Enemies { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace RPG_GAME.Core.Entities.Maps
         private IEnumerable<SkillEnemyAssign> _skills = new List<SkillEnemyAssign>();
 
         public EnemyAssign(Guid id, string enemyName, int attack, int health, int healLvl, decimal experience,
-            Difficulty difficulty, IEnumerable<SkillEnemyAssign> skills = null)
+            string difficulty, IEnumerable<SkillEnemyAssign> skills = null)
         {
             Id = id;
             EnemyName = enemyName;
@@ -28,7 +28,15 @@ namespace RPG_GAME.Core.Entities.Maps
             ChangeHealth(health);
             ChangeHealLvl(healLvl);
             ChangeExperience(experience);
-            Difficulty = difficulty;
+
+            var parsed = Enum.TryParse<Difficulty>(difficulty, out var difficultyType);
+
+            if (!parsed)
+            {
+                throw new InvalidEnemyAssignDifficultyException(difficulty);
+            }
+
+            Difficulty = difficultyType;
 
             if (skills is not null)
             {

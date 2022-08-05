@@ -46,10 +46,10 @@ namespace RPG_GAME.IntegrationTests
             var map = new Map(
                 Guid.NewGuid(),
                 "Map #1",
-                Difficulty.EASY,
+                Difficulty.EASY.ToString(),
                 new List<Enemies>
                 {
-                    new Enemies(new EnemyAssign(Guid.NewGuid(), "Enemy #1", 1, 1, 1, 1, Difficulty.EASY), 1)
+                    new Enemies(new EnemyAssign(Guid.NewGuid(), "Enemy #1", 1, 1, 1, 1, Difficulty.EASY.ToString()), 1)
                 }
             );
 

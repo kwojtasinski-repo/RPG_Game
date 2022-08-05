@@ -56,6 +56,27 @@ namespace RPG_GAME.Application.Services
             player.ChangeName(playerDto.Name);
             player.ChangeCurrentExp(playerDto.CurrentExp);
             player.ChangeRequiredExp(playerDto.RequiredExp);
+            player.Hero.ChangeAttack(playerDto.Hero.Attack);
+            player.Hero.ChangeHealth(playerDto.Hero.Health);
+            player.Hero.ChangeHealLvl(playerDto.Hero.HealLvl);
+
+            if (playerDto.Hero.Skills is null)
+            {
+                await _playerRepository.UpdateAsync(player);
+                return;
+            }
+
+            foreach (var skill in playerDto.Hero.Skills)
+            {
+                var skillHero = player.Hero.Skills.FirstOrDefault(s => s.Id == skill.Id);
+
+                if (skillHero is null)
+                {
+                    throw new HeroSkillNotFoundException(skill.Id);
+                }
+
+                skillHero.ChangeAttack(skill.Attack);
+            }
 
             await _playerRepository.UpdateAsync(player);
         }

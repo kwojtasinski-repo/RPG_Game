@@ -159,9 +159,9 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
         public static Hero AsEntity(this HeroDocument heroDocument)
         {
             return new Hero(heroDocument.Id, heroDocument.HeroName,
-                    heroDocument.Attack.AsEntity(),
+                    heroDocument.Health.AsEntity(),
+                    heroDocument.Attack.AsEntity(), 
                     heroDocument.HealLvl.AsEntity(), 
-                    heroDocument.Health.AsEntity(), 
                     heroDocument.BaseRequiredExperience.AsEntity(),
                     heroDocument.Skills.Select(s => s.AsEntity()), 
                     heroDocument.PlayersAssignedTo);
@@ -176,7 +176,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
         public static IncreasingState<T> AsEntity<T>(this IncreasingStateDocument<T> increasingStateDocument)
             where T : struct
         {
-            return new IncreasingState<T>(increasingStateDocument.Value, Enum.Parse<RPG_GAME.Core.Entities.Common.StrategyIncreasing>(increasingStateDocument.StrategyIncreasing.ToString()));
+            return new IncreasingState<T>(increasingStateDocument.Value, increasingStateDocument.StrategyIncreasing.ToString());
         }
 
         public static SkillHero AsEntity(this SkillHeroDocument skillHeroDocument)
@@ -221,7 +221,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 enemyDocument.BaseAttack.AsEntity(),
                 enemyDocument.BaseHealLvl.AsEntity(),
                 enemyDocument.Experience.AsEntity(),
-                Enum.Parse<RPG_GAME.Core.Entities.Common.Difficulty>(enemyDocument.Difficulty.ToString()),
+                enemyDocument.Difficulty.ToString(),
                 enemyDocument.Skills.Select(s => s.AsEntity()),
                 enemyDocument.MapsAssignedTo);
         }
@@ -253,7 +253,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
             return new Map(
                 mapDocument.Id,
                 mapDocument.Name,
-                Enum.Parse<RPG_GAME.Core.Entities.Common.Difficulty>(mapDocument.Difficulty.ToString()),
+                mapDocument.Difficulty.ToString(),
                 mapDocument.Enemies.Select(e => e.AsEntity()).ToList()
             );
         }
@@ -307,10 +307,10 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 enemyDocument.Id,
                 enemyDocument.EnemyName,
                 enemyDocument.BaseAttack,
-                enemyDocument.BaseHealLvl,
                 enemyDocument.BaseHealth,
+                enemyDocument.BaseHealLvl,
                 enemyDocument.Experience,
-                Enum.Parse<RPG_GAME.Core.Entities.Common.Difficulty>(enemyDocument.Difficulty.ToString()),
+                enemyDocument.Difficulty.ToString(),
                 enemyDocument.Skills.Select(s => s.AsEntity())
             );
         }

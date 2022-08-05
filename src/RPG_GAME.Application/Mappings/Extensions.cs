@@ -1,10 +1,12 @@
 ﻿using RPG_GAME.Application.DTO.Common;
 using RPG_GAME.Application.DTO.Enemies;
 using RPG_GAME.Application.DTO.Heroes;
+using RPG_GAME.Application.DTO.Maps;
 using RPG_GAME.Application.DTO.Players;
 using RPG_GAME.Core.Entities.Common;
 using RPG_GAME.Core.Entities.Enemies;
 using RPG_GAME.Core.Entities.Heroes;
+using RPG_GAME.Core.Entities.Maps;
 using RPG_GAME.Core.Entities.Players;
 
 namespace RPG_GAME.Application.Mappings
@@ -41,8 +43,8 @@ namespace RPG_GAME.Application.Mappings
         public static Hero AsEntity(this HeroDto heroDto)
         {
             return new Hero(heroDto.Id, heroDto.HeroName,
-                heroDto.Attack.AsEntity(), heroDto.HealLvl.AsEntity(),
-                heroDto.Health.AsEntity(), heroDto.BaseRequiredExperience.AsEntity(),
+                heroDto.Health.AsEntity(), heroDto.Attack.AsEntity(),
+                heroDto.HealLvl.AsEntity(), heroDto.BaseRequiredExperience.AsEntity(),
                 heroDto.Skills.Select(s => s.AsEntity()));
         }
 
@@ -75,7 +77,7 @@ namespace RPG_GAME.Application.Mappings
             return new SkillHeroAssign(
                 skillHeroDto.Id,
                 skillHeroDto.Name,
-                skillHeroDto.BaseAttack
+                skillHeroDto.Attack
             );
         }
 
@@ -103,7 +105,7 @@ namespace RPG_GAME.Application.Mappings
             {
                 Id = skill.Id,
                 Name = skill.Name,
-                BaseAttack = skill.Attack
+                Attack = skill.Attack
             };
         }
 
@@ -116,7 +118,7 @@ namespace RPG_GAME.Application.Mappings
         public static IncreasingState<T> AsEntity<T>(this IncreasingStateDto<T> fieldDto)
             where T : struct
         {
-            return new IncreasingState<T>(fieldDto.Value, Enum.Parse<StrategyIncreasing>(fieldDto.StrategyIncreasing));
+            return new IncreasingState<T>(fieldDto.Value, fieldDto.StrategyIncreasing);
         }
 
         public static SkillEnemy AsEntity(this SkillEnemyDto skill)
@@ -250,6 +252,70 @@ namespace RPG_GAME.Application.Mappings
                 Skills = enemy.Skills.Select(s => s.AsDto()),
                 MapsAssignedTo = enemy.MapsAssignedTo
             };
+        }
+
+        public static MapDto AsDto(this Map map)
+        {
+            return new MapDto()
+            {
+                Id = map.Id,
+                Name = map.Name,
+                Enemies = map.Enemies.Select(e => e.AsDto()),
+                Difficulty = map.Difficulty.ToString()
+            };
+        }
+
+        public static EnemiesDto AsDto(this Enemies enemies)
+        {
+            return new EnemiesDto()
+            {
+                Enemy = enemies.Enemy.AsDto(),
+                Quantity = enemies.Quantity
+            };
+        }
+
+        public static EnemyAssignDto AsDto(this EnemyAssign enemyAssign)
+        {
+            return new EnemyAssignDto()
+            {
+                Id = enemyAssign.Id,
+                EnemyName = enemyAssign.EnemyName,
+                BaseAttack = enemyAssign.Attack,
+                BaseHealLvl = enemyAssign.HealLvl,
+                BaseHealth = enemyAssign.Health,
+                Difficulty = enemyAssign.Difficulty.ToString(),
+                Experience = enemyAssign.Experience,
+                Skills = enemyAssign.Skills.Select(s => s.AsDto())
+            };
+        }
+
+        public static SkillEnemyAssignDto AsDto(this SkillEnemyAssign skillEnemyAssign)
+        {
+            return new SkillEnemyAssignDto()
+            {
+                Id = skillEnemyAssign.Id,
+                Name = skillEnemyAssign.Name,
+                BaseAttack = skillEnemyAssign.Attack,
+                Probability = skillEnemyAssign.Probability
+            };
+        }
+
+        public static Enemies AsEntity(this EnemiesDto enemiesDto)
+        {
+            return new Enemies(enemiesDto.Enemy.AsEntity(), enemiesDto.Quantity);
+        }
+
+        public static EnemyAssign AsEntity(this EnemyAssignDto enemyDto)
+        {
+            return new EnemyAssign(enemyDto.Id, enemyDto.EnemyName, enemyDto.BaseAttack,
+                enemyDto.BaseHealth, enemyDto.BaseHealLvl, enemyDto.Experience,
+                enemyDto.Difficulty, enemyDto.Skills?.Select(s => s.AsEntity()));
+        }
+
+        public static SkillEnemyAssign AsEntity(this SkillEnemyAssignDto skillEnemyAssignDto)
+        {
+            return new SkillEnemyAssign(skillEnemyAssignDto.Id, skillEnemyAssignDto.Name,
+                skillEnemyAssignDto.BaseAttack, skillEnemyAssignDto.Probability);
         }
     }
 }

@@ -32,7 +32,15 @@ namespace RPG_GAME.Core.Entities.Common
 
         public void ValidateValue(object value)
         {
-            if (typeof(T) == typeof(int) || typeof(T) == typeof(decimal))
+            if (typeof(T) == typeof(int))
+            {
+                if ((int)value < 0)
+                {
+                    throw new InvalidStateValueException();
+                }
+            }
+
+            if (typeof(T) == typeof(decimal))
             {
                 if ((decimal)value < 0)
                 {

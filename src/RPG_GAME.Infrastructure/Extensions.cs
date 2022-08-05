@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using RPG_GAME.Infrastructure.Auth;
 using RPG_GAME.Infrastructure.Database;
 using RPG_GAME.Infrastructure.Mappings;
+using RPG_GAME.Infrastructure.Middlewares;
 using RPG_GAME.Infrastructure.Mongo;
 using RPG_GAME.Infrastructure.Time;
 
@@ -15,11 +17,12 @@ namespace RPG_GAME.Infrastructure
 
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
+            services.AddControllers();
             services.AddAuth();
             services.AddMongo();
             services.AddTime();
-            IConfiguration configuration = services.BuildServiceProvider().GetService<IConfiguration>();
-            var mongoDbOptions = configuration.GetOptions<MongoDbOptions>(SectionName);
+            services.AddSingleton<ErrorHandlerMiddleware>();
+            var mongoDbOptions = services.GetOptions<MongoDbOptions>(SectionName);
             services.AddSingleton(mongoDbOptions);
 
             services.AddSingleton<IMongoClient>(sp =>
@@ -37,7 +40,20 @@ namespace RPG_GAME.Infrastructure
 
             services.AddRepositories();
 
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
+            
             return services;
+        }
+
+        public static WebApplication UseInfrastructure(this WebApplication app)
+        {
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            app.UseAuthorization();
+            app.MapControllers();
+            return app;
         }
 
         public static void RegisterMappings()

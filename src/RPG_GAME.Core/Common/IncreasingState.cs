@@ -1,4 +1,5 @@
 ﻿using RPG_GAME.Core.Exceptions.Common;
+using System;
 
 namespace RPG_GAME.Core.Entities.Common
 {
@@ -8,15 +9,22 @@ namespace RPG_GAME.Core.Entities.Common
         public StrategyIncreasing StrategyIncreasing { get; private set; }
         public T Value { get; private set; }
 
-        public IncreasingState(T value, StrategyIncreasing strategyIncreasing)
+        public IncreasingState(T value, string strategyIncreasing)
         {
             ChangeValue(value);
             ChangeStrategyIncreasing(strategyIncreasing);
         } 
 
-        public void ChangeStrategyIncreasing(StrategyIncreasing strategyIncreasing)
+        public void ChangeStrategyIncreasing(string strategyIncreasing)
         {
-            StrategyIncreasing = strategyIncreasing;
+            var parsed = Enum.TryParse<StrategyIncreasing>(strategyIncreasing, out var strategyIncreasingParsed);
+
+            if (!parsed)
+            {
+                throw new InvalidStrategyIncreasingException(strategyIncreasing);
+            }
+
+            StrategyIncreasing = strategyIncreasingParsed;
         }
 
         public void ChangeValue(T value)
@@ -27,11 +35,19 @@ namespace RPG_GAME.Core.Entities.Common
 
         public void ValidateValue(object value)
         {
-            if (typeof(T) == typeof(int) || typeof(T) == typeof(decimal))
+            if (typeof(T) == typeof(int))
             {
-                if((decimal) value < 0)
+                if ((int)value < 0)
                 {
-                    throw new InvalidIncreasingStateValueException();
+                    throw new InvalidStateValueException();
+                }
+            }
+
+            if (typeof(T) == typeof(decimal))
+            {
+                if ((decimal)value < 0)
+                {
+                    throw new InvalidStateValueException();
                 }
             }
         }

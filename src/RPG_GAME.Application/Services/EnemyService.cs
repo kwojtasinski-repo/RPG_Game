@@ -69,11 +69,17 @@ namespace RPG_GAME.Application.Services
             enemyExists.ChangeHealLvl(enemyDto.BaseHealLvl.AsEntity());
             enemyExists.ChangeExperience(enemyDto.Experience.AsEntity());
 
+            if (enemyDto.Skills is null)
+            {
+                await _enemyRepository.UpdateAsync(enemyExists);
+                return;
+            }
+
             foreach (var enemySkill in enemyDto.Skills)
             {
                 var exists = enemyExists.Skills.Any(s => s.Id == enemySkill.Id);
 
-                if (!exists)
+                if (exists)
                 {
                     continue;
                 }
@@ -85,7 +91,7 @@ namespace RPG_GAME.Application.Services
             {
                 var exists = enemyDto.Skills.Any(s => s.Id == enemySkill.Id);
 
-                if (!exists)
+                if (exists)
                 {
                     continue;
                 }
@@ -114,6 +120,11 @@ namespace RPG_GAME.Application.Services
             ValidateStrategyIncresing(enemyDto.BaseHealLvl.IncreasingState.StrategyIncreasing);
             ValidateStrategyIncresing(enemyDto.BaseHealth.IncreasingState.StrategyIncreasing);
             ValidateStrategyIncresing(enemyDto.Experience.IncreasingState.StrategyIncreasing);
+
+            if (enemyDto.Skills is null)
+            {
+                return;
+            }
 
             foreach (var skill in enemyDto.Skills)
             {

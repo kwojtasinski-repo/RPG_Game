@@ -15,7 +15,7 @@ namespace RPG_GAME.Core.Entities.Maps
 
         private IList<Enemies> _enemies = new List<Enemies>();
 
-        public Map(Guid id, string name, Difficulty difficulty, IEnumerable<Enemies> enemies = null)
+        public Map(Guid id, string name, string difficulty, IEnumerable<Enemies> enemies = null)
         {
             Id = id;
             ChangeName(name);
@@ -30,7 +30,7 @@ namespace RPG_GAME.Core.Entities.Maps
             }
         }
 
-        public static Map Create(string name, Difficulty difficulty, IEnumerable<Enemies> enemies = null)
+        public static Map Create(string name, string difficulty, IEnumerable<Enemies> enemies = null)
         {
             return new Map(Guid.NewGuid(), name, difficulty, enemies);
         }
@@ -50,9 +50,16 @@ namespace RPG_GAME.Core.Entities.Maps
             Name = name;
         }
 
-        public void ChangeDifficulty(Difficulty difficulty)
+        public void ChangeDifficulty(string difficulty)
         {
-            Difficulty = difficulty;
+            var parsed = Enum.TryParse<Difficulty>(difficulty, out var difficultyType);
+
+            if (!parsed)
+            {
+                throw new InvalidMapDifficultyException(difficulty);
+            }
+
+            Difficulty = difficultyType;
         }
 
         public void AddEnemies(Enemies enemies)

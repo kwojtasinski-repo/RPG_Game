@@ -3,6 +3,7 @@ using RPG_GAME.Application.DTO.Heroes;
 using RPG_GAME.Application.Exceptions.Heroes;
 using RPG_GAME.Application.Mappings;
 using RPG_GAME.Core.Entities.Common;
+using RPG_GAME.Core.Entities.Heroes;
 using RPG_GAME.Core.Repositories;
 
 namespace RPG_GAME.Application.Services
@@ -55,15 +56,51 @@ namespace RPG_GAME.Application.Services
         public async Task UpdateAsync(HeroDto heroDto)
         {
             Validate(heroDto);
-            var heroExists = _heroRepository.GetAsync(heroDto.Id);
+            var heroExists = await _heroRepository.GetAsync(heroDto.Id);
 
             if (heroExists is null)
             {
                 throw new HeroNotFoundException(heroDto.Id);
             }
 
-            var hero = heroDto.AsEntity();
-            await _heroRepository.UpdateAsync(hero);
+            heroExists.ChangeHeroName(heroDto.HeroName);
+            heroExists.ChangeAttack(heroDto.Attack.AsEntity());
+            heroExists.ChangeHealth(heroDto.Health.AsEntity());
+            heroExists.ChangeHealLvl(heroDto.HealLvl.AsEntity());
+            heroExists.ChangeBaseRequiredExperience(heroDto.BaseRequiredExperience.AsEntity());
+
+            if (heroDto.Skills is null)
+            {
+                await _heroRepository.UpdateAsync(heroExists);
+                return;
+            }
+
+            foreach (var skill in heroDto.Skills)
+            {
+                var skillHeroExists = heroExists.Skills.Any(s => s.Id == skill.Id);
+
+                if (skillHeroExists)
+                {
+                    continue;
+                }
+                
+                heroExists.AddSkill(skill.AsEntity());
+            }
+
+            var heroSkills = new List<SkillHero>(heroExists.Skills);
+            foreach (var skill in heroSkills)
+            {
+                var skillHeroExists = heroDto.Skills.Any(s => s.Id == skill.Id);
+
+                if (skillHeroExists)
+                {
+                    continue;
+                }
+
+                heroExists.RemoveSkill(skill);
+            }
+
+            await _heroRepository.UpdateAsync(heroExists);
         }
 
         private static void Validate(HeroDto heroDto)
@@ -77,6 +114,11 @@ namespace RPG_GAME.Application.Services
             ValidateStrategyIncresing(heroDto.HealLvl.IncreasingState.StrategyIncreasing);
             ValidateStrategyIncresing(heroDto.Health.IncreasingState.StrategyIncreasing);
             ValidateStrategyIncresing(heroDto.BaseRequiredExperience.IncreasingState.StrategyIncreasing);
+
+            if (heroDto.Skills is null)
+            {
+                return;    
+            }
 
             foreach (var skill in heroDto.Skills)
             {

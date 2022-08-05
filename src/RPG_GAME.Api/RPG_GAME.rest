@@ -1,0 +1,101 @@
+@api = http://localhost:5000/api
+@heroId = 7b03c9f1-47db-49a7-a0ad-c4b903b5aac6
+
+###
+GET {{api}}
+
+###
+POST {{api}}/heroes
+Content-Type: application/json
+
+{
+    "heroName": "Warrior",
+    "health": {
+        "value": 10,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 3
+        }
+    },
+    "attack": {
+        "value": 5,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 4
+        }
+    },
+    "healLvl": {
+        "value": 2,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 2
+        }
+    },
+    "baseRequiredExperience": {
+        "value": 1000,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 20
+        }
+    },
+    "skills": [
+        {
+            "name": "Cyclon",
+            "baseAttack": 10,
+            "increasingState": {
+                "strategyIncreasing": "PERCENTAGE",
+                "value": 5
+            }
+        }
+    ]
+}
+
+###
+GET {{api}}/heroes/{{heroId}}
+
+###
+PUT {{api}}/heroes/{{heroId}}
+Content-Type: application/json
+
+{
+    "heroName": "Warrior",
+    "health": {
+        "value": 10,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 3
+        }
+    },
+    "attack": {
+        "value": 5,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 4
+        }
+    },
+    "healLvl": {
+        "value": 2,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 2
+        }
+    },
+    "baseRequiredExperience": {
+        "value": 1000,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 20
+        }
+    },
+    "skills": [
+        {
+            "id": "7b346a99-785e-4302-9b39-1cf0cda06f7b",
+            "name": "Cyclon",
+            "baseAttack": 10,
+            "increasingState": {
+                "strategyIncreasing": "PERCENTAGE",
+                "value": 5
+            }
+        }
+    ]
+}
