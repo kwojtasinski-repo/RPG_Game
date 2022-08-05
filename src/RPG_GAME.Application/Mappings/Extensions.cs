@@ -71,7 +71,7 @@ namespace RPG_GAME.Application.Mappings
                 heroDto.Skills.Select(s => s.AsAssignEntity())
             );
         }
-        
+
         public static SkillHeroAssign AsAssignEntity(this SkillHeroAssignDto skillHeroDto)
         {
             return new SkillHeroAssign(
@@ -316,6 +316,19 @@ namespace RPG_GAME.Application.Mappings
         {
             return new SkillEnemyAssign(skillEnemyAssignDto.Id, skillEnemyAssignDto.Name,
                 skillEnemyAssignDto.BaseAttack, skillEnemyAssignDto.Probability);
+        }
+
+        public static EnemyAssign AsAssign(this Enemy enemy)
+        {
+            return new EnemyAssign(enemy.Id, enemy.EnemyName, enemy.BaseAttack.Value, enemy.BaseHealth.Value,
+                enemy.BaseHealLvl.Value, enemy.Experience.Value, enemy.Difficulty.ToString(),
+                enemy.Skills.Select(s => s.AsAssign()));
+        }
+
+        public static SkillEnemyAssign AsAssign(this SkillEnemy skillEnemy)
+        {
+            return new SkillEnemyAssign(skillEnemy.Id, skillEnemy.Name, skillEnemy.BaseAttack,
+                skillEnemy.Probability);
         }
     }
 }

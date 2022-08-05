@@ -14,6 +14,7 @@ namespace RPG_GAME.Application
             services.AddTransient<IEnemyService, EnemyService>();
             services.AddTransient<IHeroService, HeroService>();
             services.AddTransient<IPlayerService, PlayerService>();
+            services.AddTransient<IMapService, MapService>();
             return services;
         }
     }

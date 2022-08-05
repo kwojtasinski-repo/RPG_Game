@@ -24,5 +24,17 @@ namespace RPG_GAME.Infrastructure.Mongo.Repositories
             var user = await _repository.GetAsync(x => x.Email == email.ToLowerInvariant());
             return user?.AsEntity();
         }
+
+        public async Task<User> GetAsync(Guid id)
+        {
+            var user = await _repository.GetAsync(x => x.Id == id);
+            return user?.AsEntity();
+        }
+
+        public async Task<bool> ExistsAsync(Guid id)
+        {
+            var exists = await _repository.ExistsAsync(x => x.Id == id);
+            return exists;
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace RPG_GAME.Application.Services
         public async Task<HeroDetailsDto> GetAsync(Guid id)
         {
             var hero = await _heroRepository.GetAsync(id);
-            return hero.AsDetailsDto();
+            return hero?.AsDetailsDto();
         }
 
         public async Task<IEnumerable<HeroDto>> GetAllAsync()

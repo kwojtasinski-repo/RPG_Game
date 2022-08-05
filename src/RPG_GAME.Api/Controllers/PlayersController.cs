@@ -33,7 +33,7 @@ namespace RPG_GAME.Api.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<ActionResult> Update(Guid id, PlayerDto playerDto)
+        public async Task<ActionResult> Update(Guid id, UpdatePlayerDto playerDto)
         {
             playerDto.Id = id;
             await _playerService.UpdateAsync(playerDto);

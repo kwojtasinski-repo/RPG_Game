@@ -26,14 +26,14 @@ namespace RPG_GAME.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add(MapDto mapDto)
+        public async Task<ActionResult> Add(AddMapDto mapDto)
         {
             await _mapService.AddAsync(mapDto);
             return CreatedAtAction(nameof(Get), new { Id = mapDto.Id }, default);
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<ActionResult> Update(Guid id, MapDto mapDto)
+        public async Task<ActionResult> Update(Guid id, AddMapDto mapDto)
         {
             mapDto.Id = id;
             await _mapService.UpdateAsync(mapDto);

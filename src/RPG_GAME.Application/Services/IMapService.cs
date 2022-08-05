@@ -6,7 +6,7 @@ namespace RPG_GAME.Application.Services
     {
         Task<MapDto> GetAsync(Guid id);
         Task<IEnumerable<MapDto>> GetAllAsync();
-        Task AddAsync(MapDto mapDto);
-        Task UpdateAsync(MapDto mapDto);
+        Task AddAsync(AddMapDto mapDto);
+        Task UpdateAsync(AddMapDto mapDto);
     }
 }

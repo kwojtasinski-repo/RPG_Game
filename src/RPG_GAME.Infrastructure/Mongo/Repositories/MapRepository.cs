@@ -24,7 +24,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Repositories
         public async Task<Map> GetAsync(Guid id)
         {
             var map = await _repository.GetAsync(id);
-            return map.AsEntity();
+            return map?.AsEntity();
         }
 
         public async Task<IEnumerable<Map>> GetAllAsync()

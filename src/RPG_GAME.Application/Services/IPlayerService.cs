@@ -6,7 +6,7 @@ namespace RPG_GAME.Application.Services
     {
         Task AddAsync(AddPlayerDto playerDto);
         Task RemoveAsync(Guid id);
-        Task UpdateAsync(PlayerDto playerDto);
+        Task UpdateAsync(UpdatePlayerDto playerDto);
         Task<PlayerDto> GetAsync(Guid id);
         Task<IEnumerable<PlayerDto>> GetAllAsync();
     }

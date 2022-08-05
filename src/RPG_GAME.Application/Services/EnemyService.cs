@@ -3,6 +3,7 @@ using RPG_GAME.Application.DTO.Enemies;
 using RPG_GAME.Application.Exceptions.Enemies;
 using RPG_GAME.Application.Mappings;
 using RPG_GAME.Core.Entities.Common;
+using RPG_GAME.Core.Entities.Enemies;
 using RPG_GAME.Core.Repositories;
 
 namespace RPG_GAME.Application.Services
@@ -26,7 +27,7 @@ namespace RPG_GAME.Application.Services
         public async Task<EnemyDetailsDto> GetAsync(Guid id)
         {
             var enemy = await _enemyRepository.GetAsync(id);
-            return enemy.AsDetailsDto();
+            return enemy?.AsDetailsDto();
         }
 
         public async Task<IEnumerable<EnemyDto>> GetAllAsync()
@@ -87,7 +88,8 @@ namespace RPG_GAME.Application.Services
                 enemyExists.AddSkill(enemySkill.AsEntity());
             }
 
-            foreach (var enemySkill in enemyExists.Skills)
+            var enemySkills = new List<SkillEnemy>(enemyExists.Skills);
+            foreach (var enemySkill in enemySkills)
             {
                 var exists = enemyDto.Skills.Any(s => s.Id == enemySkill.Id);
 

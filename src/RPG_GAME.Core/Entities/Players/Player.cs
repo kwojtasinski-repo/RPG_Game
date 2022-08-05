@@ -7,7 +7,7 @@ namespace RPG_GAME.Core.Entities.Players
     {
         public Guid Id { get; }
         public string Name { get; private set; }
-        public HeroAssign Hero { get; }
+        public HeroAssign Hero { get; set; }
         public int Level { get; private set; }
         public decimal CurrentExp { get; private set; }
         public decimal RequiredExp { get; private set; }
@@ -60,12 +60,12 @@ namespace RPG_GAME.Core.Entities.Players
 
         public void ChangeCurrentExp(decimal currentExp)
         {
-            if (currentExp is <= 0)
+            if (currentExp is < 0)
             {
-                throw new PlayerCurrentExpCannotBeZeroOrNegativeException(currentExp);
+                throw new PlayerCurrentExpCannotBeNegativeException(currentExp);
             }
 
-            var calculatedCurrentExp = RequiredExp + RequiredExp;
+            var calculatedCurrentExp = CurrentExp + currentExp;
 
             if (calculatedCurrentExp > RequiredExp)
             {
@@ -84,7 +84,7 @@ namespace RPG_GAME.Core.Entities.Players
                 throw new PlayerRequiredExpCannotBeZeroOrNegativeException(requiredExp);
             }
 
-            RequiredExp += requiredExp;
+            RequiredExp = requiredExp;
         }
     }
 }

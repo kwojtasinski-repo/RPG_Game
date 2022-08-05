@@ -1,5 +1,11 @@
 @api = http://localhost:5000/api
 @heroId = 7b03c9f1-47db-49a7-a0ad-c4b903b5aac6
+@enemyId = 59afc8a9-96eb-4332-8c49-42ed55f21fe7
+@mapId = 8dc7d219-7c81-48ca-937f-32c9bc38b4a3
+@email = tester@rpg-game.com
+@password = PAsW0Rd!123
+@userId = 2e707968-3d7b-4b26-94c1-8a2d3a1f8d01
+@playerId = e400d1d0-de3f-4363-8f80-7dede375fb59
 
 ###
 GET {{api}}
@@ -58,7 +64,7 @@ PUT {{api}}/heroes/{{heroId}}
 Content-Type: application/json
 
 {
-    "heroName": "Warrior",
+    "heroName": "Warrior#1",
     "health": {
         "value": 10,
         "increasingState": {
@@ -99,3 +105,205 @@ Content-Type: application/json
         }
     ]
 }
+
+###
+GET {{api}}/heroes/{{heroId}}
+
+###
+GET {{api}}/heroes
+
+###
+DELETE {{api}}/heroes/{{heroId}}
+
+###
+GET {{api}}/enemies
+
+###
+POST {{api}}/enemies
+Content-Type: application/json
+
+{
+    "enemyName": "Knight",
+    "baseAttack": {
+        "value": 2,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 3
+        }
+    },
+    "baseHealth": {
+        "value": 10,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 3
+        }
+    },
+    "baseHealLvl": {
+        "value": 2,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 2
+        }
+    },
+    "experience": {
+        "value": 100,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 10
+        }
+    },
+    "difficulty": "EASY",
+    "skills": [
+        {
+            "name": "damage",
+            "baseAttack": 4,
+            "probability": 20,
+            "increasingState": {
+                "strategyIncreasing": "PERCENTAGE",
+                "value": 5
+            }
+        }
+    ]
+}
+
+###
+GET {{api}}/enemies/{{enemyId}}
+
+###
+PUT {{api}}/enemies/{{enemyId}}
+Content-Type: application/json
+
+{
+    "enemyName": "Knight#1",
+    "baseAttack": {
+        "value": 2,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 3
+        }
+    },
+    "baseHealth": {
+        "value": 10,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 3
+        }
+    },
+    "baseHealLvl": {
+        "value": 2,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 2
+        }
+    },
+    "experience": {
+        "value": 100,
+        "increasingState": {
+            "strategyIncreasing": "PERCENTAGE",
+            "value": 10
+        }
+    },
+    "difficulty": "EASY",
+    "skills": [
+        {
+            "name": "damage",
+            "baseAttack": 4,
+            "probability": 20,
+            "increasingState": {
+                "strategyIncreasing": "PERCENTAGE",
+                "value": 5
+            }
+        }
+    ]
+}
+
+###
+DELETE {{api}}/enemies/{{enemyId}}
+
+###
+GET {{api}}/maps
+
+###
+POST {{api}}/maps
+Content-Type: application/json
+
+{
+    "name": "Triv",
+    "difficulty": "EASY",
+    "enemies": [
+        {
+            "enemyId": "{{enemyId}}",
+            "quantity": 2
+        }
+    ]
+}
+
+###
+GET {{api}}/maps/{{mapId}}
+
+###
+PUT {{api}}/maps/{{mapId}}
+Content-Type: application/json
+
+{
+    "name": "Trivi",
+    "difficulty": "EASY",
+    "enemies": [
+        {
+            "enemyId": "{{enemyId}}",
+            "quantity": 2
+        }
+    ]
+}
+
+###
+POST {{api}}/account
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}",
+    "role": "user"
+}
+
+###
+GET {{api}}/maps/{{mapId}}
+
+###
+GET {{api}}/players
+
+###
+POST {{api}}/players
+Content-Type: application/json
+
+{
+    "name": "DKP",
+    "heroId": "{{heroId}}",
+    "userId": "{{userId}}"
+}
+
+###
+GET {{api}}/players/{{playerId}}
+
+###
+PUT {{api}}/players/{{playerId}}
+Content-Type: application/json
+
+{
+    "id": "{{playerId}}",
+    "name": "Tester",
+    "currentExp": 1,
+    "requiredExp": 1000,
+    "heroAttack": 15,
+    "heroHealth": 30,
+    "heroHealLvl": 7,
+    "heroSkills": [
+        {
+            "skillId": "7b346a99-785e-4302-9b39-1cf0cda06f7b",
+            "attack": 28
+        }
+    ]
+}
+
+###
+DELETE {{api}}/players/{{playerId}}

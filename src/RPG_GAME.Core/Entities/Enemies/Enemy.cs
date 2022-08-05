@@ -28,7 +28,7 @@ namespace RPG_GAME.Core.Entities.Enemies
             ChangeEnemyName(enemyName);
             ChangeHealth(health);
             ChangeAttack(attack);
-            ChangeHealth(healLvl);
+            ChangeHealLvl(healLvl);
             ChangeExperience(experience);
             ChangeDifficulty(difficulty);
 

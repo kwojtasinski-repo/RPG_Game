@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPG_GAME.Core", "src\RPG_GA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPG_GAME.Service", "src\RPG_GAME.Service\RPG_GAME.Service.csproj", "{D15FE3D7-7940-41E2-9417-EA23CB07FFF9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPG_Game.Infrastructure", "src\RPG_GAME.Infrastructure\RPG_Game.Infrastructure.csproj", "{F115B652-296A-42ED-8DD1-CD78E0231373}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPG_GAME.Infrastructure", "src\RPG_GAME.Infrastructure\RPG_GAME.Infrastructure.csproj", "{F115B652-296A-42ED-8DD1-CD78E0231373}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPG_GAME.IntegrationTests", "tests\RPG_GAME.IntegrationTests\RPG_GAME.IntegrationTests.csproj", "{182A5A25-E439-4800-A2D5-27E3CB084263}"
 EndProject

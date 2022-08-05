@@ -13,6 +13,12 @@ namespace RPG_GAME.Api.Controllers
             _heroService = heroService;
         }
 
+        [HttpGet]
+        public async Task<IEnumerable<HeroDto>> GetAll()
+        {
+            return await _heroService.GetAllAsync();
+        }
+
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<HeroDetailsDto>> Get(Guid id)
         {

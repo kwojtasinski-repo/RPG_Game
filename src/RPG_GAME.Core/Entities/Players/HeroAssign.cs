@@ -1,7 +1,9 @@
 ﻿using RPG_GAME.Core.Entities.Common;
+using RPG_GAME.Core.Exceptions.Heroes;
 using RPG_GAME.Core.Exceptions.Players;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RPG_GAME.Core.Entities.Players
 {
@@ -13,7 +15,9 @@ namespace RPG_GAME.Core.Entities.Players
         public int Health { get; private set; }
         public int Attack { get; private set; }
         public int HealLvl { get; private set; }
-        public IEnumerable<SkillHeroAssign> Skills { get; }
+        public IEnumerable<SkillHeroAssign> Skills => _skills;
+
+        private IList<SkillHeroAssign> _skills = new List<SkillHeroAssign>();
 
         public HeroAssign(Guid id, string heroName, int health, int attack, int healLvl, IEnumerable<SkillHeroAssign> skills = null)
         {
@@ -25,7 +29,7 @@ namespace RPG_GAME.Core.Entities.Players
 
             if (skills is not null)
             {
-                Skills = skills;
+                _skills = new List<SkillHeroAssign>(skills);
             }
         }
 
@@ -57,6 +61,23 @@ namespace RPG_GAME.Core.Entities.Players
             }
 
             HealLvl = healLvl;
+        }
+
+        public void UpdateSkill(SkillHeroAssign skillHero)
+        {
+            if (skillHero is null)
+            {
+                throw new InvalidSkillHeroException();
+            }
+
+            var skill = _skills.SingleOrDefault(s => s.Id == skillHero.Id);
+
+            if (skill is null)
+            {
+                throw new SkillHeroDoesntExistsException(skillHero.Id, skillHero.Name);
+            }
+
+            skill.ChangeAttack(skillHero.Attack);
         }
     }
 }

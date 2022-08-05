@@ -24,7 +24,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Repositories
         public async Task<Enemy> GetAsync(Guid id)
         {
             var enemy = await _repository.GetAsync(id);
-            return enemy.AsEntity();
+            return enemy?.AsEntity();
         }
 
         public async Task<IEnumerable<Enemy>> GetAllAsync()
