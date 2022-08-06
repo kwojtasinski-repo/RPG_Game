@@ -7,7 +7,7 @@ using RPG_GAME.Service.Managers;
 using System.Collections.Generic;
 using Xunit;
 
-namespace RPG_GAME.Tests.ManagersTest
+namespace RPG_GAME.UnitTests.ManagersTest
 {
     public class HeroManagerTests
     {

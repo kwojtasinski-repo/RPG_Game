@@ -87,7 +87,6 @@ namespace RPG_GAME.Application.Services
                 }
 
                 skillHero.ChangeAttack(skill.Attack);
-                player.Hero.UpdateSkill(skillHero);
             }
 
             await _playerRepository.UpdateAsync(player);

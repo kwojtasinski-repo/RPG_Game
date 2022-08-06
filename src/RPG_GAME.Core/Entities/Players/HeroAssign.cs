@@ -62,22 +62,5 @@ namespace RPG_GAME.Core.Entities.Players
 
             HealLvl = healLvl;
         }
-
-        public void UpdateSkill(SkillHeroAssign skillHero)
-        {
-            if (skillHero is null)
-            {
-                throw new InvalidSkillHeroException();
-            }
-
-            var skill = _skills.SingleOrDefault(s => s.Id == skillHero.Id);
-
-            if (skill is null)
-            {
-                throw new SkillHeroDoesntExistsException(skillHero.Id, skillHero.Name);
-            }
-
-            skill.ChangeAttack(skillHero.Attack);
-        }
     }
 }

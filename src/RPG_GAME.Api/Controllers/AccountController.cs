@@ -19,5 +19,12 @@ namespace RPG_GAME.Api.Controllers
             await _identityService.SignUpAsync(signUpDto);
             return Ok();
         }
+
+        [HttpGet]
+        public async Task<JsonWebToken> SignIn(SignInDto signInDto)
+        {
+            var token = await _identityService.SignInAsync(signInDto);
+            return token;
+        }
     }
 }

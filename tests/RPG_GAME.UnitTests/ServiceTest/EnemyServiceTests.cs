@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace RPG_GAME.Tests.ServiceTest
+namespace RPG_GAME.UnitTests.ServiceTest
 {
     public class EnemyServiceTests
     {

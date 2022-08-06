@@ -4,7 +4,7 @@ using RPG_GAME.Service.Common;
 using System.Collections.Generic;
 using Xunit;
 
-namespace RPG_GAME.Tests.ServiceTest
+namespace RPG_GAME.UnitTests.ServiceTest
 {
     public class BaseServiceTests
     {

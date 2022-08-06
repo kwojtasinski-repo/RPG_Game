@@ -5,7 +5,7 @@ using RPG_GAME.Service.Concrete;
 using RPG_GAME.Service.Managers;
 using Xunit;
 
-namespace RPG_GAME.Tests.ManagersTest
+namespace RPG_GAME.UnitTests.ManagersTest
 {
     public class StoryManagerTests
     {
