@@ -59,6 +59,7 @@ namespace RPG_GAME.Application.Services
             }
 
             await _playerRepository.DeleteAsync(id);
+            await _messageBroker.PublishAsync(new PlayerDeleted(playerExists.Id, playerExists.Name, playerExists.Hero.Id, playerExists.UserId));
         }
 
         public async Task UpdateAsync(UpdatePlayerDto playerDto)

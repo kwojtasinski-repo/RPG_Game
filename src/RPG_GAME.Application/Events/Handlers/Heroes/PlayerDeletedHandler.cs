@@ -5,21 +5,21 @@ using RPG_GAME.Core.Services.Heroes;
 
 namespace RPG_GAME.Application.Events.Handlers.Heroes
 {
-    internal sealed class PlayerAddedHandler : IEventHandler<PlayerAdded>
+    internal sealed class PlayerDeletedHandler : IEventHandler<PlayerDeleted>
     {
         private readonly IPlayerAllocatorDomainService _playerAllocatorDomainService;
         private readonly IHeroRepository _heroRepository;
-        private readonly ILogger<PlayerAddedHandler> _logger;
+        private readonly ILogger<PlayerDeletedHandler> _logger;
 
-        public PlayerAddedHandler(IPlayerAllocatorDomainService playerAllocatorDomainService,
-                    IHeroRepository heroRepository, ILogger<PlayerAddedHandler> logger)
+        public PlayerDeletedHandler(IPlayerAllocatorDomainService playerAllocatorDomainService,
+                    IHeroRepository heroRepository, ILogger<PlayerDeletedHandler> logger)
         {
             _playerAllocatorDomainService = playerAllocatorDomainService;
             _heroRepository = heroRepository;
             _logger = logger;
         }
 
-        public async Task HandleAsync(PlayerAdded @event)
+        public async Task HandleAsync(PlayerDeleted @event)
         {
             var hero = await _heroRepository.GetAsync(@event.HeroId);
 
@@ -29,7 +29,7 @@ namespace RPG_GAME.Application.Events.Handlers.Heroes
                 return;
             }
 
-            await _playerAllocatorDomainService.AddPlayer(hero, @event.PlayerId);
+            await _playerAllocatorDomainService.DeletePlayer(hero, @event.PlayerId);
             await _heroRepository.UpdateAsync(hero);
         }
     }

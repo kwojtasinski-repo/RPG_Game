@@ -58,12 +58,8 @@ namespace RPG_GAME.Infrastructure
             app.UseSwaggerUI();
             app.UseAuthorization();
             app.MapControllers();
+            app.UseMongo();
             return app;
-        }
-
-        public static void RegisterMappings()
-        {
-            MongoDbClassMap.RegisterAllMappings(typeof(Extensions).Assembly);
         }
 
         public static T GetOptions<T>(this IServiceCollection services, string sectionName) where T : new()

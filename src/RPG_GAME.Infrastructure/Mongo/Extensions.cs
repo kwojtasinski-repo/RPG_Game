@@ -11,6 +11,7 @@ using RPG_GAME.Infrastructure.Mongo.Documents.Players;
 using RPG_GAME.Infrastructure.Mongo.Repositories;
 using RPG_GAME.Core.Repositories;
 using RPG_GAME.Infrastructure.Mongo.Documents;
+using Microsoft.AspNetCore.Builder;
 
 namespace RPG_GAME.Infrastructure.Mongo
 {
@@ -71,6 +72,66 @@ namespace RPG_GAME.Infrastructure.Mongo
                 new EnumRepresentationConvention(BsonType.String),
                 new CamelCaseElementNameConvention()
             };
+        }
+
+        public static IApplicationBuilder UseMongo(this IApplicationBuilder app)
+        {
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var userRepo = scope.ServiceProvider.GetService<IMongoRepository<UserDocument, Guid>>();
+                var userBuilder = Builders<UserDocument>.IndexKeys;
+                Task.Run(async () => await userRepo.Collection.Indexes.CreateOneAsync(
+                    new CreateIndexModel<UserDocument>(userBuilder.Ascending(i => i.Email),
+                        new CreateIndexOptions
+                        {
+                            Unique = true
+                        })));
+
+                var enemyRepo = scope.ServiceProvider.GetService<IMongoRepository<EnemyDocument, Guid>>();
+                var enemyBuilder = Builders<EnemyDocument>.IndexKeys;
+                Task.Run(async () => await enemyRepo.Collection.Indexes.CreateOneAsync(
+                    new CreateIndexModel<EnemyDocument>(enemyBuilder.Ascending(i => i.EnemyName),
+                        new CreateIndexOptions
+                        {
+                            Unique = true
+                        })));
+
+                var heroRepo = scope.ServiceProvider.GetService<IMongoRepository<HeroDocument, Guid>>();
+                var heroBuilder = Builders<HeroDocument>.IndexKeys;
+                Task.Run(async () => await heroRepo.Collection.Indexes.CreateOneAsync(
+                    new CreateIndexModel<HeroDocument>(heroBuilder.Ascending(i => i.HeroName),
+                        new CreateIndexOptions
+                        {
+                            Unique = true
+                        })));
+
+                var playerRepo = scope.ServiceProvider.GetService<IMongoRepository<PlayerDocument, Guid>>();
+                var playerBuilder = Builders<PlayerDocument>.IndexKeys;
+                Task.Run(async () =>
+                {
+                    await playerRepo.Collection.Indexes.CreateOneAsync(
+                        new CreateIndexModel<PlayerDocument>(playerBuilder.Ascending(i => i.Name),
+                            new CreateIndexOptions
+                            {
+                                Unique = true
+                            }));
+
+                    await playerRepo.Collection.Indexes.CreateOneAsync(
+                        new CreateIndexModel<PlayerDocument>(playerBuilder.Ascending(i => i.UserId)));
+                });
+
+
+                var mapRepo = scope.ServiceProvider.GetService<IMongoRepository<MapDocument, Guid>>();
+                var mapBuilder = Builders<MapDocument>.IndexKeys;
+                Task.Run(async () => await mapRepo.Collection.Indexes.CreateOneAsync(
+                    new CreateIndexModel<MapDocument>(mapBuilder.Ascending(i => i.Name),
+                        new CreateIndexOptions
+                        {
+                            Unique = true
+                        })));
+            }
+
+            return app;
         }
     }
 }

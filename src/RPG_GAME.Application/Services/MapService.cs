@@ -4,6 +4,8 @@ using RPG_GAME.Application.Mappings;
 using RPG_GAME.Core.Entities.Maps;
 using RPG_GAME.Application.Exceptions.Maps;
 using RPG_GAME.Application.Exceptions.Enemies;
+using RPG_GAME.Application.Messaging;
+using RPG_GAME.Application.Events.Maps;
 
 namespace RPG_GAME.Application.Services
 {
@@ -11,11 +13,13 @@ namespace RPG_GAME.Application.Services
     {
         private readonly IMapRepository _mapRepository;
         private readonly IEnemyRepository _enemyRepository;
+        private readonly IMessageBroker _messageBroker;
 
-        public MapService(IMapRepository mapRepository, IEnemyRepository enemyRepository)
+        public MapService(IMapRepository mapRepository, IEnemyRepository enemyRepository, IMessageBroker messageBroker)
         {
             _mapRepository = mapRepository;
             _enemyRepository = enemyRepository;
+            _messageBroker = messageBroker;
         }
 
         public async Task<MapDto> GetAsync(Guid id)
@@ -48,6 +52,15 @@ namespace RPG_GAME.Application.Services
             var map = Map.Create(mapDto.Name, mapDto.Difficulty, enemies);
             await _mapRepository.AddAsync(map);
             mapDto.Id = map.Id;
+
+            var tasks = new List<Task>();
+            
+            foreach (var enemy in enemies)
+            {
+                tasks.Add(_messageBroker.PublishAsync(new EnemyAddedToMap(enemy.Enemy.Id, map.Id, map.Name)));
+            }
+
+            await Task.WhenAll(tasks);
         }
 
         public async Task UpdateAsync(AddMapDto mapDto)
@@ -68,6 +81,7 @@ namespace RPG_GAME.Application.Services
                 return;
             }
 
+            var enemiesAdded = new List<Guid>();
             foreach (var enemyDto in mapDto.Enemies)
             {
                 var enemyExists = map.Enemies.Any(e => e.Enemy.Id == enemyDto.EnemyId);
@@ -85,8 +99,10 @@ namespace RPG_GAME.Application.Services
                 }
 
                 map.AddEnemies(new Enemies(enemy.AsAssign(), enemyDto.Quantity));
+                enemiesAdded.Add(enemy.Id);
             }
 
+            var enemiesDeleted = new List<Guid>();
             var enemies = new List<Enemies>(map.Enemies);
             foreach(var enemy in enemies)
             {
@@ -98,9 +114,24 @@ namespace RPG_GAME.Application.Services
                 }
 
                 map.RemoveEnemy(enemy);
+                enemiesDeleted.Add(enemy.Enemy.Id);
             }
 
             await _mapRepository.UpdateAsync(map);
+
+            var tasks = new List<Task>();
+
+            foreach (var enemyId in enemiesAdded)
+            {
+                tasks.Add(_messageBroker.PublishAsync(new EnemyAddedToMap(enemyId, map.Id, map.Name)));
+            }
+            
+            foreach (var enemyId in enemiesDeleted)
+            {
+                tasks.Add(_messageBroker.PublishAsync(new EnemyRemovedFromMap(enemyId, map.Id, map.Name)));
+            }
+
+            await Task.WhenAll(tasks);
         }
     }
 }

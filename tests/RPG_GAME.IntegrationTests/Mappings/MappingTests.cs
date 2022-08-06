@@ -13,10 +13,10 @@ using RPG_GAME.Core.Entities.Maps;
 
 namespace RPG_GAME.IntegrationTests
 {
-    [Collection("DbAndMappings")]
+    //[Collection("DbAndMappings")]
     public class MappingTests
     { 
-        [Fact]
+      /*  [Fact]
         public void bson_class_map_should_contains_mappings()
         {
             var mappings = BsonClassMap.GetRegisteredClassMaps();
@@ -82,6 +82,6 @@ namespace RPG_GAME.IntegrationTests
         {
             _mongoClient = mongoDbTestFixture.MongoClient;
             DatabaseName = MongoDbTestFixture.DatabaseName;
-        }
+        }*/
     }
 }
