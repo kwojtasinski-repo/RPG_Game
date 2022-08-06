@@ -1,8 +1,10 @@
 ﻿using RPG_GAME.Application.DTO.Players;
+using RPG_GAME.Application.Events.Players;
 using RPG_GAME.Application.Exceptions.Auth;
 using RPG_GAME.Application.Exceptions.Heroes;
 using RPG_GAME.Application.Exceptions.Players;
 using RPG_GAME.Application.Mappings;
+using RPG_GAME.Application.Messaging;
 using RPG_GAME.Core.Entities.Players;
 using RPG_GAME.Core.Repositories;
 
@@ -13,12 +15,15 @@ namespace RPG_GAME.Application.Services
         private readonly IPlayerRepository _playerRepository;
         private readonly IHeroRepository _heroRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IMessageBroker _messageBroker;
 
-        public PlayerService(IPlayerRepository playerRepository, IHeroRepository heroRepository, IUserRepository userRepository)
+        public PlayerService(IPlayerRepository playerRepository, IHeroRepository heroRepository, IUserRepository userRepository,
+            IMessageBroker messageBroker)
         {
             _playerRepository = playerRepository;
             _heroRepository = heroRepository;
             _userRepository = userRepository;
+            _messageBroker = messageBroker;
         }
 
         public async Task AddAsync(AddPlayerDto playerDto)
@@ -41,6 +46,7 @@ namespace RPG_GAME.Application.Services
             var player = Player.Create(playerDto.Name, heroAssing, hero.BaseRequiredExperience.Value, playerDto.UserId);
             await _playerRepository.AddAsync(player);
             playerDto.Id = player.Id;
+            await _messageBroker.PublishAsync(new PlayerAdded(player.Id, player.Name, player.Hero.Id, player.UserId));
         }
 
         public async Task RemoveAsync(Guid id)

@@ -4,11 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using RPG_GAME.Infrastructure.Auth;
 using RPG_GAME.Infrastructure.Database;
+using RPG_GAME.Infrastructure.Events;
 using RPG_GAME.Infrastructure.Mappings;
 using RPG_GAME.Infrastructure.Messaging;
 using RPG_GAME.Infrastructure.Middlewares;
 using RPG_GAME.Infrastructure.Mongo;
 using RPG_GAME.Infrastructure.Time;
+using System.Reflection;
 
 namespace RPG_GAME.Infrastructure
 {
@@ -40,6 +42,7 @@ namespace RPG_GAME.Infrastructure
             });
 
             services.AddRepositories();
+            services.AddEvents(AppDomain.CurrentDomain.GetAssemblies().ToList());
             services.AddMessaging();
 
             services.AddEndpointsApiExplorer();
