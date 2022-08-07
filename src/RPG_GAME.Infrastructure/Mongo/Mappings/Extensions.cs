@@ -9,6 +9,10 @@ using RPG_GAME.Core.Entities.Heroes;
 using RPG_GAME.Core.Entities.Maps;
 using RPG_GAME.Core.Entities.Players;
 using RPG_GAME.Core.Entities.Users;
+using RPG_GAME.Infrastructure.Mongo.Documents.Battles;
+using RPG_GAME.Core.Entities.Battles;
+using RPG_GAME.Core.Entities.Battles.Actions;
+using RPG_GAME.Infrastructure.Mongo.Documents.Battles.Actions;
 
 namespace RPG_GAME.Infrastructure.Mongo.Mappings
 {
@@ -323,6 +327,80 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 skillEnemyDocument.BaseAttack,
                 skillEnemyDocument.Probability
             );
+        }
+
+        public static BattleDocument AsDocument(this Battle battle)
+        {
+            return new BattleDocument
+            {
+                Id = battle.Id,
+                BattleInfo = Enum.Parse<Documents.Battles.BattleInfo>(battle.BattleInfo.ToString()),
+                BattleStates = battle.BattleStates.Select(b => b.AsDocument()),
+                EndDate = battle.EndDate,
+                StartDate = battle.StartDate,
+                UserId = battle.UserId
+            };
+        }
+
+        public static BattleStateDocument AsDocument(this BattleState battleState)
+        {
+            return new BattleStateDocument
+            {
+                Id = battleState.Id,
+                Created = battleState.Created,
+                BattleId = battleState.BattleId,
+                BattleStatus = Enum.Parse<Documents.Battles.BattleStatus>(battleState.BattleStatus.ToString()),
+                Player = battleState.Player.AsDocument(),
+                Modified = battleState.Modified
+            };
+        }
+
+        public static BattleEventDocument AsDocument(this BattleEvent battleEvent)
+        {
+            return new BattleEventDocument
+            {
+                Id = battleEvent.Id,
+                BattleId = battleEvent.BattleId,
+                Created = battleEvent.Created,
+                Action = battleEvent.Action.AsDocument()
+            };
+        }
+
+        public static FightActionDocument AsDocument(this FightAction fightAction)
+        {
+            return new FightActionDocument
+            {
+                Id = fightAction.Id,
+                Name = fightAction.Name,
+                AttackInfo = fightAction.AttackInfo,
+                DamageDealt = fightAction.DamageDealt,
+                Health = fightAction.Health,
+            };
+        }
+
+        public static Battle AsEntity(this BattleDocument battleDocument)
+        {
+            return new Battle(battleDocument.Id, battleDocument.StartDate, battleDocument.UserId,
+                battleDocument.BattleInfo.ToString(), battleDocument.EndDate, 
+                battleDocument.BattleStates.Select(b => b.AsEntity()));
+        }
+
+        public static BattleState AsEntity(this BattleStateDocument battleStateDocument)
+        {
+            return new BattleState(battleStateDocument.Id, battleStateDocument.BattleStatus.ToString(), battleStateDocument.BattleId,
+                battleStateDocument.Player.AsEntity(), battleStateDocument.Created, battleStateDocument.Modified);
+        }
+
+        public static BattleEvent AsEntity(this BattleEventDocument battleEventDocument)
+        {
+            return new BattleEvent(battleEventDocument.Id, battleEventDocument.BattleId, battleEventDocument.Action.AsEntity(),
+                battleEventDocument.Created);
+        }
+
+        public static FightAction AsEntity(this FightActionDocument fightActionDocument)
+        {
+            return new FightAction(fightActionDocument.Id, fightActionDocument.Name, fightActionDocument.DamageDealt,
+                fightActionDocument.Health, fightActionDocument.AttackInfo);
         }
     }
 }

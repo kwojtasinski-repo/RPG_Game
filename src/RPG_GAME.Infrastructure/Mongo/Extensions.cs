@@ -12,6 +12,7 @@ using RPG_GAME.Infrastructure.Mongo.Repositories;
 using RPG_GAME.Core.Repositories;
 using RPG_GAME.Infrastructure.Mongo.Documents;
 using Microsoft.AspNetCore.Builder;
+using RPG_GAME.Infrastructure.Mongo.Documents.Battles;
 
 namespace RPG_GAME.Infrastructure.Mongo
 {
@@ -39,6 +40,12 @@ namespace RPG_GAME.Infrastructure.Mongo
 
             services.AddTransient<IMapRepository, MapRepository>();
             services.AddMongoRepository<MapDocument, Guid>("maps");
+
+            services.AddTransient<IBattleRepository, BattleRepository>();
+            services.AddMongoRepository<BattleDocument, Guid>("battles");
+            
+            services.AddTransient<IBattleEventRepository, BattleEventRepository>();
+            services.AddMongoRepository<BattleEventDocument, Guid>("battle-events");
 
             return services;
         }
@@ -120,7 +127,6 @@ namespace RPG_GAME.Infrastructure.Mongo
                         new CreateIndexModel<PlayerDocument>(playerBuilder.Ascending(i => i.UserId)));
                 });
 
-
                 var mapRepo = scope.ServiceProvider.GetService<IMongoRepository<MapDocument, Guid>>();
                 var mapBuilder = Builders<MapDocument>.IndexKeys;
                 Task.Run(async () => await mapRepo.Collection.Indexes.CreateOneAsync(
@@ -129,6 +135,16 @@ namespace RPG_GAME.Infrastructure.Mongo
                         {
                             Unique = true
                         })));
+
+                var battleRepo = scope.ServiceProvider.GetService<IMongoRepository<BattleDocument, Guid>>();
+                var battleBuilder = Builders<BattleDocument>.IndexKeys;
+                Task.Run(async () => await battleRepo.Collection.Indexes.CreateOneAsync(
+                    new CreateIndexModel<BattleDocument>(battleBuilder.Ascending(i => i.UserId))));
+
+                var battleEventRepo = scope.ServiceProvider.GetService<IMongoRepository<BattleEventDocument, Guid>>();
+                var battleEventBuilder = Builders<BattleEventDocument>.IndexKeys;
+                Task.Run(async () => await battleEventRepo.Collection.Indexes.CreateOneAsync(
+                    new CreateIndexModel<BattleEventDocument>(battleEventBuilder.Ascending(i => i.BattleId))));
             }
 
             return app;

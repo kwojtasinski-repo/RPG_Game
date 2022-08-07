@@ -14,7 +14,7 @@ namespace RPG_GAME.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add(SignUpDto signUpDto)
+        public async Task<ActionResult> SignUp(SignUpDto signUpDto)
         {
             await _identityService.SignUpAsync(signUpDto);
             return Ok();
