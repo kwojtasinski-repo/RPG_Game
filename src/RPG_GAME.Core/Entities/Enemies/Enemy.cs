@@ -76,11 +76,6 @@ namespace RPG_GAME.Core.Entities.Enemies
                 throw new EnemyHealthCannotBeZeroOrNegativeException(health.Value);
             }
 
-            if (health.IncreasingState.Value < 0)
-            {
-                throw new EnemyHealthIncreasingCannotBeNegativeException(health.IncreasingState.Value);
-            }
-
             BaseHealth = health;
         }
 
@@ -96,11 +91,6 @@ namespace RPG_GAME.Core.Entities.Enemies
                 throw new EnemyAttackCannotBeZeroOrNegativeException(attack.Value);
             }
 
-            if (attack.IncreasingState.Value < 0)
-            {
-                throw new EnemyAttackIncreasingCannotBeNegativeException(attack.IncreasingState.Value);
-            }
-
             BaseAttack = attack;
         }
 
@@ -114,11 +104,6 @@ namespace RPG_GAME.Core.Entities.Enemies
             if (healLvl.Value <= 0)
             {
                 throw new EnemyHealLvlCannotBeZeroOrNegativeException(healLvl.Value);
-            }
-
-            if (healLvl.IncreasingState.Value < 0)
-            {
-                throw new EnemyHealLvlIncreasingCannotBeNegativeException(healLvl.IncreasingState.Value);
             }
 
             BaseHealLvl = healLvl;
@@ -146,11 +131,6 @@ namespace RPG_GAME.Core.Entities.Enemies
             if (experience.Value <= 0)
             {
                 throw new EnemyExperienceCannotBeZeroOrNegativeException(experience.Value);
-            }
-
-            if (experience.IncreasingState.Value < 0)
-            {
-                throw new EnemyExperienceIncreasingCannotBeNegativeException(experience.IncreasingState.Value);
             }
 
             Experience = experience;
