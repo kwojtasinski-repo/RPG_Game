@@ -20,6 +20,11 @@ namespace RPG_GAME.Core.Entities.Enemies
 
             base.ChangeSkillBaseAttack(baseAttack);
         }
+
+        public static new SkillEnemy Create(string name, int baseAttack, decimal probability, IncreasingState<int> increasingState)
+        {
+            return new SkillEnemy(Guid.NewGuid(), name, baseAttack, probability, increasingState);
+        }
     }
 
     public class SkillEnemy<T>

@@ -369,13 +369,7 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
         [Fact]
         public void given_valid_skill_should_add()
         {
-            var name = "AbCDeF";
-            var health = 210;
-            var attack = 20;
-            var heal = 10;
-            var experience = 50M;
-            var difficulty = "EASY";
-            var enemy = Act(name, health, attack, heal, experience, difficulty);
+            var enemy = CreateDefaultEnemy();
             var skill = new SkillEnemy(Guid.NewGuid(), "Name#1", 100, 10, DefaultIncreasingState<int>());
 
             enemy.AddSkill(skill);
@@ -387,13 +381,7 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
         [Fact]
         public void given_same_as_added_skill_should_throw_an_exception()
         {
-            var name = "AbCDeF";
-            var health = 210;
-            var attack = 20;
-            var heal = 10;
-            var experience = 50M;
-            var difficulty = "EASY";
-            var enemy = Act(name, health, attack, heal, experience, difficulty);
+            var enemy = CreateDefaultEnemy();
             var skill = new SkillEnemy(Guid.NewGuid(), "Name#1", 100, 10, DefaultIncreasingState<int>());
             var skill2 = new SkillEnemy(skill.Id, "Name#1", 100, 10, DefaultIncreasingState<int>());
             enemy.AddSkill(skill);
@@ -409,13 +397,7 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
         [Fact]
         public void given_null_skill_when_add_should_throw_an_exception()
         {
-            var name = "AbCDeF";
-            var health = 210;
-            var attack = 20;
-            var heal = 10;
-            var experience = 50M;
-            var difficulty = "EASY";
-            var enemy = Act(name, health, attack, heal, experience, difficulty);
+            var enemy = CreateDefaultEnemy();
             var expectedException = new InvalidSkillEnemyException();
 
             var exception = Record.Exception(() => enemy.AddSkill(null));
@@ -428,13 +410,7 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
         [Fact]
         public void given_valid_skill_should_remove()
         {
-            var name = "AbCDeF";
-            var health = 210;
-            var attack = 20;
-            var heal = 10;
-            var experience = 50M;
-            var difficulty = "EASY";
-            var enemy = Act(name, health, attack, heal, experience, difficulty);
+            var enemy = CreateDefaultEnemy();
             var skill = new SkillEnemy(Guid.NewGuid(), "Name#1", 100, 10, DefaultIncreasingState<int>());
             enemy.AddSkill(skill);
 
@@ -446,13 +422,7 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
         [Fact]
         public void given_not_existed_skill_when_delete_should_throw_an_exception()
         {
-            var name = "AbCDeF";
-            var health = 210;
-            var attack = 20;
-            var heal = 10;
-            var experience = 50M;
-            var difficulty = "EASY";
-            var enemy = Act(name, health, attack, heal, experience, difficulty);
+            var enemy = CreateDefaultEnemy();
             var skill = new SkillEnemy(Guid.NewGuid(), "Name#1", 100, 10, DefaultIncreasingState<int>());
             var expectedException = new SkillEnemyDoesntExistsException(skill.Id, skill.Name);
 
@@ -466,13 +436,7 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
         [Fact]
         public void given_null_skill_should_throw_an_exception()
         {
-            var name = "AbCDeF";
-            var health = 210;
-            var attack = 20;
-            var heal = 10;
-            var experience = 50M;
-            var difficulty = "EASY";
-            var enemy = Act(name, health, attack, heal, experience, difficulty);
+            var enemy = CreateDefaultEnemy();
             var expectedException = new InvalidSkillEnemyException();
 
             var exception = Record.Exception(() => enemy.RemoveSkill(null));
@@ -485,13 +449,7 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
         [Fact]
         public void given_default_map_id_when_add_should_throw_an_exception()
         {
-            var name = "AbCDeF";
-            var health = 210;
-            var attack = 20;
-            var heal = 10;
-            var experience = 50M;
-            var difficulty = "EASY";
-            var enemy = Act(name, health, attack, heal, experience, difficulty);
+            var enemy = CreateDefaultEnemy();
             var expectedException = new InvalidMapIdException();
 
             var exception = Record.Exception(() => enemy.AddMap(default));
@@ -504,13 +462,7 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
         [Fact]
         public void given_existed_map_id_when_add_should_throw_an_exception()
         {
-            var name = "AbCDeF";
-            var health = 210;
-            var attack = 20;
-            var heal = 10;
-            var experience = 50M;
-            var difficulty = "EASY";
-            var enemy = Act(name, health, attack, heal, experience, difficulty);
+            var enemy = CreateDefaultEnemy();
             var mapId = Guid.NewGuid();
             enemy.AddMap(mapId);
             var expectedException = new MapAlreadyExistsException(mapId);
@@ -523,15 +475,34 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
         }
 
         [Fact]
+        public void should_add_map()
+        {
+            var enemy = CreateDefaultEnemy();
+            var mapId = Guid.NewGuid();
+
+            enemy.AddMap(mapId);
+
+            enemy.MapsAssignedTo.Should().NotBeEmpty();
+            enemy.MapsAssignedTo.Should().HaveCount(1);
+            enemy.MapsAssignedTo.Should().Contain(mapId);
+        }
+
+        [Fact]
+        public void should_delete_map()
+        {
+            var enemy = CreateDefaultEnemy();
+            var mapId = Guid.NewGuid();
+            enemy.AddMap(mapId);
+
+            enemy.RemoveMap(mapId);
+
+            enemy.MapsAssignedTo.Should().BeEmpty();
+        }
+
+        [Fact]
         public void given_not_existed_map_id_when_delete_should_throw_an_exception()
         {
-            var name = "AbCDeF";
-            var health = 210;
-            var attack = 20;
-            var heal = 10;
-            var experience = 50M;
-            var difficulty = "EASY";
-            var enemy = Act(name, health, attack, heal, experience, difficulty);
+            var enemy = CreateDefaultEnemy();
             var mapId = Guid.NewGuid();
             var expectedException = new MapDoesntExistsException(mapId);
 
@@ -545,13 +516,7 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
         [Fact]
         public void given_default_map_id_when_delete_should_throw_an_exception()
         {
-            var name = "AbCDeF";
-            var health = 210;
-            var attack = 20;
-            var heal = 10;
-            var experience = 50M;
-            var difficulty = "EASY";
-            var enemy = Act(name, health, attack, heal, experience, difficulty);
+            var enemy = CreateDefaultEnemy();
             var expectedException = new InvalidMapIdException();
 
             var exception = Record.Exception(() => enemy.RemoveMap(default));
@@ -561,7 +526,7 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
             exception.Message.Should().Be(expectedException.Message);
         }
 
-        private IncreasingState<T> DefaultIncreasingState<T>() 
+        private static IncreasingState<T> DefaultIncreasingState<T>() 
             where T : struct
         {
             T value = default;
@@ -579,6 +544,13 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
             }
 
             return new IncreasingState<T>(value, "ADDITIVE");
+        }
+
+        private static Enemy CreateDefaultEnemy()
+        {
+            return new Enemy(Guid.NewGuid(), "Enemy", new State<int>(100, DefaultIncreasingState<int>()), new State<int>(100, DefaultIncreasingState<int>()),
+                    new State<int>(10, DefaultIncreasingState<int>()), new State<decimal>(1000, DefaultIncreasingState<decimal>()),
+                    "EASY");
         }
     }
 }
