@@ -25,8 +25,8 @@ namespace RPG_GAME.Core.Entities.Players
             }
 
             Level = level;
-            ChangeCurrentExp(currentExp);
             ChangeRequiredExp(requiredExp);
+            IncreaseCurrentExpBy(currentExp);
             UserId = userId;
         }
 
@@ -58,7 +58,7 @@ namespace RPG_GAME.Core.Entities.Players
             Name = name;
         }
 
-        public void ChangeCurrentExp(decimal currentExp)
+        public void IncreaseCurrentExpBy(decimal currentExp)
         {
             if (currentExp is < 0)
             {
@@ -67,10 +67,10 @@ namespace RPG_GAME.Core.Entities.Players
 
             var calculatedCurrentExp = CurrentExp + currentExp;
 
-            if (calculatedCurrentExp > RequiredExp)
+            if (calculatedCurrentExp >= RequiredExp)
             {
                 Level++;
-                CurrentExp = 0;
+                CurrentExp = calculatedCurrentExp - RequiredExp;
                 return;
             }
 

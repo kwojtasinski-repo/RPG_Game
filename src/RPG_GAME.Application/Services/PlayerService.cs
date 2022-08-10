@@ -72,7 +72,7 @@ namespace RPG_GAME.Application.Services
             }
 
             player.ChangeName(playerDto.Name);
-            player.ChangeCurrentExp(playerDto.CurrentExp);
+            player.IncreaseCurrentExpBy(playerDto.CurrentExp);
             player.ChangeRequiredExp(playerDto.RequiredExp);
             player.Hero.ChangeAttack(playerDto.HeroAttack);
             player.Hero.ChangeHealth(playerDto.HeroHealth);

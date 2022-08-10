@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Entities\Users\" />
-    <Folder Include="Entities\Players\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
