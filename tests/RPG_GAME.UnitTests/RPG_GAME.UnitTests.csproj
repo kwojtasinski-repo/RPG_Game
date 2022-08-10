@@ -26,9 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Heroes\" />
-    <Folder Include="Entities\Maps\" />
-    <Folder Include="Entities\Common\" />
     <Folder Include="Entities\Users\" />
     <Folder Include="Entities\Players\" />
     <Folder Include="Services\" />

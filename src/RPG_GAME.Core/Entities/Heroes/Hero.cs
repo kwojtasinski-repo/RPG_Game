@@ -74,11 +74,6 @@ namespace RPG_GAME.Core.Entities.Heroes
                 throw new HeroHealthCannotBeZeroOrNegativeException(health.Value);
             }
 
-            if (health.IncreasingState.Value < 0)
-            {
-                throw new HeroHealthIncreasingCannotBeNegativeException(health.IncreasingState.Value);
-            }
-
             Health = health;
         }
 
@@ -92,11 +87,6 @@ namespace RPG_GAME.Core.Entities.Heroes
             if (attack.Value <= 0)
             {
                 throw new HeroAttackCannotBeZeroOrNegativeException(attack.Value);
-            }
-
-            if (attack.IncreasingState.Value < 0)
-            {
-                throw new HeroAttackIncreasingCannotBeNegativeException(attack.IncreasingState.Value);
             }
 
             Attack = attack;
@@ -114,11 +104,6 @@ namespace RPG_GAME.Core.Entities.Heroes
                 throw new HeroHealLvlCannotBeZeroOrNegativeException(healLvl.Value);
             }
 
-            if (healLvl.IncreasingState.Value < 0)
-            {
-                throw new HeroHealLvlIncreasingCannotBeNegativeException(healLvl.IncreasingState.Value);
-            }
-
             HealLvl = healLvl;
         }
 
@@ -132,11 +117,6 @@ namespace RPG_GAME.Core.Entities.Heroes
             if (baseRequiredExperience.Value <= 0)
             {
                 throw new HeroBaseReqExpCannotBeZeroOrNegativeException(baseRequiredExperience.Value);
-            }
-
-            if (baseRequiredExperience.IncreasingState.Value < 0)
-            {
-                throw new HeroBaseReqExpIncreasingCannotBeNegativeException(baseRequiredExperience.IncreasingState.Value);
             }
 
             BaseRequiredExperience = baseRequiredExperience;

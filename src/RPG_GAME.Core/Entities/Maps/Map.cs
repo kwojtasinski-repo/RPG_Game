@@ -71,12 +71,13 @@ namespace RPG_GAME.Core.Entities.Maps
 
             var enemiesExists = _enemies.SingleOrDefault(e => e.Enemy.Id == enemies.Enemy.Id);
 
-            if (enemiesExists is not null)
+            if (enemiesExists is null)
             {
-                throw new EnemiesAlreadyExistsException(enemiesExists.Enemy.Id);
+                _enemies.Add(enemies);
+                return;
             }
 
-            _enemies.Add(enemies);
+            enemiesExists.AddQuantity(enemies.Quantity);
         }
 
         public void RemoveEnemy(Enemies enemies)
@@ -93,7 +94,15 @@ namespace RPG_GAME.Core.Entities.Maps
                 throw new EnemiesDoesntExistsException(enemies.Enemy.Id);
             }
 
-            _enemies.Remove(enemies);
+            var quantity = enemiesExists.Quantity - enemies.Quantity;
+
+            if (quantity <= 0)
+            {
+                _enemies.Remove(enemies);
+                return;
+            }
+
+            enemiesExists.RemoveQuantity(enemies.Quantity);
         }
     }
 }

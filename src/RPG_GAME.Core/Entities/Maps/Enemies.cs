@@ -5,7 +5,7 @@ namespace RPG_GAME.Core.Entities.Maps
     public class Enemies
     {
         public EnemyAssign Enemy { get; }
-        public int Quantity { get; }
+        public int Quantity { get; private set; }
 
         public Enemies(EnemyAssign enemy, int quantity)
         {
@@ -21,6 +21,33 @@ namespace RPG_GAME.Core.Entities.Maps
 
             Enemy = enemy;
             Quantity = quantity;
+        }
+
+        public void AddQuantity(int quantity)
+        {
+            if (quantity <= 0)
+            {
+                throw new QuantityCannotBeZeroOrNegative(quantity);
+            }
+
+            Quantity += quantity;
+        }
+
+        public void RemoveQuantity(int quantity)
+        {
+            if (quantity <= 0)
+            {
+                throw new QuantityCannotBeZeroOrNegative(quantity);
+            }
+
+            var quantitySubtract = Quantity - quantity;
+
+            if (quantitySubtract <= 0)
+            {
+                throw new QuantityCannotBeZeroOrNegative(quantitySubtract);
+            }
+
+            Quantity = quantitySubtract;
         }
     }
 }

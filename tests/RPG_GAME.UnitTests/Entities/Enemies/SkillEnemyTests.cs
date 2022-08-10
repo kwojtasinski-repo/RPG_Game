@@ -91,6 +91,85 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
             exception.Message.Should().Be(expectedException.Message);
         }
 
+        [Fact]
+        public void should_change_probability()
+        {
+            var probability = 25;
+            var skillEnemy = SkillEnemy.Create("name", 10, 20, DefaultIncreasingState());
+
+            skillEnemy.ChangeProbability(probability);
+
+            skillEnemy.Probability.Should().Be(probability);
+        }
+
+        [Theory]
+        [InlineData(-12)]
+        [InlineData(-1)]
+        [InlineData(96)]
+        [InlineData(100)]
+        public void given_invalid_probability_when_change_value_should_throw_an_exception(decimal probability)
+        {
+            var skillEnemy = SkillEnemy.Create("name", 10, 20, DefaultIncreasingState());
+            var expectedException = new InvalidSkillEnemyProbabilityException();
+
+            var exception = Record.Exception(() => skillEnemy.ChangeProbability(probability));
+
+            exception.Should().NotBeNull();
+            exception.Should().BeOfType(expectedException.GetType());
+            exception.Message.Should().Be(expectedException.Message);
+        }
+
+        [Fact]
+        public void should_change_attack()
+        {
+            var attack = 25;
+            var skillEnemy = SkillEnemy.Create("name", 10, 20, DefaultIncreasingState());
+
+            skillEnemy.ChangeSkillBaseAttack(attack);
+
+            skillEnemy.BaseAttack.Should().Be(attack);
+        }
+
+        [Fact]
+        public void given_invalid_attack_when_change_value_should_throw_an_exception()
+        {
+            var attack = -25;
+            var skillEnemy = SkillEnemy.Create("name", 10, 20, DefaultIncreasingState());
+            var expectedException = new InvalidSkillEnemyAttackException();
+
+            var exception = Record.Exception(() => skillEnemy.ChangeSkillBaseAttack(attack));
+
+            exception.Should().NotBeNull();
+            exception.Should().BeOfType(expectedException.GetType());
+            exception.Message.Should().Be(expectedException.Message);
+        }
+
+        [Fact]
+        public void given_null_increasing_state_when_change_value_should_throw_an_exception()
+        {
+            var skillEnemy = SkillEnemy.Create("name", 10, 20, DefaultIncreasingState());
+            var expectedException = new InvalidSkillEnemyIncreasingStateException();
+
+            var exception = Record.Exception(() => skillEnemy.ChangeSkillIncreasingState(null));
+
+            exception.Should().NotBeNull();
+            exception.Should().BeOfType(expectedException.GetType());
+            exception.Message.Should().Be(expectedException.Message);
+        }
+
+        [Fact]
+        public void should_change_increasing_state()
+        {
+            var increasingState = new IncreasingState<int>(100, "PERCENTAGE");
+            var skillEnemy = SkillEnemy.Create("name", 10, 20, DefaultIncreasingState());
+
+            skillEnemy.ChangeSkillIncreasingState(increasingState);
+
+            skillEnemy.IncreasingState.Should().NotBeNull();
+            skillEnemy.IncreasingState.StrategyIncreasing.Should().Be(increasingState.StrategyIncreasing);
+            skillEnemy.IncreasingState.Value.Should().Be(increasingState.Value);
+        }
+
         private static IncreasingState<int> DefaultIncreasingState()
         {
             return new IncreasingState<int>(1, "ADDITIVE");

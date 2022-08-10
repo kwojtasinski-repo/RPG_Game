@@ -30,7 +30,7 @@ namespace RPG_GAME.Core.Entities.Common
             IncreasingState = increasingState;
         }
 
-        public void ValidateValue(object value)
+        private void ValidateValue(object value)
         {
             if (typeof(T) == typeof(int))
             {

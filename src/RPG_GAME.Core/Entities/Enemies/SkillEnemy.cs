@@ -41,7 +41,6 @@ namespace RPG_GAME.Core.Entities.Enemies
             Id = id;
             ChangeSkillName(name);
             ChangeSkillBaseAttack(baseAttack);
-            ChangeSkillBaseAttack(baseAttack);
             ChangeProbability(probability);
             ChangeSkillIncreasingState(increasingState);
         }

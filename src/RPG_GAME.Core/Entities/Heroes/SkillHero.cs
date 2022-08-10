@@ -19,7 +19,12 @@ namespace RPG_GAME.Core.Entities.Heroes
 
             base.ChangeSkillBaseAttack(baseAttack);
         }
-    }
+
+        public new static SkillHero Create(string name, int baseAttack, IncreasingState<int> increasingState)
+        {
+            return new SkillHero(Guid.NewGuid(), name, baseAttack, increasingState);
+        }
+}
 
     public class SkillHero<T>
         where T : struct
