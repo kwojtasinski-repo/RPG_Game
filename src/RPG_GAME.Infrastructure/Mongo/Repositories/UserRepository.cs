@@ -36,5 +36,10 @@ namespace RPG_GAME.Infrastructure.Mongo.Repositories
             var exists = await _repository.ExistsAsync(x => x.Id == id);
             return exists;
         }
+
+        public async Task UpdateAsync(User user)
+        {
+            await _repository.UpdateAsync(user.AsDocument());
+        }
     }
 }

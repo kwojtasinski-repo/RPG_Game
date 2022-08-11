@@ -10,5 +10,6 @@ namespace RPG_GAME.Core.Repositories
         public Task<User> GetAsync(Guid id);
         public Task<bool> ExistsAsync(Guid id);
         Task AddAsync(User user);
+        Task UpdateAsync(User user);
     }
 }
