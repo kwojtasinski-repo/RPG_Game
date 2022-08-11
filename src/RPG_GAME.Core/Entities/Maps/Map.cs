@@ -80,6 +80,24 @@ namespace RPG_GAME.Core.Entities.Maps
             enemiesExists.AddQuantity(enemies.Quantity);
         }
 
+        public void ReplaceEnemies(Enemies enemies)
+        {
+            if (enemies is null)
+            {
+                throw new InvalidEnemiesException();
+            }
+
+            var enemiesExists = _enemies.SingleOrDefault(e => e.Enemy.Id == enemies.Enemy.Id);
+
+            if (enemiesExists is null)
+            {
+                _enemies.Add(enemies);
+                throw new EnemiesDoesntExistsException(enemies.Enemy.Id);
+            }
+
+            enemiesExists.SetQuantity(enemies.Quantity);
+        }
+
         public void RemoveEnemy(Enemies enemies)
         {
             if (enemies is null)

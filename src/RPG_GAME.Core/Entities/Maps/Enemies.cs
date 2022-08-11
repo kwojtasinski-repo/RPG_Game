@@ -49,5 +49,15 @@ namespace RPG_GAME.Core.Entities.Maps
 
             Quantity = quantitySubtract;
         }
+
+        internal void SetQuantity(int quantity)
+        {
+            if (quantity <= 0)
+            {
+                throw new QuantityCannotBeZeroOrNegative(quantity);
+            }
+
+            Quantity = quantity;
+        }
     }
 }

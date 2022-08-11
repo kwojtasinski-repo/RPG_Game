@@ -37,6 +37,7 @@ namespace RPG_GAME.Application.Services
         {
             var enemies = new List<Enemies>();
 
+            ValidateEnemies(mapDto.Enemies);
             foreach (var enemyDto in mapDto.Enemies)
             {
                 var enemy = await _enemyRepository.GetAsync(enemyDto.EnemyId);
@@ -81,21 +82,23 @@ namespace RPG_GAME.Application.Services
                 return;
             }
 
+            ValidateEnemies(mapDto.Enemies);
             var enemiesAdded = new List<Guid>();
             foreach (var enemyDto in mapDto.Enemies)
             {
                 var enemyExists = map.Enemies.Any(e => e.Enemy.Id == enemyDto.EnemyId);
-
-                if (enemyExists)
-                {
-                    continue;
-                }
 
                 var enemy = await _enemyRepository.GetAsync(enemyDto.EnemyId);
 
                 if (enemy is null)
                 {
                     throw new EnemyNotFoundException(enemyDto.EnemyId);
+                }
+
+                if (enemyExists)
+                {
+                    map.ReplaceEnemies(new Enemies(enemy.AsAssign(), enemyDto.Quantity));
+                    continue;
                 }
 
                 map.AddEnemies(new Enemies(enemy.AsAssign(), enemyDto.Quantity));
@@ -132,6 +135,16 @@ namespace RPG_GAME.Application.Services
             }
 
             await Task.WhenAll(tasks);
+        }
+
+        private void ValidateEnemies(IEnumerable<AddEnemyDto> enemies)
+        {
+            var anyDuplicate = enemies.GroupBy(e => e.EnemyId).Any(g => g.Count() > 1);
+
+            if (anyDuplicate)
+            {
+                throw new EnemiesShouldntHaveDuplicatedEnemyIdException();
+            }
         }
     }
 }

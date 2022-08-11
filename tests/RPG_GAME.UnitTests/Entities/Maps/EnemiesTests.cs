@@ -136,6 +136,35 @@ namespace RPG_GAME.UnitTests.Entities.Maps
             exception.Message.Should().Be(expectedException.Message);
         }
 
+        [Fact]
+        public void should_replace_quantity()
+        {
+            var enemy = DefaultEnemyAssing();
+            var enemies = new Core.Entities.Maps.Enemies(enemy, 1);
+            var quantity = 15;
+
+            enemies.SetQuantity(quantity);
+
+            enemies.Quantity.Should().Be(quantity);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        [InlineData(-100)]
+        public void given_invalid_quantiy_when_replace_should_throw_an_exception(int quantity)
+        {
+            var enemy = DefaultEnemyAssing();
+            var enemies = new Core.Entities.Maps.Enemies(enemy, 1);
+            var expectedException = new QuantityCannotBeZeroOrNegative(quantity);
+
+            var exception = Record.Exception(() => enemies.SetQuantity(quantity));
+
+            exception.Should().NotBeNull();
+            exception.Should().BeOfType(expectedException.GetType());
+            exception.Message.Should().Be(expectedException.Message);
+        }
+
         private static EnemyAssign DefaultEnemyAssing()
         {
             return new EnemyAssign(Guid.NewGuid(), "Enemy", 10, 200, 10, 2000, "EASY");

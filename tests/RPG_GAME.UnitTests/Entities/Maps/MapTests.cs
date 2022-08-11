@@ -220,7 +220,56 @@ namespace RPG_GAME.UnitTests.Entities.Maps
             exception.Message.Should().Be(expectedException.Message);
         }
 
-        private static RPG_GAME.Core.Entities.Maps.Enemies CreateDefaultEnemies(Guid? id = null)
+        [Fact]
+        public void should_replace_enemies()
+        {
+            var name = "Map#1";
+            var difficulty = "EASY";
+            var enemy = CreateDefaultEnemies();
+            var enemyToReplace = CreateDefaultEnemies(enemy.Enemy.Id);
+            enemyToReplace.AddQuantity(10);
+            var map = Map.Create(name, difficulty, new List<Core.Entities.Maps.Enemies> { enemy });
+
+            map.ReplaceEnemies(enemyToReplace);
+
+            map.Enemies.Should().NotBeEmpty();
+            map.Enemies.Should().HaveCount(1);
+            map.Enemies.First().Quantity.Should().Be(enemyToReplace.Quantity);
+        }
+
+        [Fact]
+        public void given_null_enemies_when_replace_should_throw_an_exception()
+        {
+            var name = "Map#1";
+            var difficulty = "EASY";
+            var enemy = CreateDefaultEnemies();
+            var map = Map.Create(name, difficulty, new List<Core.Entities.Maps.Enemies> { enemy });
+            var expectedException = new InvalidEnemiesException();
+
+            var exception = Record.Exception(() => map.ReplaceEnemies(null));
+
+            exception.Should().NotBeNull();
+            exception.Should().BeOfType(expectedException.GetType());
+            exception.Message.Should().Be(expectedException.Message);
+        }
+
+        [Fact]
+        public void given_not_existing_enemies_when_replace_should_throw_an_exception()
+        {
+            var name = "Map#1";
+            var difficulty = "EASY";
+            var map = Map.Create(name, difficulty);
+            var enemies = CreateDefaultEnemies();
+            var expectedException = new EnemiesDoesntExistsException(enemies.Enemy.Id);
+
+            var exception = Record.Exception(() => map.ReplaceEnemies(enemies));
+
+            exception.Should().NotBeNull();
+            exception.Should().BeOfType(expectedException.GetType());
+            exception.Message.Should().Be(expectedException.Message);
+        }
+
+        private static Core.Entities.Maps.Enemies CreateDefaultEnemies(Guid? id = null)
         {
             return new Core.Entities.Maps.Enemies(
                 new EnemyAssign(id ?? Guid.NewGuid(), "Enemy#1", 10, 10, 1, 100, "EASY"),

@@ -9,7 +9,6 @@ using RPG_GAME.Application.Time;
 using RPG_GAME.Core.Entities.Users;
 using RPG_GAME.Core.Repositories;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
@@ -69,6 +68,8 @@ namespace RPG_GAME.UnitTests.Services
             _passwordHasher.Setup(p => p.HashPassword(It.IsAny<User>(), dto.Password)).Returns(dto.Password);
 
             await _identityService.SignUpAsync(dto);
+
+            _userRepository.Verify(u => u.AddAsync(It.IsAny<User>()), times: Times.Once);
         }
 
         [Fact]
