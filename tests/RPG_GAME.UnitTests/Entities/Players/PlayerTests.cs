@@ -21,7 +21,7 @@ namespace RPG_GAME.UnitTests.Entities.Players
             var requiredExp = 100;
             var userId = Guid.NewGuid();
 
-            var player = Act(name, hero, level, currentExp, requiredExp, userId);
+            var player = Player.Create(name, hero,requiredExp, userId);
 
             player.Should().NotBeNull();
             player.Name.Should().Be(name);

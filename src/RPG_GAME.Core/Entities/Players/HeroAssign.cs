@@ -1,9 +1,7 @@
 ﻿using RPG_GAME.Core.Entities.Common;
-using RPG_GAME.Core.Exceptions.Heroes;
 using RPG_GAME.Core.Exceptions.Players;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace RPG_GAME.Core.Entities.Players
 {

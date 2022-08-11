@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Users\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
