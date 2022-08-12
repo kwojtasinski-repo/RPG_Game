@@ -2,8 +2,10 @@
 using Moq;
 using RPG_GAME.Application.DTO.Common;
 using RPG_GAME.Application.DTO.Enemies;
+using RPG_GAME.Application.Events;
 using RPG_GAME.Application.Exceptions.Enemies;
 using RPG_GAME.Application.Mappings;
+using RPG_GAME.Application.Messaging;
 using RPG_GAME.Application.Services;
 using RPG_GAME.Core.Entities.Enemies;
 using RPG_GAME.Core.Repositories;
@@ -127,6 +129,7 @@ namespace RPG_GAME.UnitTests.Services
             await _enemyService.UpdateAsync(dto);
 
             _enemyRepository.Verify(h => h.UpdateAsync(It.IsAny<Enemy>()), times: Times.Once);
+            _messageBroker.Verify(h => h.PublishAsync(It.IsAny<IEvent>()), times: Times.Once);
         }
 
         [Fact]
@@ -186,11 +189,13 @@ namespace RPG_GAME.UnitTests.Services
 
         private readonly IEnemyService _enemyService;
         private readonly Mock<IEnemyRepository> _enemyRepository;
+        private readonly Mock<IMessageBroker> _messageBroker;
 
         public EnemyServiceTests()
         {
             _enemyRepository = new Mock<IEnemyRepository>();
-            _enemyService = new EnemyService(_enemyRepository.Object);
+            _messageBroker = new Mock<IMessageBroker>();
+            _enemyService = new EnemyService(_enemyRepository.Object, _messageBroker.Object);
         }
     }
 }

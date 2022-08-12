@@ -11,5 +11,6 @@ namespace RPG_GAME.Core.Repositories
         Task UpdateAsync(Map map);
         Task<Map> GetAsync(Guid id);
         Task<IEnumerable<Map>> GetAllAsync();
+        Task<IEnumerable<Map>> GetAllMapsByEnemyId(Guid enemyId);
     }
 }

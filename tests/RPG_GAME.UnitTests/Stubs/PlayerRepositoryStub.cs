@@ -28,6 +28,11 @@ namespace RPG_GAME.UnitTests.Stubs
             return Task.FromResult<IEnumerable<Player>>(_players);
         }
 
+        public Task<IEnumerable<Player>> GetAllPlayersByHeroId(Guid heroId)
+        {
+            return Task.FromResult(_players.Where(p => p.Hero.Id == heroId));
+        }
+
         public Task<Player> GetAsync(Guid id)
         {
             return Task.FromResult(_players.FirstOrDefault(p => p.Id == id));

@@ -7,14 +7,14 @@ namespace RPG_GAME.Core.Entities.Maps
 {
     public class EnemyAssign
     {
-        public Guid Id { get; }
+        public Guid Id { get; private set; }
         public CharacterType Character => CharacterType.ENEMY;
-        public string EnemyName { get; }
+        public string EnemyName { get; private set; }
         public int Attack { get; private set; }
         public int Health { get; private set; }
         public int HealLvl { get; private set; }
         public decimal Experience { get; private set; }
-        public Difficulty Difficulty { get; }
+        public Difficulty Difficulty { get; private set; }
         public IEnumerable<SkillEnemyAssign> Skills => _skills;
 
         private IEnumerable<SkillEnemyAssign> _skills = new List<SkillEnemyAssign>();
@@ -82,6 +82,31 @@ namespace RPG_GAME.Core.Entities.Maps
             }
 
             Experience = experience;
+        }
+
+        internal void ChangeName(string enemyName)
+        {
+            if (string.IsNullOrWhiteSpace(enemyName))
+            {
+                return;
+            }
+
+            EnemyName = enemyName;
+        }
+
+        internal void ChangeDifficulty(Difficulty difficulty)
+        {
+            Difficulty = difficulty;
+        }
+
+        internal void ChangeSkills(IEnumerable<SkillEnemyAssign> skills)
+        {
+            if (skills is null)
+            {
+                return;
+            }
+
+            _skills = skills;
         }
     }
 }

@@ -12,5 +12,6 @@ namespace RPG_GAME.Core.Repositories
         Task DeleteAsync(Guid id);
         Task<Player> GetAsync(Guid id);
         Task<IEnumerable<Player>> GetAllAsync();
+        Task<IEnumerable<Player>> GetAllPlayersByHeroId(Guid heroId);
     }
 }

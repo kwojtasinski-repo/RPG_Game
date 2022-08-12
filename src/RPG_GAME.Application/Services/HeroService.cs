@@ -1,7 +1,9 @@
 ﻿using RPG_GAME.Application.DTO.Common;
 using RPG_GAME.Application.DTO.Heroes;
+using RPG_GAME.Application.Events.Heroes;
 using RPG_GAME.Application.Exceptions.Heroes;
 using RPG_GAME.Application.Mappings;
+using RPG_GAME.Application.Messaging;
 using RPG_GAME.Core.Entities.Common;
 using RPG_GAME.Core.Entities.Heroes;
 using RPG_GAME.Core.Repositories;
@@ -11,10 +13,12 @@ namespace RPG_GAME.Application.Services
     internal sealed class HeroService : IHeroService
     {
         private readonly IHeroRepository _heroRepository;
+        private readonly IMessageBroker _messageBroker;
 
-        public HeroService(IHeroRepository heroRepository)
+        public HeroService(IHeroRepository heroRepository, IMessageBroker messageBroker)
         {
             _heroRepository = heroRepository;
+            _messageBroker = messageBroker;
         }
 
         public async Task AddAsync(HeroDto heroDto)
@@ -72,6 +76,7 @@ namespace RPG_GAME.Application.Services
             if (heroDto.Skills is null)
             {
                 await _heroRepository.UpdateAsync(heroExists);
+                await _messageBroker.PublishAsync(new HeroUpdated(heroExists.Id, heroExists.HeroName));
                 return;
             }
 
@@ -101,6 +106,7 @@ namespace RPG_GAME.Application.Services
             }
 
             await _heroRepository.UpdateAsync(heroExists);
+            await _messageBroker.PublishAsync(new HeroUpdated(heroExists.Id, heroExists.HeroName, heroExists.Skills.Select(s => s.AsAssign())));
         }
 
         private static void Validate(HeroDto heroDto)

@@ -2,6 +2,7 @@
 using RPG_GAME.Core.Exceptions.Players;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RPG_GAME.Core.Entities.Players
 {
@@ -9,7 +10,7 @@ namespace RPG_GAME.Core.Entities.Players
     {
         public Guid Id { get; }
         public CharacterType Character => CharacterType.PLAYER;
-        public string HeroName { get; }
+        public string HeroName { get; private set; }
         public int Health { get; private set; }
         public int Attack { get; private set; }
         public int HealLvl { get; private set; }
@@ -59,6 +60,26 @@ namespace RPG_GAME.Core.Entities.Players
             }
 
             HealLvl = healLvl;
+        }
+
+        internal void ChangeHeroName(string heroName)
+        {
+            if (string.IsNullOrWhiteSpace(heroName))
+            {
+                return;
+            }
+
+            HeroName = heroName;
+        }
+
+        internal void ChangeSkills(IEnumerable<SkillHeroAssign> skills)
+        {
+            if (skills is null)
+            {
+                return;
+            }
+
+            _skills = skills.ToList();
         }
     }
 }

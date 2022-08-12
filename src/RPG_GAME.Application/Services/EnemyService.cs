@@ -1,7 +1,9 @@
 ﻿using RPG_GAME.Application.DTO.Common;
 using RPG_GAME.Application.DTO.Enemies;
+using RPG_GAME.Application.Events.Enemies;
 using RPG_GAME.Application.Exceptions.Enemies;
 using RPG_GAME.Application.Mappings;
+using RPG_GAME.Application.Messaging;
 using RPG_GAME.Core.Entities.Common;
 using RPG_GAME.Core.Entities.Enemies;
 using RPG_GAME.Core.Repositories;
@@ -11,10 +13,12 @@ namespace RPG_GAME.Application.Services
     internal sealed class EnemyService : IEnemyService
     {
         private readonly IEnemyRepository _enemyRepository;
+        private readonly IMessageBroker _messageBroker;
 
-        public EnemyService(IEnemyRepository enemyRepository)
+        public EnemyService(IEnemyRepository enemyRepository, IMessageBroker messageBroker)
         {
             _enemyRepository = enemyRepository;
+            _messageBroker = messageBroker;
         }
 
         public async Task AddAsync(EnemyDto enemyDto)
@@ -73,6 +77,8 @@ namespace RPG_GAME.Application.Services
             if (enemyDto.Skills is null)
             {
                 await _enemyRepository.UpdateAsync(enemyExists);
+                await _messageBroker.PublishAsync(new EnemyUpdated(enemyExists.Id, enemyExists.EnemyName, enemyExists.BaseAttack.Value, enemyExists.BaseHealth.Value, enemyExists.BaseHealLvl.Value,
+                                                        enemyExists.Experience.Value, enemyExists.Difficulty));
                 return;
             }
 
@@ -102,6 +108,8 @@ namespace RPG_GAME.Application.Services
             }
 
             await _enemyRepository.UpdateAsync(enemyExists);
+            await _messageBroker.PublishAsync(new EnemyUpdated(enemyExists.Id, enemyExists.EnemyName, enemyExists.BaseAttack.Value, enemyExists.BaseHealth.Value, enemyExists.BaseHealLvl.Value,
+                                                        enemyExists.Experience.Value, enemyExists.Difficulty, enemyExists.Skills.Select(e => e.AsAssign())));
         }
 
         private static void Validate(EnemyDto enemyDto)

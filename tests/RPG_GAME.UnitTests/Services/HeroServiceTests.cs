@@ -2,8 +2,10 @@
 using Moq;
 using RPG_GAME.Application.DTO.Common;
 using RPG_GAME.Application.DTO.Heroes;
+using RPG_GAME.Application.Events;
 using RPG_GAME.Application.Exceptions.Heroes;
 using RPG_GAME.Application.Mappings;
+using RPG_GAME.Application.Messaging;
 using RPG_GAME.Application.Services;
 using RPG_GAME.Core.Entities.Heroes;
 using RPG_GAME.Core.Repositories;
@@ -101,6 +103,7 @@ namespace RPG_GAME.UnitTests.Services
             await _heroService.UpdateAsync(dto);
 
             _heroRepository.Verify(h => h.UpdateAsync(It.IsAny<Hero>()), times: Times.Once);
+            _messageBroker.Verify(h => h.PublishAsync(It.IsAny<IEvent>()), times: Times.Once);
         }
 
         [Fact]
@@ -160,11 +163,13 @@ namespace RPG_GAME.UnitTests.Services
 
         private readonly IHeroService _heroService;
         private readonly Mock<IHeroRepository> _heroRepository;
+        private readonly Mock<IMessageBroker> _messageBroker;
 
         public HeroServiceTests()
         {
             _heroRepository = new Mock<IHeroRepository>();
-            _heroService = new HeroService(_heroRepository.Object);
+            _messageBroker = new Mock<IMessageBroker>();
+            _heroService = new HeroService(_heroRepository.Object, _messageBroker.Object);
         }
     }
 }

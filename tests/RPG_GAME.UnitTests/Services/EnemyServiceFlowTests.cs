@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using RPG_GAME.Application.DTO.Enemies;
+using RPG_GAME.Application.Events.Enemies;
 using RPG_GAME.Application.Exceptions.Enemies;
 using RPG_GAME.Application.Mappings;
 using RPG_GAME.Application.Services;
@@ -28,7 +29,6 @@ namespace RPG_GAME.UnitTests.Services
             heroFromDb.EnemyName.Should().Be(enemy.EnemyName);
         }
 
-
         [Fact]
         public async Task should_update()
         {
@@ -45,6 +45,25 @@ namespace RPG_GAME.UnitTests.Services
             heroUpdated.Should().NotBeNull();
             heroUpdated.EnemyName.Should().Be(heroToUpdate.EnemyName);
             heroUpdated.Skills.Should().HaveCount(heroToUpdate.Skills.Count());
+        }
+
+        [Fact]
+        public async Task should_update_and_publish_event()
+        {
+            var enemy = EntitiesFixture.CreateDefaultEnemy().AsDto();
+            enemy.Skills = new List<SkillEnemyDto> { EntitiesFixture.CreateDefaultSkillEnemy("skill1").AsDto(), EntitiesFixture.CreateDefaultSkillEnemy("skill2").AsDto() };
+            var heroToUpdate = EntitiesFixture.Clone(enemy);
+            heroToUpdate.Skills = new List<SkillEnemyDto> { enemy.Skills.First(), EntitiesFixture.CreateDefaultSkillEnemy().AsDto(), EntitiesFixture.CreateDefaultSkillEnemy("test123").AsDto() };
+            await _enemyRepository.AddAsync(enemy.AsEntity());
+            heroToUpdate.EnemyName = "Enemy123";
+
+            await _enemyService.UpdateAsync(heroToUpdate);
+
+            var messages = _messageBrokerStub.GetPublishedMessages();
+            messages.Should().HaveCount(1);
+            var ids = messages.Where(m => typeof(EnemyUpdated).IsAssignableFrom(m.GetType()))
+                .Select(m => ((EnemyUpdated)m).EnemyId);
+            ids.Should().Contain(heroToUpdate.Id);
         }
 
         [Fact]
@@ -115,11 +134,13 @@ namespace RPG_GAME.UnitTests.Services
 
         private readonly IEnemyService _enemyService;
         private readonly IEnemyRepository _enemyRepository;
+        private readonly MessageBrokerStub _messageBrokerStub;
 
         public EnemyServiceFlowTests()
         {
             _enemyRepository = new EnemyRepositoryStub();
-            _enemyService = new EnemyService(_enemyRepository);
+            _messageBrokerStub = new MessageBrokerStub();
+            _enemyService = new EnemyService(_enemyRepository, _messageBrokerStub);
         }
     }
 }

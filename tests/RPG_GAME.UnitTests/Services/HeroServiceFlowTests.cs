@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using RPG_GAME.Application.DTO.Heroes;
+using RPG_GAME.Application.Events.Heroes;
 using RPG_GAME.Application.Exceptions.Heroes;
 using RPG_GAME.Application.Mappings;
 using RPG_GAME.Application.Services;
@@ -44,6 +45,25 @@ namespace RPG_GAME.UnitTests.Services
             heroUpdated.Should().NotBeNull();
             heroUpdated.HeroName.Should().Be(heroToUpdate.HeroName);
             heroUpdated.Skills.Should().HaveCount(heroToUpdate.Skills.Count());
+        }
+
+        [Fact]
+        public async Task should_update_and_publish_event()
+        {
+            var hero = EntitiesFixture.CreateDefaultHero().AsDto();
+            hero.Skills = new List<SkillHeroDto> { EntitiesFixture.CreateDefaultSkillHero("skill1").AsDto(), EntitiesFixture.CreateDefaultSkillHero("skill2").AsDto() };
+            var heroToUpdate = EntitiesFixture.Clone(hero);
+            heroToUpdate.Skills = new List<SkillHeroDto> { hero.Skills.First(), EntitiesFixture.CreateDefaultSkillHero().AsDto(), EntitiesFixture.CreateDefaultSkillHero("test123").AsDto() };
+            await _heroRepository.AddAsync(hero.AsEntity());
+            heroToUpdate.HeroName = "Heros123";
+
+            await _heroService.UpdateAsync(heroToUpdate);
+
+            var messages = _messageBrokerStub.GetPublishedMessages();
+            messages.Should().HaveCount(1);
+            var ids = messages.Where(m => typeof(HeroUpdated).IsAssignableFrom(m.GetType()))
+                .Select(m => ((HeroUpdated)m).HeroId);
+            ids.Should().Contain(heroToUpdate.Id);
         }
 
         [Fact]
@@ -114,11 +134,13 @@ namespace RPG_GAME.UnitTests.Services
 
         private readonly IHeroService _heroService;
         private readonly IHeroRepository _heroRepository;
+        private readonly MessageBrokerStub _messageBrokerStub;
 
         public HeroServiceFlowTests()
         {
             _heroRepository = new HeroRepositoryStub();
-            _heroService = new HeroService(_heroRepository);
+            _messageBrokerStub = new MessageBrokerStub();
+            _heroService = new HeroService(_heroRepository, _messageBrokerStub);
         }
     }
 }

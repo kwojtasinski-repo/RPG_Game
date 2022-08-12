@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using RPG_GAME.Infrastructure.Mongo.Mappings;
 using RPG_GAME.Core.Entities.Players;
 using RPG_GAME.Core.Repositories;
@@ -42,6 +43,12 @@ namespace RPG_GAME.Infrastructure.Mongo.Repositories
         public async Task DeleteAsync(Guid id)
         {
             await _repository.DeleteAsync(id);
+        }
+
+        public async Task<IEnumerable<Player>> GetAllPlayersByHeroId(Guid heroId)
+        {
+            var players = await _repository.Collection.AsQueryable().Where(p => p.Hero.Id == heroId).ToListAsync();
+            return players.Select(p => p.AsEntity());
         }
     }
 }

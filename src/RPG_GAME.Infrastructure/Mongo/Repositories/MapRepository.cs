@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using RPG_GAME.Infrastructure.Mongo.Documents.Maps;
 using RPG_GAME.Infrastructure.Mongo.Mappings;
 using RPG_GAME.Core.Entities.Maps;
@@ -37,6 +38,12 @@ namespace RPG_GAME.Infrastructure.Mongo.Repositories
         {
             var document = map.AsDocument();
             await _repository.UpdateAsync(document);
+        }
+
+        public async Task<IEnumerable<Map>> GetAllMapsByEnemyId(Guid enemyId)
+        {
+            var maps = await _repository.Collection.AsQueryable().Where(m => m.Enemies.Any(e => e.Enemy.Id == enemyId)).ToListAsync();
+            return maps.Select(m => m.AsEntity());
         }
     }
 }

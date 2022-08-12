@@ -7,7 +7,7 @@ namespace RPG_GAME.Core.Entities.Players
     {
         public Guid Id { get; }
         public string Name { get; private set; }
-        public HeroAssign Hero { get; set; }
+        public HeroAssign Hero { get; private set; }
         public int Level { get; private set; }
         public decimal CurrentExp { get; private set; }
         public decimal RequiredExp { get; private set; }

@@ -22,6 +22,12 @@ namespace RPG_GAME.UnitTests.Stubs
             return Task.FromResult<IEnumerable<Map>>(_maps);
         }
 
+        public Task<IEnumerable<Map>> GetAllMapsByEnemyId(Guid enemyId)
+        {
+            var maps = _maps.Where(m => m.Enemies.Any(en => en.Enemy.Id == enemyId));
+            return Task.FromResult(maps);
+        }
+
         public Task<Map> GetAsync(Guid id)
         {
             return Task.FromResult(_maps.SingleOrDefault(m => m.Id == id));
