@@ -1,4 +1,5 @@
-﻿using RPG_GAME.Core.Entities.Players;
+﻿using RPG_GAME.Core.Entities.Maps;
+using RPG_GAME.Core.Entities.Players;
 using RPG_GAME.Core.Exceptions.Battles;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace RPG_GAME.Core.Entities.Battles
         public Guid UserId { get; }
         public BattleInfo BattleInfo { get; private set; }
         public DateTime? EndDate { get; private set; }
+        public Map Map { get; private set; } //calculated enemies with map TODO add methods
         public IEnumerable<BattleState> BattleStates => GetBattleStates();
 
         private IList<BattleState> _battleStates = new List<BattleState>();

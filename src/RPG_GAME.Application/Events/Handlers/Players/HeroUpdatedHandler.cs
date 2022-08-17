@@ -38,7 +38,7 @@ namespace RPG_GAME.Application.Events.Handlers.Players
                 }
 
                 await _heroAssignUpdaterDomainService.ChangeHeroAssignFieldsAsync(player.Hero, new HeroAssignFieldsToUpdate(@event.HeroName, @event.Skills));
-                await _playerRepository.UpdateAsync(player);
+                await _playerRepository.UpdateAsync(player);// TODO calculate skills to existing lvl
             }
         }
     }
