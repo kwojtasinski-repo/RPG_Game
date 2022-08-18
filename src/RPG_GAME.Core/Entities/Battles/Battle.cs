@@ -14,17 +14,18 @@ namespace RPG_GAME.Core.Entities.Battles
         public Guid UserId { get; }
         public BattleInfo BattleInfo { get; private set; }
         public DateTime? EndDate { get; private set; }
-        public Map Map { get; private set; } //calculated enemies with map TODO add methods
+        public Map Map { get; private set; }
         public IEnumerable<BattleState> BattleStates => GetBattleStates();
 
         private IList<BattleState> _battleStates = new List<BattleState>();
 
-        public Battle(Guid id, DateTime startDate, Guid userId, string battleInfo, DateTime? endDate = null, IEnumerable<BattleState> battleStates = null)
+        public Battle(Guid id, DateTime startDate, Guid userId, string battleInfo, Map map, DateTime? endDate = null, IEnumerable<BattleState> battleStates = null)
         {
             Id = id;
             StartDate = startDate;
             UserId = userId;
             ChangeBattleInfo(battleInfo);
+            ChangeMap(map);
             EndDate = endDate;
 
             if (battleStates is not null)
@@ -33,9 +34,9 @@ namespace RPG_GAME.Core.Entities.Battles
             }
         }
 
-        public static Battle Create(DateTime startDate, Guid userId)
+        public static Battle Create(DateTime startDate, Guid userId, Map map)
         {
-            return new Battle(Guid.NewGuid(), startDate, userId, "Starting");
+            return new Battle(Guid.NewGuid(), startDate, userId, "Starting", map);
         }
 
         public void AddBattleStateAtPrepare(BattleState battleState)
@@ -140,6 +141,16 @@ namespace RPG_GAME.Core.Entities.Battles
             EndDate = endDate;
             ChangeBattleInfo(battleInfo);
             _battleStates.Add(battleState);
+        }
+
+        public void ChangeMap(Map map)
+        {
+            if (map is null)
+            {
+                throw new InvalidMapException();
+            }
+
+            Map = map;
         }
     }
 }

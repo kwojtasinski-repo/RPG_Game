@@ -336,6 +336,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 Id = battle.Id,
                 BattleInfo = Enum.Parse<Documents.Battles.BattleInfo>(battle.BattleInfo.ToString()),
                 BattleStates = battle.BattleStates.Select(b => b.AsDocument()),
+                Map = battle.Map.AsDocument(),
                 EndDate = battle.EndDate,
                 StartDate = battle.StartDate,
                 UserId = battle.UserId
@@ -381,7 +382,8 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
         public static Battle AsEntity(this BattleDocument battleDocument)
         {
             return new Battle(battleDocument.Id, battleDocument.StartDate, battleDocument.UserId,
-                battleDocument.BattleInfo.ToString(), battleDocument.EndDate, 
+                battleDocument.BattleInfo.ToString(), battleDocument.Map.AsEntity(), 
+                battleDocument.EndDate, 
                 battleDocument.BattleStates.Select(b => b.AsEntity()));
         }
 
