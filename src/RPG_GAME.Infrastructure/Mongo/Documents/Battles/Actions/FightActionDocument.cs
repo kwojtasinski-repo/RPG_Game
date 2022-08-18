@@ -2,7 +2,7 @@
 {
     internal class FightActionDocument
     {
-        public Guid Id { get; set; }
+        public Guid CharacterId { get; set; }
         public string Name { get; set; }
         public int DamageDealt { get; set; }
         public int Health { get; set; }

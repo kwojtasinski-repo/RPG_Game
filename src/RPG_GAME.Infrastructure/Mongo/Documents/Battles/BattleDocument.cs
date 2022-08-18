@@ -11,5 +11,6 @@ namespace RPG_GAME.Infrastructure.Mongo.Documents.Battles
         public MapDocument Map { get; set; }
         public DateTime? EndDate { get; set; }
         public IEnumerable<BattleStateDocument> BattleStates { get; set; }
+        public IEnumerable<Guid> EnemiesKilled { get; set; }
     }
 }

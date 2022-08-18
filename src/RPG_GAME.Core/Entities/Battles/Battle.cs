@@ -16,10 +16,12 @@ namespace RPG_GAME.Core.Entities.Battles
         public DateTime? EndDate { get; private set; }
         public Map Map { get; private set; }
         public IEnumerable<BattleState> BattleStates => GetBattleStates();
+        public IEnumerable<Guid> EnemiesKilled => _enemiesKilled;
 
+        private IList<Guid> _enemiesKilled = new List<Guid>();
         private IList<BattleState> _battleStates = new List<BattleState>();
 
-        public Battle(Guid id, DateTime startDate, Guid userId, string battleInfo, Map map, DateTime? endDate = null, IEnumerable<BattleState> battleStates = null)
+        public Battle(Guid id, DateTime startDate, Guid userId, string battleInfo, Map map, DateTime? endDate = null, IEnumerable<BattleState> battleStates = null, IEnumerable<Guid> enemiesKilled = null)
         {
             Id = id;
             StartDate = startDate;
@@ -31,6 +33,11 @@ namespace RPG_GAME.Core.Entities.Battles
             if (battleStates is not null)
             {
                 _battleStates = new List<BattleState>(battleStates);
+            }
+
+            if (enemiesKilled is not null)
+            {
+                _enemiesKilled = new List<Guid>(enemiesKilled);
             }
         }
 
@@ -119,7 +126,7 @@ namespace RPG_GAME.Core.Entities.Battles
             BattleInfo = battleInfoParsed;
         }
 
-        public void Completed(DateTime endDate, string battleInfo, BattleState battleState)
+        public Player EndBattle(DateTime endDate, string battleInfo, BattleState battleState)
         {
             if (battleState is null)
             {
@@ -141,6 +148,14 @@ namespace RPG_GAME.Core.Entities.Battles
             EndDate = endDate;
             ChangeBattleInfo(battleInfo);
             _battleStates.Add(battleState);
+
+            if (BattleInfo != BattleInfo.Won)
+            {
+                var battleStateAtPrepare = _battleStates.SingleOrDefault(b => b.BattleStatus == BattleStatus.Prepare);
+                return battleStateAtPrepare.Player;
+            }
+
+            return battleState.Player;
         }
 
         public void ChangeMap(Map map)
@@ -151,6 +166,16 @@ namespace RPG_GAME.Core.Entities.Battles
             }
 
             Map = map;
+        }
+
+        public void AddKilledEnemy(Guid enemyId)
+        {
+            if (enemyId == Guid.Empty)
+            {
+                throw new InvalidEnemyIdException();
+            }
+
+            _enemiesKilled.Add(enemyId);
         }
     }
 }

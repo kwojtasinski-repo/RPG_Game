@@ -339,7 +339,8 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 Map = battle.Map.AsDocument(),
                 EndDate = battle.EndDate,
                 StartDate = battle.StartDate,
-                UserId = battle.UserId
+                UserId = battle.UserId,
+                EnemiesKilled = battle.EnemiesKilled
             };
         }
 
@@ -371,7 +372,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
         {
             return new FightActionDocument
             {
-                Id = fightAction.Id,
+                CharacterId = fightAction.CharacterId,
                 Name = fightAction.Name,
                 AttackInfo = fightAction.AttackInfo,
                 DamageDealt = fightAction.DamageDealt,
@@ -384,7 +385,8 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
             return new Battle(battleDocument.Id, battleDocument.StartDate, battleDocument.UserId,
                 battleDocument.BattleInfo.ToString(), battleDocument.Map.AsEntity(), 
                 battleDocument.EndDate, 
-                battleDocument.BattleStates.Select(b => b.AsEntity()));
+                battleDocument.BattleStates.Select(b => b.AsEntity()),
+                battleDocument.EnemiesKilled);
         }
 
         public static BattleState AsEntity(this BattleStateDocument battleStateDocument)
@@ -401,7 +403,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
 
         public static FightAction AsEntity(this FightActionDocument fightActionDocument)
         {
-            return new FightAction(fightActionDocument.Id, fightActionDocument.Name, fightActionDocument.DamageDealt,
+            return new FightAction(fightActionDocument.CharacterId, fightActionDocument.Name, fightActionDocument.DamageDealt,
                 fightActionDocument.Health, fightActionDocument.AttackInfo);
         }
     }

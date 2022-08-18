@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RPG_GAME.Core.Exceptions.Battles
 {
-    internal class InvalidMapException : DomainException
+    internal sealed class InvalidMapException : DomainException
     {
         public InvalidMapException() : base("Invalid Map")
         {
