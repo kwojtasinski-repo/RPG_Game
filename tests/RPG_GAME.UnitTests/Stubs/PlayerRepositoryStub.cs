@@ -38,6 +38,12 @@ namespace RPG_GAME.UnitTests.Stubs
             return Task.FromResult(_players.FirstOrDefault(p => p.Id == id));
         }
 
+        public async Task<Player> GetByUserId(Guid userId)
+        {
+            await Task.CompletedTask;
+            return _players.SingleOrDefault(p => p.UserId == userId);
+        }
+
         public Task UpdateAsync(Player player)
         {
             return Task.CompletedTask;

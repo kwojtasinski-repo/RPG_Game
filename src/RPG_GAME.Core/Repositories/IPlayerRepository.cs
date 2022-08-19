@@ -13,5 +13,6 @@ namespace RPG_GAME.Core.Repositories
         Task<Player> GetAsync(Guid id);
         Task<IEnumerable<Player>> GetAllAsync();
         Task<IEnumerable<Player>> GetAllPlayersByHeroId(Guid heroId);
+        Task<Player> GetByUserId(Guid userId);
     }
 }

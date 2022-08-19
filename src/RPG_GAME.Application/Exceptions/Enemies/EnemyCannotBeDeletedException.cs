@@ -1,6 +1,6 @@
 ﻿namespace RPG_GAME.Application.Exceptions.Enemies
 {
-    internal class EnemyCannotBeDeletedException : BusinessException
+    internal sealed class EnemyCannotBeDeletedException : BusinessException
     {
         public Guid Id { get; }
 

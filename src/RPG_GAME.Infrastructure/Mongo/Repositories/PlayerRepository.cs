@@ -50,5 +50,12 @@ namespace RPG_GAME.Infrastructure.Mongo.Repositories
             var players = await _repository.Collection.AsQueryable().Where(p => p.Hero.Id == heroId).ToListAsync();
             return players.Select(p => p.AsEntity());
         }
+
+        public async Task<Player> GetByUserId(Guid userId)
+        {
+            return (await _repository.Collection
+                .AsQueryable()
+                .SingleOrDefaultAsync(u => u.UserId == userId)).AsEntity();
+        }
     }
 }

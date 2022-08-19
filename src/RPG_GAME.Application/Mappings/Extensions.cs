@@ -1,8 +1,11 @@
-﻿using RPG_GAME.Application.DTO.Common;
+﻿using RPG_GAME.Application.DTO.Battles;
+using RPG_GAME.Application.DTO.Common;
 using RPG_GAME.Application.DTO.Enemies;
 using RPG_GAME.Application.DTO.Heroes;
 using RPG_GAME.Application.DTO.Maps;
 using RPG_GAME.Application.DTO.Players;
+using RPG_GAME.Core.Entities.Battles;
+using RPG_GAME.Core.Entities.Battles.Actions;
 using RPG_GAME.Core.Entities.Common;
 using RPG_GAME.Core.Entities.Enemies;
 using RPG_GAME.Core.Entities.Heroes;
@@ -329,6 +332,58 @@ namespace RPG_GAME.Application.Mappings
         {
             return new SkillEnemyAssign(skillEnemy.Id, skillEnemy.Name, skillEnemy.BaseAttack,
                 skillEnemy.Probability);
+        }
+
+        public static BattleDetailsDto AsDetailsDto(this Battle battle)
+        {
+            return new BattleDetailsDto
+            {
+                Id = battle.Id,
+                BattleInfo = battle.BattleInfo.ToString(),
+                StartDate = battle.StartDate,
+                EndDate = battle.EndDate,
+                Map = battle.Map.AsDto(),
+                EnemiesKilled = battle.EnemiesKilled,
+                BattleStates = battle.BattleStates.Select(bs => bs.AsDto()),
+                UserId = battle.UserId
+            };
+        }
+
+        public static BattleStateDto AsDto(this BattleState battleState)
+        {
+            return new BattleStateDto
+            {
+                Id = battleState.Id,
+                BattleStatus = battleState.BattleStatus.ToString(),
+                BattleId = battleState.BattleId,
+                Created = battleState.Created,
+                Player = battleState.Player.AsDto(),
+                Modified = battleState.Modified
+            };
+        }
+
+        public static BattleEventDto AsDto(this BattleEvent battleEvent)
+        {
+            return new BattleEventDto
+            { 
+                Id = battleEvent.Id,
+                Action = battleEvent.Action.AsDto(),
+                BattleId = battleEvent.BattleId,
+                Created = battleEvent.Created
+            };
+        }
+
+        public static FightActionDto AsDto(this FightAction fightAction)
+        {
+            return new FightActionDto
+            {
+                CharacterId = fightAction.CharacterId,
+                Character = fightAction.Character.ToString(),
+                Name = fightAction.Name,
+                AttackInfo = fightAction.AttackInfo,
+                DamageDealt = fightAction.DamageDealt,
+                Health = fightAction.Health
+            };
         }
     }
 }

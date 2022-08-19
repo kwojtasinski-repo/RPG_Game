@@ -7,7 +7,7 @@ namespace RPG_GAME.Application.Commands
     {
     }
 
-    public interface ICommand<T> : ICommand
+    public interface ICommand<T> : IMessage
     {
     }
 }
