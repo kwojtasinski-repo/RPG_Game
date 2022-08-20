@@ -1,6 +1,6 @@
 ﻿namespace RPG_GAME.Application.Exceptions.Enemies
 {
-    internal sealed class InvalidEnemyDifficultyException : BusinessException
+    public sealed class InvalidEnemyDifficultyException : BusinessException
     {
         public string Difficulty { get; }
 

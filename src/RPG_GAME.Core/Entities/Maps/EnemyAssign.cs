@@ -1,4 +1,5 @@
-﻿using RPG_GAME.Core.Entities.Common;
+﻿using RPG_GAME.Core.Common;
+using RPG_GAME.Core.Entities.Common;
 using RPG_GAME.Core.Exceptions.Maps;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,12 @@ namespace RPG_GAME.Core.Entities.Maps
         public decimal Experience { get; private set; }
         public Difficulty Difficulty { get; private set; }
         public IEnumerable<SkillEnemyAssign> Skills => _skills;
+        public Category Category { get; private set; }
 
         private IEnumerable<SkillEnemyAssign> _skills = new List<SkillEnemyAssign>();
 
         public EnemyAssign(Guid id, string enemyName, int attack, int health, int healLvl, decimal experience,
-            string difficulty, IEnumerable<SkillEnemyAssign> skills = null)
+            string difficulty, string category, IEnumerable<SkillEnemyAssign> skills = null)
         {
             Id = id;
             EnemyName = enemyName;
@@ -37,6 +39,15 @@ namespace RPG_GAME.Core.Entities.Maps
             }
 
             Difficulty = difficultyType;
+
+            var parsedCategory = Enum.TryParse<Category>(category, out var categoryType);
+
+            if (!parsedCategory)
+            {
+                throw new InvalidEnemyAssignCategoryException(category);
+            }
+
+            Category = categoryType;
 
             if (skills is not null)
             {
@@ -97,6 +108,11 @@ namespace RPG_GAME.Core.Entities.Maps
         internal void ChangeDifficulty(Difficulty difficulty)
         {
             Difficulty = difficulty;
+        }
+
+        internal void ChangeCategory(Category category)
+        {
+            Category = category;
         }
 
         internal void ChangeSkills(IEnumerable<SkillEnemyAssign> skills)

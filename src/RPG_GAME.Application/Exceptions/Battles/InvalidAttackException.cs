@@ -1,6 +1,6 @@
 ﻿namespace RPG_GAME.Application.Exceptions.Battles
 {
-    internal sealed class InvalidAttackException : BusinessException
+    public sealed class InvalidAttackException : BusinessException
     {
         public string AttackName { get; }
 

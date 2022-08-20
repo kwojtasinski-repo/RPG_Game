@@ -7,10 +7,10 @@ namespace RPG_GAME.Core.Entities.Battles
         public Guid Id { get; }
         public Guid BattleId { get; }
         public Guid PlayerId { get; }
-        public int PlayerCurrentHealth { get; }
-        public int PlayerLevel { get; }
+        public int PlayerCurrentHealth { get; private set; }
+        public int PlayerLevel { get; private set; }
         public Guid EnemyId { get; }
-        public int EnemyHealth { get; }
+        public int EnemyHealth { get; private set; }
 
         public CurrentBattleState(Guid id, Guid battleId, Guid playerId, int playerCurrentHealth,
             int playerLevel, Guid enemyId, int enemyHealth)
@@ -22,6 +22,26 @@ namespace RPG_GAME.Core.Entities.Battles
             PlayerLevel = playerLevel;
             EnemyId = enemyId;
             EnemyHealth = enemyHealth;
+        }
+
+        public void HealPlayerBy(int heal)
+        {
+            PlayerCurrentHealth += heal;
+        }
+
+        public void MakeDamageToPlayer(int damage)
+        {
+            PlayerCurrentHealth -= damage;
+        }
+
+        public void HealEnemyBy(int heal)
+        {
+            EnemyHealth += heal;
+        }
+
+        public void MakeDamageToEnemy(int damage)
+        {
+            EnemyHealth -= damage;
         }
     }
 }

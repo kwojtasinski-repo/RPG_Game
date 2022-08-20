@@ -1,4 +1,5 @@
-﻿using RPG_GAME.Core.Entities.Common;
+﻿using RPG_GAME.Core.Common;
+using RPG_GAME.Core.Entities.Common;
 using RPG_GAME.Core.Exceptions.Enemies;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace RPG_GAME.Core.Entities.Enemies
         public State<int> BaseHealLvl { get; private set; }
         public State<decimal> Experience { get; private set; }
         public Difficulty Difficulty { get; private set; }
+        public Category Category { get; private set; }
         public IEnumerable<SkillEnemy> Skills => _skills;
         public IEnumerable<Guid> MapsAssignedTo => _mapsAssignedTo;
 
@@ -22,7 +24,7 @@ namespace RPG_GAME.Core.Entities.Enemies
         private IList<Guid> _mapsAssignedTo = new List<Guid>();
 
         public Enemy(Guid id, string enemyName, State<int> health, State<int> attack, State<int> healLvl, State<decimal> experience,
-            string difficulty, IEnumerable<SkillEnemy> skills = null, IEnumerable<Guid> mapsAssignedTo = null)
+            string difficulty, string category, IEnumerable<SkillEnemy> skills = null, IEnumerable<Guid> mapsAssignedTo = null)
         {
             Id = id;
             ChangeEnemyName(enemyName);
@@ -31,6 +33,7 @@ namespace RPG_GAME.Core.Entities.Enemies
             ChangeHealLvl(healLvl);
             ChangeExperience(experience);
             ChangeDifficulty(difficulty);
+            ChangeCategory(category);
 
             if (skills is not null)
             {
@@ -119,6 +122,18 @@ namespace RPG_GAME.Core.Entities.Enemies
             }
 
             Difficulty = difficultyType;
+        }
+
+        public void ChangeCategory(string category)
+        {
+            var parsed = Enum.TryParse<Category>(category, out var categoryType);
+
+            if (!parsed)
+            {
+                throw new InvalidEnemyCategoryException(category);
+            }
+
+            Category = categoryType;
         }
 
         public void ChangeExperience(State<decimal> experience)

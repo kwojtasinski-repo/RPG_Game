@@ -1,6 +1,7 @@
 ﻿using RPG_GAME.Application.DTO.Battles;
 using RPG_GAME.Application.Exceptions.Auth;
 using RPG_GAME.Application.Exceptions.Battles;
+using RPG_GAME.Application.Managers;
 using RPG_GAME.Application.Mappings;
 using RPG_GAME.Application.Time;
 using RPG_GAME.Core.Entities.Battles;
@@ -8,23 +9,25 @@ using RPG_GAME.Core.Repositories;
 
 namespace RPG_GAME.Application.Commands.Battles.Handlers
 {
-    internal sealed class StartBattleHandler : ICommandHandler<StartBattle, BattleDetailsDto>
+    internal sealed class StartBattleHandler : ICommandHandler<StartBattle, BattleStatusDto>
     {
         private readonly IUserRepository _userRepository;
         private readonly IBattleRepository _battleRepository;
         private readonly IPlayerRepository _playerRepository;
         private readonly IClock _clock;
+        private readonly IBattleManager _battleManager;
 
         public StartBattleHandler(IUserRepository userRepository, IBattleRepository battleRepository,
-            IPlayerRepository playerRepository, IClock clock)
+            IPlayerRepository playerRepository, IClock clock, IBattleManager battleManager)
         {
             _userRepository = userRepository;
             _battleRepository = battleRepository;
             _playerRepository = playerRepository;
             _clock = clock;
+            _battleManager = battleManager;
         }
 
-        public async Task<BattleDetailsDto> HandleAsync(StartBattle command)
+        public async Task<BattleStatusDto> HandleAsync(StartBattle command)
         {
             var userExitsts = await _userRepository.ExistsAsync(command.UserId);
 
@@ -54,8 +57,16 @@ namespace RPG_GAME.Application.Commands.Battles.Handlers
 
             var battleState = BattleState.InAction(command.BattleId, player, _clock.CurrentDate());
             battle.AddBattleStateAtInProgress(battleState);
+            var enemy = _battleManager.GetFirstEnemy(battle);
 
-            return battle.AsDetailsDto();
+            return new BattleStatusDto
+            {
+                BattleId = battle.Id,
+                EnemyHealth = enemy.Health,
+                EnemyId = enemy.Id,
+                PlayerHealth = player.Hero.Health,
+                PlayerId = player.Id
+            };
         }
     }
 }

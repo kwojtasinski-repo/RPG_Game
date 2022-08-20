@@ -1,6 +1,6 @@
 ﻿namespace RPG_GAME.Application.Exceptions.Players
 {
-    internal sealed class PlayerNotFoundException : BusinessException
+    public sealed class PlayerNotFoundException : BusinessException
     {
         public Guid Id { get; }
 

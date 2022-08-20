@@ -41,6 +41,31 @@ namespace RPG_GAME.Core.Entities.Battles
             }
         }
 
+        public BattleState GetLatestBattleState()
+        {
+            if (!_battleStates.Any())
+            {
+                throw new BattleStatesNotFoundException(Id);
+            }
+
+            var battleStateCompleted = _battleStates.SingleOrDefault(b => b.BattleStatus == BattleStatus.Completed);
+
+            if (battleStateCompleted is not null)
+            {
+                return battleStateCompleted;
+            }
+
+            var battleStateInAction = _battleStates.SingleOrDefault(b => b.BattleStatus == BattleStatus.InAction);
+
+            if (battleStateInAction is not null)
+            {
+                return battleStateInAction;
+            }
+
+            var battleStatePrepare = _battleStates.SingleOrDefault(b => b.BattleStatus == BattleStatus.Prepare);
+            return battleStatePrepare;
+        }
+
         public static Battle Create(DateTime startDate, Guid userId, Map map)
         {
             return new Battle(Guid.NewGuid(), startDate, userId, "Starting", map);

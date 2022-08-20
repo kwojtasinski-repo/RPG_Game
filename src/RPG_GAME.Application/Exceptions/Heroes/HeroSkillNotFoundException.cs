@@ -1,6 +1,6 @@
 ﻿namespace RPG_GAME.Application.Exceptions.Heroes
 {
-    internal sealed class HeroSkillNotFoundException : BusinessException
+    public sealed class HeroSkillNotFoundException : BusinessException
     {
         public Guid Id { get; }
 

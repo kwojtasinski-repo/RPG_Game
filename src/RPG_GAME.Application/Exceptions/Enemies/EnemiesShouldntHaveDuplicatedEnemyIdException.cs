@@ -1,6 +1,6 @@
 ﻿namespace RPG_GAME.Application.Exceptions.Enemies
 {
-    internal sealed class EnemiesShouldntHaveDuplicatedEnemyIdException : BusinessException
+    public sealed class EnemiesShouldntHaveDuplicatedEnemyIdException : BusinessException
     {
         public EnemiesShouldntHaveDuplicatedEnemyIdException() : base("Enemies shouldnt have duplicated EnemyId")
         {

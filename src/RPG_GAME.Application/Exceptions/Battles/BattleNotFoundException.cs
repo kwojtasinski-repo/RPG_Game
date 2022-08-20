@@ -1,6 +1,6 @@
 ﻿namespace RPG_GAME.Application.Exceptions.Battles
 {
-    internal sealed class BattleNotFoundException : BusinessException
+    public sealed class BattleNotFoundException : BusinessException
     {
         public Guid BattleId { get; }
 

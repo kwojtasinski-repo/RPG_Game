@@ -31,6 +31,11 @@ namespace RPG_GAME.Application.Commands.Battles.Handlers
                 throw new BattleNotFoundException(command.BattleId);
             }
 
+            if (battle.BattleInfo != Core.Entities.Battles.BattleInfo.InProgress)
+            {
+                throw new InvalidOperationException("Battle is not in correct state");
+            }
+
             var player = await _playerRepository.GetAsync(command.PlayerId);
             
             if (player is null)
@@ -38,8 +43,10 @@ namespace RPG_GAME.Application.Commands.Battles.Handlers
                 throw new PlayerForUserNotFoundException(command.PlayerId);
             }
 
-            var battleEvent = await _battleManager.CreateBattleEvent(battle.Id, player, command.AttackInfo);
+            var battleEvent = await _battleManager.CreateBattleEvent(battle, command.EnemyId, player, command.AttackInfo);
             await _battleEventRepository.AddAsync(battleEvent);
+            await _battleRepository.UpdateAsync(battle);
+
             return battleEvent.AsDto();
         }
     }

@@ -12,10 +12,5 @@
   <ItemGroup>
     <ProjectReference Include="..\RPG_GAME.Core\RPG_GAME.Core.csproj" />
   </ItemGroup>
-		
-  <ItemGroup>
-    <Folder Include="Queries\Battles\" />
-    <Folder Include="Queries\Battles\Handlers\" />
-  </ItemGroup>
 
 </Project>

@@ -14,7 +14,7 @@ using RPG_GAME.Core.Entities.Players;
 
 namespace RPG_GAME.Application.Mappings
 {
-    internal static class Extensions
+    public static class Extensions
     {
         public static Player AsEntity(this PlayerDto playerDto)
         {

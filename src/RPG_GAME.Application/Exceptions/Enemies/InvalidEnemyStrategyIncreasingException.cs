@@ -1,6 +1,6 @@
 ﻿namespace RPG_GAME.Application.Exceptions.Enemies
 {
-    internal sealed class InvalidEnemyStrategyIncreasingException : BusinessException
+    public sealed class InvalidEnemyStrategyIncreasingException : BusinessException
     {
         public string StrategyIncreasing { get; }
 

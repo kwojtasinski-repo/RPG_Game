@@ -1,6 +1,6 @@
 ﻿namespace RPG_GAME.Application.Exceptions.Auth
 {
-    internal sealed class UserNotFoundException : BusinessException
+    public sealed class UserNotFoundException : BusinessException
     {
         public Guid Id { get; }
 

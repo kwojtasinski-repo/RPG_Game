@@ -1,6 +1,6 @@
 ﻿namespace RPG_GAME.Application.Exceptions.Enemies
 {
-    internal sealed class EnemyNotFoundException : BusinessException
+    public sealed class EnemyNotFoundException : BusinessException
     {
         public Guid Id { get; }
 

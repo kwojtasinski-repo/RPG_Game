@@ -1,6 +1,6 @@
 ﻿namespace RPG_GAME.Application.Exceptions.Battles
 {
-    internal sealed class CannotStartBattleForUserException : BusinessException
+    public sealed class CannotStartBattleForUserException : BusinessException
     {
         public Guid BattleId { get; }
         public Guid UserId { get; }

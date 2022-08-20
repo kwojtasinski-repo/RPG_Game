@@ -1,6 +1,6 @@
 ﻿namespace RPG_GAME.Application.Exceptions.Heroes
 {
-    internal sealed class HeroCannotBeDeletedException : BusinessException
+    public sealed class HeroCannotBeDeletedException : BusinessException
     {
         public Guid Id { get; }
 
