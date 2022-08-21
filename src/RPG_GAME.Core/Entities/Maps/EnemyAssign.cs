@@ -1,8 +1,10 @@
 ﻿using RPG_GAME.Core.Common;
 using RPG_GAME.Core.Entities.Common;
+using RPG_GAME.Core.Exceptions.Enemies;
 using RPG_GAME.Core.Exceptions.Maps;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RPG_GAME.Core.Entities.Maps
 {
@@ -19,7 +21,7 @@ namespace RPG_GAME.Core.Entities.Maps
         public IEnumerable<SkillEnemyAssign> Skills => _skills;
         public Category Category { get; private set; }
 
-        private IEnumerable<SkillEnemyAssign> _skills = new List<SkillEnemyAssign>();
+        private IList<SkillEnemyAssign> _skills = new List<SkillEnemyAssign>();
 
         public EnemyAssign(Guid id, string enemyName, int attack, int health, int healLvl, decimal experience,
             string difficulty, string category, IEnumerable<SkillEnemyAssign> skills = null)
@@ -51,7 +53,7 @@ namespace RPG_GAME.Core.Entities.Maps
 
             if (skills is not null)
             {
-                _skills = skills;
+                _skills = skills.ToList();
             }
         }
 
@@ -122,7 +124,24 @@ namespace RPG_GAME.Core.Entities.Maps
                 return;
             }
 
-            _skills = skills;
+            _skills = skills.ToList();
+        }
+
+        public void ChangeSkillAttack(SkillEnemyAssign skillEnemyAssign)
+        {
+            if(skillEnemyAssign is null)
+            {
+                throw new InvalidSkillEnemyException();
+            }
+
+            var skillToReplace = _skills.SingleOrDefault(s => s.Id == skillEnemyAssign.Id);
+
+            if (skillToReplace is null)
+            {
+                throw new InvalidSkillEnemyException(skillEnemyAssign.Id);
+            }
+            
+            skillToReplace.ChangeAttack(skillEnemyAssign.Attack);
         }
     }
 }

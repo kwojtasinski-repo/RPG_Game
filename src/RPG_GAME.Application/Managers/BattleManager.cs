@@ -57,6 +57,11 @@ namespace RPG_GAME.Application.Managers
 
         public async Task<BattleEvent> CreateBattleEvent(Battle battle, Guid enemyId, Player player, string action)
         {
+            if (battle.BattleInfo != BattleInfo.InProgress)
+            {
+                throw new CannotCreateEventForBattleWithInfoException(battle.Id, battle.BattleInfo.ToString());
+            }
+
             var enemy = await _enemyRepository.GetAsync(enemyId);
 
             if (enemy is null)
@@ -77,7 +82,7 @@ namespace RPG_GAME.Application.Managers
             // id enemy is needed and battles enemyKilled have to verify how many left also check current hp enemy and hero
             var lastBattleState = await _currentBattleStateRepository.GetAsync(battle.Id);
             var currentBattleState = CreateCurrentBattleState(lastBattleState, battle.Id, player, currentEnemyAssignInBattle);
-            IsEnemyAlive(lastBattleState);
+            IsEnemyAlive(currentBattleState);
             DoAction(action, player, currentBattleState);
             
             if (currentBattleState.EnemyHealth <= 0)
@@ -91,7 +96,7 @@ namespace RPG_GAME.Application.Managers
                 }
 
                 UpdatePlayer(player, battle);
-                await _currentBattleStateRepository.UpdateAsync(currentBattleState);
+                await AddOrUpdateBattleState(currentBattleState, lastBattleState);
 
                 return new BattleEvent(Guid.NewGuid(), battle.Id,
                 new FightAction(enemyId, CharacterType.ENEMY.ToString(),
@@ -105,12 +110,18 @@ namespace RPG_GAME.Application.Managers
 
             if (currentBattleState.PlayerCurrentHealth <= 0)
             {
+                UpdatePlayer(player, battle);
+                await AddOrUpdateBattleState(currentBattleState, lastBattleState);
                 var battleStateCompleted = BattleState.Completed(battle.Id, player, _clock.CurrentDate());
                 battle.EndBattle(_clock.CurrentDate(), BattleInfo.Lost.ToString(), battleStateCompleted);
+                return new BattleEvent(Guid.NewGuid(), battle.Id,
+                new FightAction(enemy.Id,
+                        CharacterType.ENEMY.ToString(), enemy.EnemyName,
+                        enemyAttack.Damage, currentBattleState.EnemyHealth, enemyAttack.AttackName), _clock.CurrentDate());
             }
 
             UpdatePlayer(player, battle);
-            await _currentBattleStateRepository.UpdateAsync(currentBattleState);
+            await AddOrUpdateBattleState(currentBattleState, lastBattleState);
 
             return new BattleEvent(Guid.NewGuid(), battle.Id, 
                 new FightAction(enemy.Id, 
@@ -198,6 +209,18 @@ namespace RPG_GAME.Application.Managers
         public EnemyAssign GetFirstEnemy(Battle battle)
         {
             return battle.Map.Enemies.Where(e => e.Enemy.Category == Core.Common.Category.Knight).Select(e => e.Enemy).FirstOrDefault();
+        }
+
+        private async Task AddOrUpdateBattleState(CurrentBattleState currentBattleState, CurrentBattleState lastBattleState)
+        {
+            if (lastBattleState is null)
+            {
+                await _currentBattleStateRepository.AddAsync(currentBattleState);
+            }
+            else
+            {
+                await _currentBattleStateRepository.UpdateAsync(currentBattleState);
+            }
         }
     }
 }

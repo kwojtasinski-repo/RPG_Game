@@ -37,7 +37,7 @@ namespace RPG_GAME.Application.Managers
             switch (strategyIncreasing)
             {
                 case StrategyIncreasing.PERCENTAGE:
-                    int value = 0;
+                    int value = stats;
                     for (int i = 1; i <= level; i++)
                     {
                         var increasedValue = (int)Math.Ceiling(increasingValue * stats / 100.0);
@@ -46,7 +46,7 @@ namespace RPG_GAME.Application.Managers
 
                     return value;
                 case StrategyIncreasing.ADDITIVE:
-                    value = 0;
+                    value = stats;
                     for (int i = 1; i <= level; i++)
                     {
                         value += increasingValue + value;
@@ -63,7 +63,7 @@ namespace RPG_GAME.Application.Managers
             switch (strategyIncreasing)
             {
                 case StrategyIncreasing.PERCENTAGE:
-                    decimal value = 0;
+                    decimal value = stats;
                     for (int i = 1; i <= level; i++)
                     {
                         var increasedValue = increasingValue * stats / 100;
@@ -72,7 +72,7 @@ namespace RPG_GAME.Application.Managers
 
                     return value;
                 case StrategyIncreasing.ADDITIVE:
-                    value = 0;
+                    value = stats;
                     for (int i = 1; i <= level; i++)
                     {
                         value += increasingValue + value;

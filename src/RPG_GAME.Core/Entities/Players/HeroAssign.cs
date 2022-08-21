@@ -34,11 +34,6 @@ namespace RPG_GAME.Core.Entities.Players
 
         public void ChangeHealth(int health) 
         {
-            if (health is <= 0)
-            {
-                throw new HeroAssignHealthCannotBeZeroOrNegativeException(health);
-            }
-
             Health = health;
         }
 

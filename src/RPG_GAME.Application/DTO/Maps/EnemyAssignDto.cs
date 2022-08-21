@@ -9,6 +9,7 @@
         public int BaseHealLvl { get; set; }
         public decimal Experience { get; set; }
         public string Difficulty { get; set; }
+        public string Category { get; set; }
         public IEnumerable<SkillEnemyAssignDto> Skills { get; set; }
     }
 }

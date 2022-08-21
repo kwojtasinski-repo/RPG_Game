@@ -17,7 +17,7 @@ namespace RPG_GAME.Application.Managers
         {
             foreach (var skill in enemyAssign.Skills)
             {
-                _enemyAttacks.Add(skill.Name, new AttackWithProbability(skill.Attack, skill.Name, skill.Probability));
+                _enemyAttacks[skill.Name] = new AttackWithProbability(skill.Attack, skill.Name, skill.Probability);
             }
 
             _enemyAttacks = _enemyAttacks.OrderByDescending(e => e.Value.Probability)
@@ -36,7 +36,7 @@ namespace RPG_GAME.Application.Managers
             }
 
             var random = new Random();
-            var value = random.Next(1, count);
+            var value = random.Next(0, count);
             var attack = _enemyAttacks.ElementAt(value);
             var skill = enemyAssign.Skills.Where(a => a.Name == attack.Key);
 
@@ -45,10 +45,10 @@ namespace RPG_GAME.Application.Managers
                 return BaseAttack(enemyAssign);
             }
 
-            var difference = 100 - (int) attack.Value.Probability;
-            var number = random.Next(1, difference);
+            var difference = 100 - (int) decimal.Round(attack.Value.Probability, 0, MidpointRounding.AwayFromZero);
+            var number = random.Next(1, 100);
 
-            if (number != difference)
+            if (number < difference)
             {
                 return BaseAttack(enemyAssign);
             }

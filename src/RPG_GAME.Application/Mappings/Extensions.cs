@@ -222,6 +222,7 @@ namespace RPG_GAME.Application.Mappings
                 enemyDto.BaseHealLvl.AsEntity(),
                 enemyDto.Experience.AsEntity(),
                 enemyDto.Difficulty,
+                enemyDto.Category,
                 enemyDto.Skills.Select(s => s.AsEntity())
             );
         }
@@ -312,7 +313,7 @@ namespace RPG_GAME.Application.Mappings
         {
             return new EnemyAssign(enemyDto.Id, enemyDto.EnemyName, enemyDto.BaseAttack,
                 enemyDto.BaseHealth, enemyDto.BaseHealLvl, enemyDto.Experience,
-                enemyDto.Difficulty, enemyDto.Skills?.Select(s => s.AsEntity()));
+                enemyDto.Difficulty, enemyDto.Category, enemyDto.Skills?.Select(s => s.AsEntity()));
         }
 
         public static SkillEnemyAssign AsEntity(this SkillEnemyAssignDto skillEnemyAssignDto)
@@ -325,7 +326,7 @@ namespace RPG_GAME.Application.Mappings
         {
             return new EnemyAssign(enemy.Id, enemy.EnemyName, enemy.BaseAttack.Value, enemy.BaseHealth.Value,
                 enemy.BaseHealLvl.Value, enemy.Experience.Value, enemy.Difficulty.ToString(),
-                enemy.Skills.Select(s => s.AsAssign()));
+                enemy.Category.ToString(), enemy.Skills.Select(s => s.AsAssign()));
         }
 
         public static SkillEnemyAssign AsAssign(this SkillEnemy skillEnemy)

@@ -167,7 +167,7 @@ namespace RPG_GAME.UnitTests.Entities.Maps
 
         private static EnemyAssign DefaultEnemyAssing()
         {
-            return new EnemyAssign(Guid.NewGuid(), "Enemy", 10, 200, 10, 2000, "EASY");
+            return new EnemyAssign(Guid.NewGuid(), "Enemy", 10, 200, 10, 2000, "EASY", "Knight");
         }
     }
 }

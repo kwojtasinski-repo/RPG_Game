@@ -12,16 +12,16 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
     public class EnemyTests
     {
         private Enemy Act(string enemyName, int health, int attack, int healLvl, decimal experience,
-            string difficulty, IEnumerable<SkillEnemy> skills = null)
+            string difficulty, string category = "Archer", IEnumerable<SkillEnemy> skills = null)
                 => new Enemy(Guid.NewGuid(), enemyName, new State<int>(health, DefaultIncreasingState<int>()), new State<int>(attack, DefaultIncreasingState<int>()),
                     new State<int>(healLvl, DefaultIncreasingState<int>()), new State<decimal>(experience, DefaultIncreasingState<decimal>()),
-                    difficulty, skills);
+                    difficulty, category, skills);
 
         private Enemy Act(string enemyName, int health, IncreasingState<int> healthIncreasing, int attack, IncreasingState<int> attackIncreasing, int healLvl, IncreasingState<int> healLvlIncreasing,
-            decimal experience, IncreasingState<decimal> experienceIncreasing, string difficulty, IEnumerable<SkillEnemy> skills = null)
+            decimal experience, IncreasingState<decimal> experienceIncreasing, string difficulty, string category = "Knight", IEnumerable<SkillEnemy> skills = null)
                 => new Enemy(Guid.NewGuid(), enemyName, new State<int>(health, healthIncreasing), new State<int>(attack, attackIncreasing),
                     new State<int>(healLvl, healLvlIncreasing), new State<decimal>(experience, experienceIncreasing),
-                    difficulty, skills);
+                    difficulty, category, skills);
 
         [Fact]
         public void should_create_enemy()
@@ -58,10 +58,11 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
             var experience = 50M;
             var experienceIncrease = new IncreasingState<decimal>(15, "ADDITIVE");
             var difficulty = "EASY";
+            var category = "Archer";
             var skills = new List<SkillEnemy> { new SkillEnemy(Guid.NewGuid(), "Name#1", 30, 10, new IncreasingState<int>(10, "ADDITIVE")) };
 
             var enemy = Act(name, health, healthIncrease, attack, attackIncrease, heal, healIncrease,
-                experience, experienceIncrease, difficulty, skills);
+                experience, experienceIncrease, difficulty, category, skills);
 
             enemy.Should().NotBeNull();
             enemy.Id.Should().NotBe(Guid.Empty);
@@ -124,11 +125,12 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
             var heal = 5;
             var experience = 50M;
             var difficulty = "EASY";
+            var category = "Dragon";
             var expectedException = new InvalidEnemyHealthException();
 
             var exception = Record.Exception(() => new Enemy(Guid.NewGuid(), name, null, new State<int>(attack, DefaultIncreasingState<int>()),
                     new State<int>(heal, DefaultIncreasingState<int>()), new State<decimal>(experience, DefaultIncreasingState<decimal>()),
-                    difficulty));
+                    difficulty, category));
 
             exception.Should().NotBeNull();
             exception.Should().BeOfType(expectedException.GetType());
@@ -178,11 +180,12 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
             var heal = 5;
             var experience = 50M;
             var difficulty = "EASY";
+            var category = "Archer";
             var expectedException = new InvalidEnemyAttackException();
 
             var exception = Record.Exception(() => new Enemy(Guid.NewGuid(), name, new State<int>(health, DefaultIncreasingState<int>()), null,
                     new State<int>(heal, DefaultIncreasingState<int>()), new State<decimal>(experience, DefaultIncreasingState<decimal>()),
-                    difficulty));
+                    difficulty, category));
 
             exception.Should().NotBeNull();
             exception.Should().BeOfType(expectedException.GetType());
@@ -232,11 +235,12 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
             var attack = 20;
             var experience = 50M;
             var difficulty = "EASY";
+            var category = "Knight";
             var expectedException = new InvalidEnemyHealLvlException();
 
             var exception = Record.Exception(() => new Enemy(Guid.NewGuid(), name, new State<int>(health, DefaultIncreasingState<int>()), new State<int>(attack, DefaultIncreasingState<int>()),
                     null, new State<decimal>(experience, DefaultIncreasingState<decimal>()),
-                    difficulty));
+                    difficulty,category));
 
             exception.Should().NotBeNull();
             exception.Should().BeOfType(expectedException.GetType());
@@ -286,10 +290,11 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
             var attack = 20;
             var heal = 5;
             var difficulty = "EASY";
+            var category = "Archer";
             var expectedException = new InvalidEnemyExperienceException();
 
             var exception = Record.Exception(() => new Enemy(Guid.NewGuid(), name, new State<int>(health, DefaultIncreasingState<int>()), new State<int>(attack, DefaultIncreasingState<int>()),
-                    new State<int>(heal, DefaultIncreasingState<int>()), null, difficulty));
+                    new State<int>(heal, DefaultIncreasingState<int>()), null, difficulty, category));
 
             exception.Should().NotBeNull();
             exception.Should().BeOfType(expectedException.GetType());
@@ -550,7 +555,7 @@ namespace RPG_GAME.UnitTests.Entities.Enemies
         {
             return new Enemy(Guid.NewGuid(), "Enemy", new State<int>(100, DefaultIncreasingState<int>()), new State<int>(100, DefaultIncreasingState<int>()),
                     new State<int>(10, DefaultIncreasingState<int>()), new State<decimal>(1000, DefaultIncreasingState<decimal>()),
-                    "EASY");
+                    "EASY", "Knight");
         }
     }
 }

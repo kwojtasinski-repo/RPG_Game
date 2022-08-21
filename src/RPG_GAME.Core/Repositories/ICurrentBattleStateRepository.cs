@@ -8,6 +8,6 @@ namespace RPG_GAME.Core.Repositories
     {
         Task AddAsync(CurrentBattleState currentBattleState);
         Task UpdateAsync(CurrentBattleState currentBattleState);
-        Task<CurrentBattleState> GetAsync(Guid id);
+        Task<CurrentBattleState> GetAsync(Guid battleId);
     }
 }

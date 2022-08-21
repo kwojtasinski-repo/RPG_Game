@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RPG_GAME.UnitTests.Stubs
 {
-    public class EnemyRepositoryStub : IEnemyRepository
+    internal sealed class EnemyRepositoryStub : IEnemyRepository
     {
         private readonly IList<Enemy> _enemies = new List<Enemy>();
 

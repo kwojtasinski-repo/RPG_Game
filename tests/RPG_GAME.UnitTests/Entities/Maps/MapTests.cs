@@ -272,7 +272,7 @@ namespace RPG_GAME.UnitTests.Entities.Maps
         private static Core.Entities.Maps.Enemies CreateDefaultEnemies(Guid? id = null)
         {
             return new Core.Entities.Maps.Enemies(
-                new EnemyAssign(id ?? Guid.NewGuid(), "Enemy#1", 10, 10, 1, 100, "EASY"),
+                new EnemyAssign(id ?? Guid.NewGuid(), "Enemy#1", 10, 10, 1, 100, "EASY", "Knight"),
                 10);
         }
     }

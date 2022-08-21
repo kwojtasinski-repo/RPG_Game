@@ -9,8 +9,8 @@ namespace RPG_GAME.UnitTests.Entities.Maps
 {
     public class EnemyAssignTests
     {
-        private EnemyAssign Act(string enemyName, int attack, int health, int heal, decimal experience, string difficulty, IEnumerable<SkillEnemyAssign> skills = null)
-            => new EnemyAssign(Guid.NewGuid(), enemyName, attack, health, heal, experience, difficulty, skills);
+        private EnemyAssign Act(string enemyName, int attack, int health, int heal, decimal experience, string difficulty, string category = "Knight", IEnumerable<SkillEnemyAssign> skills = null)
+            => new EnemyAssign(Guid.NewGuid(), enemyName, attack, health, heal, experience, difficulty, category, skills);
 
         [Fact]
         public void should_create()
@@ -43,9 +43,10 @@ namespace RPG_GAME.UnitTests.Entities.Maps
             var heal = 10;
             var experience = 1000M;
             var difficulty = "HARD";
+            var category = "Archer";
             var skills = new List<SkillEnemyAssign> { new SkillEnemyAssign(Guid.NewGuid(), "skill#1", 350, 20) };
 
-            var enemy = Act(name, attack, health, heal, experience, difficulty, skills);
+            var enemy = Act(name, attack, health, heal, experience, difficulty,category, skills);
 
             enemy.Should().NotBeNull();
             enemy.EnemyName.Should().Be(name);

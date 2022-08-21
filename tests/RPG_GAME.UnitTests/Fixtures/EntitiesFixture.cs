@@ -4,7 +4,9 @@ using RPG_GAME.Application.DTO.Heroes;
 using RPG_GAME.Core.Entities.Common;
 using RPG_GAME.Core.Entities.Enemies;
 using RPG_GAME.Core.Entities.Heroes;
+using RPG_GAME.Core.Entities.Maps;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace RPG_GAME.UnitTests.Fixtures
@@ -21,7 +23,7 @@ namespace RPG_GAME.UnitTests.Fixtures
         {
             return new Enemy(Guid.NewGuid(), "Enemy", new State<int>(100, DefaultIncreasingState<int>()), new State<int>(100, DefaultIncreasingState<int>()),
                     new State<int>(10, DefaultIncreasingState<int>()), new State<decimal>(1000, DefaultIncreasingState<decimal>()),
-                    "EASY");
+                    "EASY", "Knight");
         }
 
         public static IncreasingState<T> DefaultIncreasingState<T>()
@@ -46,12 +48,12 @@ namespace RPG_GAME.UnitTests.Fixtures
 
         public static SkillHero CreateDefaultSkillHero(string name = null, int? baseAttack = null)
         {
-            return new SkillHero(Guid.NewGuid(), name ?? "skill", baseAttack ?? 10, DefaultIncreasingState());
+            return new SkillHero(Guid.NewGuid(), name ?? "skill" + Guid.NewGuid().ToString("N"), baseAttack ?? 10, DefaultIncreasingState());
         }
 
         public static SkillEnemy CreateDefaultSkillEnemy(string name = null, int? baseAttack = null, decimal? probability = null)
         {
-            return new SkillEnemy(Guid.NewGuid(), name ?? "skill", baseAttack ?? 10, probability ?? 20, DefaultIncreasingState());
+            return new SkillEnemy(Guid.NewGuid(), name ?? "skill" + Guid.NewGuid().ToString("N"), baseAttack ?? 10, probability ?? 20, DefaultIncreasingState());
         }
 
         public static IncreasingState<int> DefaultIncreasingState()
@@ -87,7 +89,7 @@ namespace RPG_GAME.UnitTests.Fixtures
             return new Enemy(enemy.Id, enemy.EnemyName, new State<int>(enemy.BaseHealth.Value, new IncreasingState<int>(enemy.BaseHealth.IncreasingState.Value, enemy.BaseHealth.IncreasingState.StrategyIncreasing.ToString())),
                 new State<int>(enemy.BaseAttack.Value, new IncreasingState<int>(enemy.BaseAttack.IncreasingState.Value, enemy.BaseAttack.IncreasingState.StrategyIncreasing.ToString())), new State<int>(enemy.BaseHealLvl.Value, new IncreasingState<int>(enemy.BaseHealLvl.IncreasingState.Value, enemy.BaseHealLvl.IncreasingState.StrategyIncreasing.ToString())),
                 new State<decimal>(enemy.Experience.Value, new IncreasingState<decimal>(enemy.Experience.IncreasingState.Value, enemy.Experience.IncreasingState.StrategyIncreasing.ToString())),
-                enemy.Difficulty.ToString(), enemy.Skills.Select(s => new SkillEnemy(s.Id, s.Name, s.BaseAttack, s.Probability, new IncreasingState<int>(s.IncreasingState.Value, s.IncreasingState.StrategyIncreasing.ToString()))),
+                enemy.Difficulty.ToString(), enemy.Category.ToString(), enemy.Skills.Select(s => new SkillEnemy(s.Id, s.Name, s.BaseAttack, s.Probability, new IncreasingState<int>(s.IncreasingState.Value, s.IncreasingState.StrategyIncreasing.ToString()))),
                 enemy.MapsAssignedTo.Select(m => m));
         }
 
@@ -104,6 +106,16 @@ namespace RPG_GAME.UnitTests.Fixtures
                 Difficulty = enemyDto.Difficulty,
                 Skills = enemyDto.Skills,
             };
+        }
+
+        public static Enemies CreateEnemies(EnemyAssign enemyAssign, int quantity = 1)
+        {
+            return new Enemies(enemyAssign, quantity);
+        }
+
+        public static Map CreateDefaultMap(string name = null, string difficulty = null, IEnumerable<Enemies> enemies = null)
+        {
+            return Map.Create(name ?? "Map#1", difficulty ?? "EASY", enemies);
         }
     }
 }
