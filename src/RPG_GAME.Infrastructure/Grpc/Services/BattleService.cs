@@ -5,34 +5,24 @@ namespace RPG_GAME.Infrastructure.Grpc.Services
 {
     internal sealed class BattleService : Battle.BattleBase
     {
-        public override Task<AddBattleEventResponse> AddBattleEvent(AddBattleEventRequest request, ServerCallContext context)
+        public override Task<BattleResponse> PrepareBattle(BattleRequest request, ServerCallContext context)
         {
-            return base.AddBattleEvent(request, context);
+            return base.PrepareBattle(request, context);
         }
 
-        public override Task<AddBattleStateResponse> AddBattleState(AddBattleStateRequest request, ServerCallContext context)
-        {
-            return base.AddBattleState(request, context);
-        }
-
-        public override Task<CheckBattleResponse> CheckBattle(CheckBattleRequest request, ServerCallContext context)
-        {
-            return base.CheckBattle(request, context);
-        }
-
-        public override Task<StartBattleResponse> StartBattle(StartBattleRequest request, ServerCallContext context)
+        public override Task<BattleResponse> StartBattle(BattleRequest request, ServerCallContext context)
         {
             return base.StartBattle(request, context);
         }
 
-        public override Task<UpdateBattleResponse> UpdateBattle(UpdateBattleRequest request, ServerCallContext context)
+        public override Task<BattleResponse> CompleteBattle(BattleRequest request, ServerCallContext context)
         {
-            return base.UpdateBattle(request, context);
+            return base.CompleteBattle(request, context);
         }
 
-        public override Task<UpdateBattleStateResponse> UpdateBattleState(UpdateBattleStateRequest request, ServerCallContext context)
+        public override Task<AddBattleEventResponse> AddBattleEvent(AddBattleEventRequest request, ServerCallContext context)
         {
-            return base.UpdateBattleState(request, context);
+            return base.AddBattleEvent(request, context);
         }
     }
 }

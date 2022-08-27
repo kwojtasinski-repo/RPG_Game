@@ -7,26 +7,26 @@ option csharp_namespace = "RPG_GAME.Infrastructure.Grpc.Protos";
 package battle;
 
 service Battle {
-	rpc StartBattle (StartBattleRequest) returns (StartBattleResponse);
-	rpc UpdateBattle (UpdateBattleRequest) returns (UpdateBattleResponse);
-	rpc AddBattleState (AddBattleStateRequest) returns (AddBattleStateResponse);
-	rpc UpdateBattleState (UpdateBattleStateRequest) returns (UpdateBattleStateResponse);
-	rpc CheckBattle (CheckBattleRequest) returns (CheckBattleResponse);
+    rpc PrepareBattle (BattleRequest) returns (BattleResponse);
+	rpc StartBattle (BattleRequest) returns (BattleResponse);
+	rpc CompleteBattle (BattleRequest) returns (BattleResponse);
 	rpc AddBattleEvent (AddBattleEventRequest) returns (AddBattleEventResponse);
 }
 
-message StartBattleRequest {
+message BattleRequest {
 	string userId = 1;
 	string mapId = 2;
 }
 
-message StartBattleResponse {
+message BattleResponse {
 	string id = 1;
     google.protobuf.Timestamp startDate = 2;
     string userId = 3;
     string battleInfo = 4;
-    Map map = 5;
-    repeated BattleState battleStates = 6;
+    google.protobuf.Timestamp endDate = 5;
+    Map map = 6;
+    repeated BattleState battleStates = 7;
+    repeated string enemiesKilled = 8;
 }
 
 message Map {
@@ -49,7 +49,8 @@ message EnemyAssign {
     int32 healLvl = 5;
     DecimalValue experience = 6;
     string difficulty = 7;
-    repeated SkillEnemyAssign skills = 8;
+    string category = 8;
+    repeated SkillEnemyAssign skills = 9;
 }
 
 message SkillEnemyAssign {
@@ -65,6 +66,7 @@ message BattleState {
     string battleStatus = 3;
     Player player = 4;
     google.protobuf.Timestamp created = 5;
+    google.protobuf.Timestamp modified = 6;
 }
 
 message Player {
@@ -92,74 +94,12 @@ message SkillHeroAssign {
     int32 attack = 3;
 }
 
-message UpdateBattleRequest {
-    string id = 1;
-    string BattleInfo = 2;
-}
-
-message UpdateBattleResponse {
-    string id = 1;
-    google.protobuf.Timestamp startDate = 2;
-    string userId = 3;
-    string battleInfo = 4;
-    Map map = 5;
-    repeated BattleState battleStates = 6;
-}
-
-message AddBattleStateRequest {
-    string id = 1;
-    string battleId = 2;
-    string battleStatus = 3;
-    string playerId = 4;
-}
-
-message AddBattleStateResponse {
-    string id = 1;
-    string battleId = 2;
-    string battleStatus = 3;
-    Player player = 4;
-    google.protobuf.Timestamp created = 5;
-}
-
-message UpdateBattleStateRequest {
-    string id = 1;
-    string battleId = 2;
-    string battleStatus = 3;
-    Player player = 4;
-}
-
-message UpdateBattleStateResponse {
-    string id = 1;
-    string battleId = 2;
-    string battleStatus = 3;
-    Player player = 4;
-    google.protobuf.Timestamp created = 5;
-    google.protobuf.Timestamp modified = 6;
-}
-
-message CheckBattleRequest {
-    string battleId = 1;
-}
-
-message CheckBattleResponse {
-    string id = 1;
-    google.protobuf.Timestamp startDate = 2;
-    string userId = 3;
-    string battleInfo = 4;
-    Map map = 5;
-    repeated BattleState battleStates = 6;
-}
-
 message AddBattleEventRequest {
     string battleId = 1;
-    FightAction action = 2;
-}
-
-message FightAction {
-    string name = 1;
-    int32 damageDealt = 2;
-    int32 health = 3;
-    string attackInfo = 4;
+    string playerId = 2;
+    string enemyId = 3;
+    string damageDealt = 4;
+    string action = 5;
 }
 
 message AddBattleEventResponse {
@@ -167,6 +107,15 @@ message AddBattleEventResponse {
     string battleId = 2;
     FightAction action = 3;
     google.protobuf.Timestamp created = 4;
+}
+
+message FightAction {
+    string characterId = 1;
+    string character = 2;
+    string name = 3;
+    int32 damageDealt = 4;
+    int32 health = 5;
+    string attackInfo = 6;
 }
 
 // Example: 12345.6789 -> { units = 12345, nanos = 678900000 }
