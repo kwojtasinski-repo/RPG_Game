@@ -3,6 +3,7 @@
     internal class FightActionDocument
     {
         public Guid CharacterId { get; set; }
+        public CharacterType Character { get; set; }
         public string Name { get; set; }
         public int DamageDealt { get; set; }
         public int Health { get; set; }

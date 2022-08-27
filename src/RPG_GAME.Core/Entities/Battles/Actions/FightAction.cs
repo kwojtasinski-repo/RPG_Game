@@ -6,6 +6,8 @@ namespace RPG_GAME.Core.Entities.Battles.Actions
 {
     public class FightAction
     {
+        public const string FIGHT_ACTION_ENEMY_IS_DEAD = "dead";
+
         public Guid CharacterId { get; }
         public CharacterType Character { get; private set; }
         public string Name { get; }

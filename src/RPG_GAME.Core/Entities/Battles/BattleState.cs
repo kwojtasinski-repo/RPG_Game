@@ -50,9 +50,13 @@ namespace RPG_GAME.Core.Entities.Battles
             BattleStatus = battleStatusParsed;
         }
 
-        // TODO: Allowed only in one situation when state is InAction
         public void UpdatePlayer(Player player, DateTime modified)
         {
+            if (BattleStatus != BattleStatus.InAction)
+            {
+                throw new CannotUpdatePlayerInCurrentBattleStateException(BattleStatus);
+            }
+
             if (player is null)
             {
                 throw new InvalidPlayerException();

@@ -10,6 +10,7 @@
         public int BaseHealLvl { get; set; }
         public decimal Experience { get; set; }
         public Difficulty Difficulty { get; set; }
+        public Category Category { get; set; }
         public IEnumerable<SkillEnemyAssignDocument> Skills { get; set; }
     }
 }

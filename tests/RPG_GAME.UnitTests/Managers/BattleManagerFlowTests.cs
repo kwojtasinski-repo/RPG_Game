@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using RPG_GAME.Application.Managers;
 using RPG_GAME.Application.Mappings;
 using RPG_GAME.Application.Time;
@@ -84,7 +85,6 @@ namespace RPG_GAME.UnitTests.Managers
             battleState.BattleStatus.Should().Be(Core.Entities.Battles.BattleStatus.Completed);
         }
 
-
         [Fact]
         public async Task should_create_event_and_kill_enemy()
         {
@@ -106,6 +106,23 @@ namespace RPG_GAME.UnitTests.Managers
             var currentBattleState = await _currentBattleStateRepository.GetAsync(battle.Id);
             currentBattleState.Should().NotBeNull();
             currentBattleState.EnemyHealth.Should().BeLessThanOrEqualTo(0);
+        }
+
+        [Fact]
+        public async Task should_level_up()
+        {
+            var enemy = await AddDefaultEnemy();
+            Guid userId = Guid.NewGuid();
+            var map = CreateMap(enemy);
+            var hero = await AddDefaultHero();
+            var player = CreatePlayer(hero, userId);
+            var action = hero.Skills.First().Name;
+            var playerLevel = player.Level;
+            var battle = BattleFixture.CreateBattleInProgress(_clock.CurrentDate(), userId, map, player);
+
+            await _battleManager.CreateBattleEvent(battle, enemy.Id, player, action);
+
+            player.Level.Should().BeGreaterThan(playerLevel);
         }
 
         [Fact]
@@ -177,8 +194,8 @@ namespace RPG_GAME.UnitTests.Managers
             _heroRepository = new HeroRepositoryStub();
             _enemyRepository = new EnemyRepositoryStub();
             _enemyAttackManager = new EnemyAttackManager();
-            _playerIncreaseStatsManager = new PlayerIncreaseStatsManager();
-            _enemyIncreaseStatsManager = new EnemyIncreaseStatsManager();
+            _playerIncreaseStatsManager = new PlayerIncreaseStatsManager(LoggerStub<PlayerIncreaseStatsManager>.Create());
+            _enemyIncreaseStatsManager = new EnemyIncreaseStatsManager(LoggerStub<EnemyIncreaseStatsManager>.Create());
             _battleManager = new BattleManager(_clock, _currentBattleStateRepository, _heroRepository,
                     _enemyRepository, _enemyAttackManager, _playerIncreaseStatsManager, _enemyIncreaseStatsManager);
         }

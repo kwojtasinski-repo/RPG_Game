@@ -199,6 +199,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 BaseHealth = enemy.BaseHealth.AsDocument(),
                 Difficulty = Enum.Parse<Documents.Difficulty>(enemy.Difficulty.ToString()),
                 Experience = enemy.Experience.AsDocument(),
+                Category = Enum.Parse<Category>(enemy.Category.ToString()),
                 Skills = enemy.Skills.Select(s => s.AsDocument()),
                 MapsAssignedTo = enemy.MapsAssignedTo
             };
@@ -226,6 +227,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 enemyDocument.BaseHealLvl.AsEntity(),
                 enemyDocument.Experience.AsEntity(),
                 enemyDocument.Difficulty.ToString(),
+                enemyDocument.Category.ToString(),
                 enemyDocument.Skills.Select(s => s.AsEntity()),
                 enemyDocument.MapsAssignedTo);
         }
@@ -281,6 +283,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 BaseHealLvl = enemy.HealLvl,
                 BaseHealth = enemy.Health,
                 Experience = enemy.Experience,
+                Category = Enum.Parse<Category>(enemy.Category.ToString()),
                 Difficulty = Enum.Parse<Documents.Difficulty>(enemy.Difficulty.ToString()),
                 Skills = enemy.Skills.Select(s => s.AsDocument()),
             };
@@ -315,6 +318,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 enemyDocument.BaseHealLvl,
                 enemyDocument.Experience,
                 enemyDocument.Difficulty.ToString(),
+                enemyDocument.Category.ToString(),
                 enemyDocument.Skills.Select(s => s.AsEntity())
             );
         }
@@ -403,8 +407,29 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
 
         public static FightAction AsEntity(this FightActionDocument fightActionDocument)
         {
-            return new FightAction(fightActionDocument.CharacterId, fightActionDocument.Name, fightActionDocument.DamageDealt,
-                fightActionDocument.Health, fightActionDocument.AttackInfo);
+            return new FightAction(fightActionDocument.CharacterId, fightActionDocument.Character.ToString(), fightActionDocument.Name,
+                fightActionDocument.DamageDealt, fightActionDocument.Health, fightActionDocument.AttackInfo);
+        }
+
+        public static CurrentBattleStateDocument AsDocument(this CurrentBattleState currentBattleState)
+        {
+            return new CurrentBattleStateDocument
+            {
+                Id = currentBattleState.Id,
+                BattleId = currentBattleState.BattleId,
+                EnemyId = currentBattleState.EnemyId,
+                EnemyHealth = currentBattleState.EnemyHealth,
+                PlayerId = currentBattleState.PlayerId,
+                PlayerCurrentHealth = currentBattleState.PlayerCurrentHealth,
+                PlayerLevel = currentBattleState.PlayerLevel,
+                ModifiedDate = currentBattleState.ModifiedDate
+            };
+        }
+
+        public static CurrentBattleState AsEntity(this CurrentBattleStateDocument currentBattleStateDocument)
+        {
+            return new CurrentBattleState(currentBattleStateDocument.Id, currentBattleStateDocument.BattleId, currentBattleStateDocument.PlayerId, currentBattleStateDocument.PlayerCurrentHealth, currentBattleStateDocument.PlayerLevel,
+                                currentBattleStateDocument.EnemyId, currentBattleStateDocument.EnemyHealth, currentBattleStateDocument.ModifiedDate);
         }
     }
 }

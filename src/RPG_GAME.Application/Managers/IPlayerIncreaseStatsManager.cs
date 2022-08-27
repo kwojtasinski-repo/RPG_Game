@@ -7,5 +7,6 @@ namespace RPG_GAME.Application.Managers
     {
         void IncreaseHeroStats(int level, HeroAssign heroAssign, Hero hero);
         void IncreasePlayerStats(Player player, Hero hero);
+        void IncreaseHeroSkills(int level, HeroAssign hero, IEnumerable<SkillHero> skills);
     }
 }

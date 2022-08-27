@@ -58,7 +58,7 @@ namespace RPG_GAME.Core.Entities.Players
             Name = name;
         }
 
-        public void IncreaseCurrentExpBy(decimal currentExp)
+        public decimal IncreaseCurrentExpBy(decimal currentExp)
         {
             if (currentExp is < 0)
             {
@@ -71,10 +71,11 @@ namespace RPG_GAME.Core.Entities.Players
             {
                 Level++;
                 CurrentExp = calculatedCurrentExp - RequiredExp;
-                return;
+                return currentExp - RequiredExp;
             }
 
             CurrentExp = calculatedCurrentExp;
+            return decimal.Zero;
         }
 
         public void ChangeRequiredExp(decimal requiredExp)

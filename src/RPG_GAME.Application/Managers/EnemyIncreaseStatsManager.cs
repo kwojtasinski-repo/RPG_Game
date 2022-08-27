@@ -1,4 +1,5 @@
-﻿using RPG_GAME.Core.Entities.Common;
+﻿using Microsoft.Extensions.Logging;
+using RPG_GAME.Core.Entities.Common;
 using RPG_GAME.Core.Entities.Enemies;
 using RPG_GAME.Core.Entities.Maps;
 
@@ -6,6 +7,13 @@ namespace RPG_GAME.Application.Managers
 {
     internal sealed class EnemyIncreaseStatsManager : IEnemyIncreaseStatsManager
     {
+        private readonly ILogger<EnemyIncreaseStatsManager> _logger;
+
+        public EnemyIncreaseStatsManager(ILogger<EnemyIncreaseStatsManager> logger)
+        {
+            _logger = logger;
+        }
+
         public void IncreaseEnemyStats(int level, EnemyAssign enemyAssign, Enemy enemy)
         {
             enemyAssign.ChangeAttack(CalculateStats(enemy.BaseAttack.Value, enemy.BaseAttack.IncreasingState.Value, enemy.BaseAttack.IncreasingState.StrategyIncreasing, level));
@@ -19,7 +27,7 @@ namespace RPG_GAME.Application.Managers
 
                 if (skillEnemy is null)
                 {
-                    // TODO: inform maybe logs?
+                    _logger.LogError($"Enemy with id '{enemy.Id}' and name '{enemy.EnemyName}' dont have skill '{skill.Name}'");
                     continue;
                 }
 

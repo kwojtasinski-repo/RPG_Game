@@ -47,6 +47,9 @@ namespace RPG_GAME.Infrastructure.Mongo
             services.AddTransient<IBattleEventRepository, BattleEventRepository>();
             services.AddMongoRepository<BattleEventDocument, Guid>("battle-events");
 
+            services.AddTransient<ICurrentBattleStateRepository, CurrentBattleStateRepository>();
+            services.AddMongoRepository<CurrentBattleStateDocument, Guid>("current-battle-states");
+
             return services;
         }
 

@@ -106,7 +106,7 @@ namespace RPG_GAME.Application.Services
             }
 
             await _heroRepository.UpdateAsync(heroExists);
-            await _messageBroker.PublishAsync(new HeroUpdated(heroExists.Id, heroExists.HeroName, heroExists.Skills.Select(s => s.AsAssign())));
+            await _messageBroker.PublishAsync(new HeroUpdated(heroExists.Id, heroExists.HeroName, heroExists.Skills));
         }
 
         private static void Validate(HeroDto heroDto)

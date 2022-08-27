@@ -10,6 +10,7 @@
         public StateDocument<int> BaseHealLvl { get; set; }
         public StateDocument<decimal> Experience { get; set; }
         public Difficulty Difficulty { get; set; }
+        public Category Category { get; set; }
         public IEnumerable<SkillEnemyDocument> Skills { get; set; }
         public IEnumerable<Guid> MapsAssignedTo { get; set; }
     }

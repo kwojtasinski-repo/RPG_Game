@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using RPG_GAME.Application.Events.Heroes;
+using RPG_GAME.Application.Managers;
 using RPG_GAME.Core.Repositories;
 using RPG_GAME.Core.Services.Players;
 
@@ -10,6 +11,7 @@ namespace RPG_GAME.Application.Events.Handlers.Players
         private readonly IPlayerRepository _playerRepository;
         private readonly ILogger<HeroUpdatedHandler> _logger;
         private readonly IHeroAssignUpdaterDomainService _heroAssignUpdaterDomainService;
+        private readonly IPlayerIncreaseStatsManager _playerIncreaseStatsManager;
 
         public HeroUpdatedHandler(IPlayerRepository playerRepository, ILogger<HeroUpdatedHandler> logger,
             IHeroAssignUpdaterDomainService heroAssignUpdaterDomainService)
@@ -37,8 +39,9 @@ namespace RPG_GAME.Application.Events.Handlers.Players
                     continue;
                 }
 
-                await _heroAssignUpdaterDomainService.ChangeHeroAssignFieldsAsync(player.Hero, new HeroAssignFieldsToUpdate(@event.HeroName, @event.Skills));
-                await _playerRepository.UpdateAsync(player);// TODO calculate skills to existing lvl
+                await _heroAssignUpdaterDomainService.ChangeHeroAssignFieldsAsync(player.Hero, new HeroAssignFieldsToUpdate(@event.HeroName, @event.SkillsToUpdate));
+                _playerIncreaseStatsManager.IncreaseHeroSkills(player.Level, player.Hero, @event.Skills);
+                await _playerRepository.UpdateAsync(player);
             }
         }
     }
