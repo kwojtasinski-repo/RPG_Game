@@ -47,46 +47,6 @@ namespace RPG_GAME.UnitTests.Entities.Players
             hero.Skills.Should().HaveCount(skills.Count);
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        [InlineData(-15)]
-        public void given_invalid_health_should_throw_an_exception(int health)
-        {
-            var heroName = "Hero#1";
-            var attack = 10;
-            var healLvl = 1;
-            var skills = new List<SkillHeroAssign> { CreateDefaultSkill() };
-            var expectedException = new HeroAssignHealthCannotBeZeroOrNegativeException(health);
-
-            var exception = Record.Exception(() => Act(heroName, health, attack, healLvl, skills));
-
-            exception.Should().NotBeNull();
-            exception.Should().BeOfType(expectedException.GetType());
-            exception.Message.Should().Be(expectedException.Message);
-        }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        [InlineData(-15)]
-        public void given_invalid_health_when_change_value_should_throw_an_exception(int healthModified)
-        {
-            var heroName = "Hero#1";
-            var health = 10;
-            var attack = 10;
-            var healLvl = 1;
-            var skills = new List<SkillHeroAssign> { CreateDefaultSkill() };
-            var expectedException = new HeroAssignHealthCannotBeZeroOrNegativeException(healthModified);
-            var hero = Act(heroName, health, attack, healLvl, skills);
-
-            var exception = Record.Exception(() => hero.ChangeHealth(healthModified));
-
-            exception.Should().NotBeNull();
-            exception.Should().BeOfType(expectedException.GetType());
-            exception.Message.Should().Be(expectedException.Message);
-        }
-
         [Fact]
         public void should_change_health()
         {

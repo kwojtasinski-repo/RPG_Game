@@ -105,6 +105,7 @@ namespace RPG_GAME.UnitTests.Fixtures
                 Experience = new StateDto<decimal> { Value = enemyDto.Experience.Value, IncreasingState = new IncreasingStateDto<decimal> { Value = enemyDto.Experience.IncreasingState.Value, StrategyIncreasing = enemyDto.Experience.IncreasingState.StrategyIncreasing.ToString() } },
                 Difficulty = enemyDto.Difficulty,
                 Skills = enemyDto.Skills,
+                Category = enemyDto.Category
             };
         }
 

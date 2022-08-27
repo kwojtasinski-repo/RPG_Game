@@ -30,6 +30,7 @@ namespace RPG_GAME.UnitTests.Managers
             var player = CreatePlayer(hero, userId);
             var action = hero.Skills.First().Name;
             var battle = BattleFixture.CreateBattleInProgress(_clock.CurrentDate(), userId, map, player);
+            var dateExpected = _clock.CurrentDate();
 
             var battleEvent = await _battleManager.CreateBattleEvent(battle, enemy.Id, player, action);
 
@@ -37,6 +38,7 @@ namespace RPG_GAME.UnitTests.Managers
             battleEvent.BattleId.Should().Be(battle.Id);
             var currentBattleState = await _currentBattleStateRepository.GetAsync(battle.Id);
             currentBattleState.Should().NotBeNull();
+            currentBattleState.ModifiedDate.Should().Be(dateExpected);
         }
 
         [Fact]

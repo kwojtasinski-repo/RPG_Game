@@ -7,7 +7,7 @@ namespace RPG_GAME.UnitTests.Stubs
     {
         public DateTime CurrentDate()
         {
-            return DateTime.UtcNow;
+            return new DateTime(2022, 8, 27, 11, 10, 20);
         }
     }
 }

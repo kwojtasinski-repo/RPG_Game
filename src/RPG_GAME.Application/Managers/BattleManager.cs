@@ -139,10 +139,11 @@ namespace RPG_GAME.Application.Managers
         {
             if (lastBattleState is null)
             {
-                return new CurrentBattleState(Guid.NewGuid(), battleId, player.Id, player.Hero.Health, player.Level, enemyAssign.Id, enemyAssign.Health);
+                return new CurrentBattleState(Guid.NewGuid(), battleId, player.Id, player.Hero.Health, player.Level, enemyAssign.Id, enemyAssign.Health, _clock.CurrentDate());
             }
 
-            var currentBattleState = new CurrentBattleState(Guid.NewGuid(), lastBattleState.BattleId, lastBattleState.PlayerId, lastBattleState.PlayerCurrentHealth, lastBattleState.PlayerCurrentHealth, lastBattleState.EnemyId, lastBattleState.EnemyHealth);
+            var currentBattleState = new CurrentBattleState(Guid.NewGuid(), lastBattleState.BattleId, lastBattleState.PlayerId, lastBattleState.PlayerCurrentHealth, 
+                lastBattleState.PlayerCurrentHealth, lastBattleState.EnemyId, lastBattleState.EnemyHealth, _clock.CurrentDate());
             return currentBattleState;
         }
 

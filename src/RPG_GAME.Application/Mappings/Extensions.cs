@@ -238,6 +238,7 @@ namespace RPG_GAME.Application.Mappings
                 BaseHealLvl = enemy.BaseHealLvl.AsDto(),
                 BaseHealth = enemy.BaseHealth.AsDto(),
                 Experience = enemy.Experience.AsDto(),
+                Category = enemy.Category.ToString(),
                 Skills = enemy.Skills.Select(s => s.AsDto())
             };
         }

@@ -29,7 +29,8 @@ namespace RPG_GAME.UnitTests.Services
                 BaseHealth = new StateDto<int> { Value = 20, IncreasingState = new IncreasingStateDto<int> { Value = 5, StrategyIncreasing = "ADDITIVE" } },
                 BaseHealLvl = new StateDto<int> { Value = 5, IncreasingState = new IncreasingStateDto<int> { Value = 1, StrategyIncreasing = "ADDITIVE" } },
                 Experience = new StateDto<decimal> { Value = 100, IncreasingState = new IncreasingStateDto<decimal> { Value = 20, StrategyIncreasing = "ADDITIVE" } },
-                Difficulty = "EASY"
+                Difficulty = "EASY",
+                Category = "Archer"
             };
 
             await _enemyService.AddAsync(enemy);

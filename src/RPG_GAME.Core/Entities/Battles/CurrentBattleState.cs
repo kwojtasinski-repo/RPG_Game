@@ -11,9 +11,10 @@ namespace RPG_GAME.Core.Entities.Battles
         public int PlayerLevel { get; private set; }
         public Guid EnemyId { get; }
         public int EnemyHealth { get; private set; }
+        public DateTime ModifiedDate { get; }
 
         public CurrentBattleState(Guid id, Guid battleId, Guid playerId, int playerCurrentHealth,
-            int playerLevel, Guid enemyId, int enemyHealth)
+            int playerLevel, Guid enemyId, int enemyHealth, DateTime modifiedDate)
         {
             Id = id;
             BattleId = battleId;
@@ -22,6 +23,7 @@ namespace RPG_GAME.Core.Entities.Battles
             PlayerLevel = playerLevel;
             EnemyId = enemyId;
             EnemyHealth = enemyHealth;
+            ModifiedDate = modifiedDate;
         }
 
         public void HealPlayerBy(int heal)

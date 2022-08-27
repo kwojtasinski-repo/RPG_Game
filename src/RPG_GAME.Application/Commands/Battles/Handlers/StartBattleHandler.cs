@@ -47,6 +47,7 @@ namespace RPG_GAME.Application.Commands.Battles.Handlers
             {
                 throw new CannotStartBattleForUserException(command.BattleId, command.UserId);
             }
+            //TODO: check battleInfo -> Starting
 
             var player = await _playerRepository.GetByUserId(command.UserId);
 
