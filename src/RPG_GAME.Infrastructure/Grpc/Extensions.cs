@@ -6,7 +6,7 @@ namespace RPG_GAME.Infrastructure.Grpc
 {
     internal static class Extensions
     {
-        public static IServiceCollection AddGrpcCommunication(IServiceCollection services)
+        public static IServiceCollection AddGrpcCommunication(this IServiceCollection services)
         {
             services.AddGrpc();
             return services;

@@ -70,6 +70,7 @@ namespace RPG_GAME.Application.Services
             enemyExists.ChangeEnemyName(enemyDto.EnemyName);
             enemyExists.ChangeAttack(enemyDto.BaseAttack.AsEntity());
             enemyExists.ChangeDifficulty(enemyDto.Difficulty);
+            enemyExists.ChangeCategory(enemyDto.Category);
             enemyExists.ChangeHealth(enemyDto.BaseHealth.AsEntity());
             enemyExists.ChangeHealLvl(enemyDto.BaseHealLvl.AsEntity());
             enemyExists.ChangeExperience(enemyDto.Experience.AsEntity());
@@ -78,7 +79,7 @@ namespace RPG_GAME.Application.Services
             {
                 await _enemyRepository.UpdateAsync(enemyExists);
                 await _messageBroker.PublishAsync(new EnemyUpdated(enemyExists.Id, enemyExists.EnemyName, enemyExists.BaseAttack.Value, enemyExists.BaseHealth.Value, enemyExists.BaseHealLvl.Value,
-                                                        enemyExists.Experience.Value, enemyExists.Difficulty));
+                                                        enemyExists.Experience.Value, enemyExists.Difficulty, enemyExists.Category));
                 return;
             }
 
@@ -109,7 +110,7 @@ namespace RPG_GAME.Application.Services
 
             await _enemyRepository.UpdateAsync(enemyExists);
             await _messageBroker.PublishAsync(new EnemyUpdated(enemyExists.Id, enemyExists.EnemyName, enemyExists.BaseAttack.Value, enemyExists.BaseHealth.Value, enemyExists.BaseHealLvl.Value,
-                                                        enemyExists.Experience.Value, enemyExists.Difficulty, enemyExists.Skills.Select(e => e.AsAssign())));
+                                                        enemyExists.Experience.Value, enemyExists.Difficulty, enemyExists.Category, enemyExists.Skills.Select(e => e.AsAssign())));
         }
 
         private static void Validate(EnemyDto enemyDto)

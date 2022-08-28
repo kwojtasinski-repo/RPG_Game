@@ -253,6 +253,7 @@ namespace RPG_GAME.Application.Mappings
                 BaseHealLvl = enemy.BaseHealLvl.AsDto(),
                 BaseHealth = enemy.BaseHealth.AsDto(),
                 Difficulty = enemy.Difficulty.ToString(),
+                Category = enemy.Category.ToString(),
                 Experience = enemy.Experience.AsDto(),
                 Skills = enemy.Skills.Select(s => s.AsDto()),
                 MapsAssignedTo = enemy.MapsAssignedTo
@@ -290,6 +291,7 @@ namespace RPG_GAME.Application.Mappings
                 BaseHealth = enemyAssign.Health,
                 Difficulty = enemyAssign.Difficulty.ToString(),
                 Experience = enemyAssign.Experience,
+                Category = enemyAssign.Category.ToString(),
                 Skills = enemyAssign.Skills.Select(s => s.AsDto())
             };
         }

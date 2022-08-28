@@ -2,7 +2,7 @@
 
 import "google/protobuf/timestamp.proto";
 
-option csharp_namespace = "RPG_GAME.Infrastructure.Grpc.Protos";
+option csharp_namespace = "RPG_GAME.Protos";
 
 package battle;
 
@@ -98,7 +98,8 @@ message AddBattleEventRequest {
     string battleId = 1;
     string playerId = 2;
     string enemyId = 3;
-    string action = 4;
+    string damageDealt = 4;
+    string action = 5;
 }
 
 message AddBattleEventResponse {

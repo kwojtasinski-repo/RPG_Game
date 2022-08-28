@@ -6,12 +6,34 @@ using System.Xml.Serialization;
 using System.Collections.Generic;
 using RPG_GAME.Service.Concrete;
 using RPG_GAME.Service.Managers;
+using System.Threading.Tasks;
+using Grpc.Net.Client;
+using RPG_GAME.Protos;
 
 namespace RPG_GAME
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
+        {
+            Console.WriteLine("Hello, World!");
+            var baseUri = "http://localhost:50000";
+            using var channel = GrpcChannel.ForAddress(baseUri);
+            var client = new Battle.BattleClient(channel);
+            var mapId = "2c70e345-024f-4b12-b1ff-11f33ff40fdb";
+            var userId = "68945a59-bb5f-48d0-a855-4a8b679c8e74";
+
+            var response = await client.PrepareBattleAsync(new BattleRequest { MapId = mapId, UserId = userId });
+
+            Console.WriteLine(response.ToString());
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+        }
+    }
+    
+    class ProgramOld
+    {
+        static void OldMain(string[] args)
         {
             MenuActionService menuActionService = new MenuActionService();
             HeroService heroService = new HeroService();

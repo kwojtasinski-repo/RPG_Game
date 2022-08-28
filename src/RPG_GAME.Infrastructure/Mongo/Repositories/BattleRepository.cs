@@ -11,6 +11,11 @@ namespace RPG_GAME.Infrastructure.Mongo.Repositories
     {
         private readonly IMongoRepository<BattleDocument, Guid> _repository;
 
+        public BattleRepository(IMongoRepository<BattleDocument, Guid> repository)
+        {
+            _repository = repository;
+        }
+
         public async Task AddAsync(Battle battle)
         {
             var document = battle.AsDocument();

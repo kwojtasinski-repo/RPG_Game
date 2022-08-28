@@ -1,11 +1,11 @@
 @api = http://localhost:5000/api
-@heroId = 7b03c9f1-47db-49a7-a0ad-c4b903b5aac6
-@enemyId = 59afc8a9-96eb-4332-8c49-42ed55f21fe7
-@mapId = 8dc7d219-7c81-48ca-937f-32c9bc38b4a3
+@heroId = 6550dca5-1334-440e-81e7-2e495db2b0f9
+@enemyId = bcc3ecb7-6680-404a-8b12-5ade67d93c5b
+@mapId = 2c70e345-024f-4b12-b1ff-11f33ff40fdb
 @email = tester@rpg-game.com
 @password = PAsW0Rd!123
-@userId = 2e707968-3d7b-4b26-94c1-8a2d3a1f8d01
-@playerId = e400d1d0-de3f-4363-8f80-7dede375fb59
+@userId = 68945a59-bb5f-48d0-a855-4a8b679c8e74
+@playerId = c37501ec-8f21-4af7-9668-ffc3f4528d32
 
 ###
 GET {{api}}
@@ -153,6 +153,7 @@ Content-Type: application/json
         }
     },
     "difficulty": "EASY",
+    "category": "Archer",
     "skills": [
         {
             "name": "damage",
@@ -204,6 +205,7 @@ Content-Type: application/json
         }
     },
     "difficulty": "EASY",
+    "category": "Knight",
     "skills": [
         {
             "name": "damage",
@@ -264,6 +266,15 @@ Content-Type: application/json
     "email": "{{email}}",
     "password": "{{password}}",
     "role": "user"
+}
+
+###
+POST {{api}}/account/me
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
 }
 
 ###

@@ -1,4 +1,5 @@
-﻿using RPG_GAME.Core.Entities.Common;
+﻿using RPG_GAME.Core.Common;
+using RPG_GAME.Core.Entities.Common;
 using RPG_GAME.Core.Entities.Maps;
 
 namespace RPG_GAME.Application.Events.Enemies
@@ -12,9 +13,10 @@ namespace RPG_GAME.Application.Events.Enemies
         public int BaseHealLvl { get; }
         public decimal Experience { get; }
         public Difficulty Difficulty { get; }
+        public Category Category { get; }
         public IEnumerable<SkillEnemyAssign> Skills { get; } = new List<SkillEnemyAssign>();
 
-        public EnemyUpdated(Guid enemyId, string enemyName, int baseAttack, int baseHealth, int baseHealLvl, decimal experience, Difficulty difficulty, IEnumerable<SkillEnemyAssign> skills = null)
+        public EnemyUpdated(Guid enemyId, string enemyName, int baseAttack, int baseHealth, int baseHealLvl, decimal experience, Difficulty difficulty, Category category, IEnumerable<SkillEnemyAssign> skills = null)
         {
             EnemyId = enemyId;
             EnemyName = enemyName;
@@ -23,6 +25,7 @@ namespace RPG_GAME.Application.Events.Enemies
             BaseHealLvl = baseHealLvl;
             Experience = experience;
             Difficulty = difficulty;
+            Category = category;
 
             if (skills is not null)
             {

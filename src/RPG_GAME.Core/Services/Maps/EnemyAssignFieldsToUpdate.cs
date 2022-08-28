@@ -1,4 +1,5 @@
-﻿using RPG_GAME.Core.Entities.Common;
+﻿using RPG_GAME.Core.Common;
+using RPG_GAME.Core.Entities.Common;
 using RPG_GAME.Core.Entities.Maps;
 using System.Collections.Generic;
 
@@ -8,13 +9,15 @@ namespace RPG_GAME.Core.Services.Maps
     {
         public string EnemyName { get; }
         public Difficulty Difficulty { get; }
+        public Category Category { get; }
         public IEnumerable<SkillEnemyAssign> Skills { get; } = new List<SkillEnemyAssign>();
 
-        public EnemyAssignFieldsToUpdate(string enemyName, Difficulty difficulty, IEnumerable<SkillEnemyAssign> skills = null)
+        public EnemyAssignFieldsToUpdate(string enemyName, Difficulty difficulty, Category category, IEnumerable<SkillEnemyAssign> skills = null)
         {
             EnemyName = enemyName;
             Difficulty = difficulty;
             Skills = skills;
+            Category = category;
         }
     }
 }

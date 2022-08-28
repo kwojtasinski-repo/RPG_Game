@@ -10,8 +10,9 @@ namespace RPG_GAME.Core.Services.Maps
         {
             enemyAssign.ChangeName(enemyAssignFieldsToUpdate.EnemyName);
             enemyAssign.ChangeDifficulty(enemyAssignFieldsToUpdate.Difficulty);
+            enemyAssign.ChangeCategory(enemyAssignFieldsToUpdate.Category);
 
-            if (!enemyAssignFieldsToUpdate.Skills.Any())
+            if (enemyAssignFieldsToUpdate.Skills.Any())
             {
                 enemyAssign.ChangeSkills(enemyAssignFieldsToUpdate.Skills);
             }

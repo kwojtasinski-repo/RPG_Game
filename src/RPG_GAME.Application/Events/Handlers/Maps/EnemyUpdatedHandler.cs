@@ -43,7 +43,7 @@ namespace RPG_GAME.Application.Events.Handlers.Players
                 enemies.Enemy.ChangeHealth(@event.BaseHealth);
                 enemies.Enemy.ChangeHealLvl(@event.BaseHealLvl);
                 enemies.Enemy.ChangeExperience(@event.Experience);
-                await _enemyAssignUpdaterDomainService.ChangeEnemyAssignFieldsAsync(enemies.Enemy, new EnemyAssignFieldsToUpdate(@event.EnemyName, @event.Difficulty, @event.Skills));
+                await _enemyAssignUpdaterDomainService.ChangeEnemyAssignFieldsAsync(enemies.Enemy, new EnemyAssignFieldsToUpdate(@event.EnemyName, @event.Difficulty, @event.Category, @event.Skills));
 
                 await _mapRepository.UpdateAsync(map);
             }

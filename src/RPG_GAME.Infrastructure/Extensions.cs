@@ -6,6 +6,7 @@ using RPG_GAME.Infrastructure.Auth;
 using RPG_GAME.Infrastructure.Commands;
 using RPG_GAME.Infrastructure.Database;
 using RPG_GAME.Infrastructure.Events;
+using RPG_GAME.Infrastructure.Grpc;
 using RPG_GAME.Infrastructure.Messaging;
 using RPG_GAME.Infrastructure.Middlewares;
 using RPG_GAME.Infrastructure.Mongo;
@@ -50,7 +51,8 @@ namespace RPG_GAME.Infrastructure
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
-            
+            services.AddGrpcCommunication();
+
             return services;
         }
 
@@ -62,6 +64,7 @@ namespace RPG_GAME.Infrastructure
             app.UseAuthorization();
             app.MapControllers();
             app.UseMongo();
+            app.UseGrpc();
             return app;
         }
 
