@@ -46,7 +46,7 @@ namespace RPG_GAME.Application.Managers
             
             var battleState = BattleState.Completed(battle.Id, player, _clock.CurrentDate());
 
-            if (battle.EnemiesKilled.Count() != enemiesToKill)
+            if (battle.EnemiesKilled.Sum(ek => ek.Value) != enemiesToKill)
             {
                 var playerNotChanged = battle.EndBattle(_clock.CurrentDate(), "Lost", battleState);
                 return Task.FromResult(playerNotChanged);
@@ -209,11 +209,6 @@ namespace RPG_GAME.Application.Managers
             }
 
             return 0;
-        }
-
-        public EnemyAssign GetFirstEnemy(Battle battle)
-        {
-            return battle.Map.Enemies.Where(e => e.Enemy.Category == Core.Common.Category.Knight).Select(e => e.Enemy).FirstOrDefault();
         }
 
         private async Task AddOrUpdateBattleState(CurrentBattleState currentBattleState, CurrentBattleState lastBattleState)

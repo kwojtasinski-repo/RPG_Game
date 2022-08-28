@@ -26,7 +26,7 @@ message BattleResponse {
     google.protobuf.Timestamp endDate = 5;
     Map map = 6;
     repeated BattleState battleStates = 7;
-    repeated string enemiesKilled = 8;
+    repeated Dictionary enemiesKilled = 8;
 }
 
 message Map {
@@ -127,4 +127,13 @@ message DecimalValue {
   // Nano units of the amount (10^-9)
   // Must be same sign as units
   sfixed32 nanos = 2;
+}
+
+message Pair {
+   string key = 1;
+   int32 value = 2;
+}
+
+message Dictionary {
+   repeated Pair pairs = 1;
 }

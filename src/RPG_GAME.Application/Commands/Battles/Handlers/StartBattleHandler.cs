@@ -1,8 +1,6 @@
 ﻿using RPG_GAME.Application.DTO.Battles;
 using RPG_GAME.Application.Exceptions.Auth;
 using RPG_GAME.Application.Exceptions.Battles;
-using RPG_GAME.Application.Managers;
-using RPG_GAME.Application.Mappings;
 using RPG_GAME.Application.Time;
 using RPG_GAME.Core.Entities.Battles;
 using RPG_GAME.Core.Repositories;
@@ -15,16 +13,14 @@ namespace RPG_GAME.Application.Commands.Battles.Handlers
         private readonly IBattleRepository _battleRepository;
         private readonly IPlayerRepository _playerRepository;
         private readonly IClock _clock;
-        private readonly IBattleManager _battleManager;
 
         public StartBattleHandler(IUserRepository userRepository, IBattleRepository battleRepository,
-            IPlayerRepository playerRepository, IClock clock, IBattleManager battleManager)
+            IPlayerRepository playerRepository, IClock clock)
         {
             _userRepository = userRepository;
             _battleRepository = battleRepository;
             _playerRepository = playerRepository;
             _clock = clock;
-            _battleManager = battleManager;
         }
 
         public async Task<BattleStatusDto> HandleAsync(StartBattle command)
@@ -62,7 +58,7 @@ namespace RPG_GAME.Application.Commands.Battles.Handlers
 
             var battleState = BattleState.InAction(command.BattleId, player, _clock.CurrentDate());
             battle.AddBattleStateAtInProgress(battleState);
-            var enemy = _battleManager.GetFirstEnemy(battle);
+            var enemy = battle.GetEnemyToFight();
 
             return new BattleStatusDto
             {

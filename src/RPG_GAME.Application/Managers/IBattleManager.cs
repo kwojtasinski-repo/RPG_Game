@@ -1,5 +1,4 @@
 ﻿using RPG_GAME.Core.Entities.Battles;
-using RPG_GAME.Core.Entities.Maps;
 using RPG_GAME.Core.Entities.Players;
 
 namespace RPG_GAME.Application.Managers
@@ -8,6 +7,5 @@ namespace RPG_GAME.Application.Managers
     {
         Task<Player> CompleteBattle(Battle battle, Player player);
         Task<BattleEvent> CreateBattleEvent(Battle battle, Guid enemyId, Player player, string action);
-        EnemyAssign GetFirstEnemy(Battle battle);
     }
 }

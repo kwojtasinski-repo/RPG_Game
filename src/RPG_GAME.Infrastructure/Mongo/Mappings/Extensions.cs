@@ -344,7 +344,20 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 EndDate = battle.EndDate,
                 StartDate = battle.StartDate,
                 UserId = battle.UserId,
-                EnemiesKilled = battle.EnemiesKilled
+                EnemiesKilled = battle.EnemiesKilled.Aggregate(new List<Guid>(),
+                        (list, kvp) =>
+                        {
+                            list.AddRange(new Func<List<Guid>>(() =>
+                            {
+                                var list = new List<Guid>();
+                                for (int i = 0; i < kvp.Value; i++)
+                                {
+                                    list.Add(kvp.Key);
+                                }
+                                return list;
+                            })());
+                            return list;
+                        })
             };
         }
 

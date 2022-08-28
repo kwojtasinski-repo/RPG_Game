@@ -1,8 +1,10 @@
-﻿using RPG_GAME.Core.Entities.Maps;
+﻿using RPG_GAME.Core.Common;
+using RPG_GAME.Core.Entities.Maps;
 using RPG_GAME.Core.Entities.Players;
 using RPG_GAME.Core.Exceptions.Battles;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace RPG_GAME.Core.Entities.Battles
@@ -16,7 +18,7 @@ namespace RPG_GAME.Core.Entities.Battles
         public DateTime? EndDate { get; private set; }
         public Map Map { get; private set; }
         public IEnumerable<BattleState> BattleStates => GetBattleStates();
-        public IEnumerable<Guid> EnemiesKilled => _enemiesKilled;
+        public IImmutableDictionary<Guid, int> EnemiesKilled => _enemiesKilled.GroupBy(e => e).ToImmutableDictionary(e => e.Key, e => e.Count());
 
         private IList<Guid> _enemiesKilled = new List<Guid>();
         private IList<BattleState> _battleStates = new List<BattleState>();
@@ -130,7 +132,7 @@ namespace RPG_GAME.Core.Entities.Battles
                 var heroSkills = battleState.Player.Hero.Skills.Select(s => new SkillHeroAssign(s.Id, s.Name, s.Attack));
                 var hero = new HeroAssign(battleState.Player.Hero.Id, battleState.Player.Hero.HeroName, battleState.Player.Hero.Health, 
                     battleState.Player.Hero.Attack, battleState.Player.Hero.HealLvl, heroSkills);
-                var player = new Players.Player(battleState.Player.Id, battleState.Player.Name, hero, 
+                var player = new Player(battleState.Player.Id, battleState.Player.Name, hero, 
                     battleState.Player.Level, battleState.Player.CurrentExp, battleState.Player.RequiredExp, battleState.Player.UserId);
                 battleStates.Add(new BattleState(battleState.Id, battleState.BattleStatus.ToString(), battleState.BattleId,
                     player, battleState.Created, battleState.Modified));
@@ -201,6 +203,50 @@ namespace RPG_GAME.Core.Entities.Battles
             }
 
             _enemiesKilled.Add(enemyId);
+        }
+
+        public EnemyAssign GetEnemyToFight()
+        {
+            EnemyAssign enemy = null;
+
+            foreach(var category in Enum.GetValues<Category>())
+            {
+                enemy = GetEnemyByCategory(category);
+
+                if (enemy is not null)
+                {
+                    break;
+                }
+            }
+
+            if (enemy is null)
+            {
+                throw new MapHasNoEnemiesException(Map.Id);
+            }
+
+            return enemy;
+        }
+
+        private EnemyAssign GetEnemyByCategory(Category category)
+        {
+            var enemies = Map.Enemies.Where(e => e.Enemy.Category == category)
+                .FirstOrDefault(e =>
+                {
+                    var enemiesKilledCount = EnemiesKilled.Where(ek => ek.Key == e.Enemy.Id).Select(ek => ek.Value).FirstOrDefault();
+
+                    if (enemiesKilledCount == default)
+                    {
+                        return true;
+                    }
+
+                    if (e.Quantity < enemiesKilledCount)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                });
+            return enemies?.Enemy;
         }
     }
 }
