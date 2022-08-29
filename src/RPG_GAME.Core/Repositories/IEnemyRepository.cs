@@ -12,5 +12,6 @@ namespace RPG_GAME.Core.Repositories
         Task<Enemy> GetAsync(Guid id);
         Task<IEnumerable<Enemy>> GetAllAsync();
         Task DeleteAsync(Guid id);
+        Task<IEnumerable<Enemy>> GetByMapIdAsync(Guid id);
     }
 }

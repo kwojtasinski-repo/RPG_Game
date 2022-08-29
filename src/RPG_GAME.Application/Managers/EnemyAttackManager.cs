@@ -64,7 +64,7 @@ namespace RPG_GAME.Application.Managers
         {
             return new EnemyAttackDto
             {
-                AttackName = nameof(EnemyAssign.EnemyName),
+                AttackName = nameof(EnemyAssign.Attack),
                 Damage = enemyAssign.Attack
             };
         }

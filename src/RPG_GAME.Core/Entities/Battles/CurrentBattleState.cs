@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RPG_GAME.Core.Entities.Battles
 {
@@ -12,9 +15,13 @@ namespace RPG_GAME.Core.Entities.Battles
         public Guid EnemyId { get; }
         public int EnemyHealth { get; private set; }
         public DateTime ModifiedDate { get; }
+        public IEnumerable<Guid> EnemiesKilled => _enemiesKilled;
+        
+        public List<Guid> _enemiesKilled = new();
 
         public CurrentBattleState(Guid id, Guid battleId, Guid playerId, int playerCurrentHealth,
-            int playerLevel, Guid enemyId, int enemyHealth, DateTime modifiedDate)
+            int playerLevel, Guid enemyId, int enemyHealth, DateTime modifiedDate, 
+            IEnumerable<Guid> enemiesKilled = null)
         {
             Id = id;
             BattleId = battleId;
@@ -24,6 +31,11 @@ namespace RPG_GAME.Core.Entities.Battles
             EnemyId = enemyId;
             EnemyHealth = enemyHealth;
             ModifiedDate = modifiedDate;
+
+            if (enemiesKilled is not null)
+            {
+                _enemiesKilled = enemiesKilled.ToList();
+            }
         }
 
         public void HealPlayerBy(int heal)
@@ -44,6 +56,11 @@ namespace RPG_GAME.Core.Entities.Battles
         public void MakeDamageToEnemy(int damage)
         {
             EnemyHealth -= damage;
+        }
+
+        public void AddEnemyKilled(Guid enemyId)
+        {
+            _enemiesKilled.Add(enemyId);
         }
     }
 }

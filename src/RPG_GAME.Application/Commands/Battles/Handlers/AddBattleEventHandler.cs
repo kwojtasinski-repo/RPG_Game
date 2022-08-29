@@ -43,9 +43,15 @@ namespace RPG_GAME.Application.Commands.Battles.Handlers
                 throw new PlayerForUserNotFoundException(command.PlayerId);
             }
 
-            var battleEvent = await _battleManager.CreateBattleEvent(battle, command.EnemyId, player, command.Action);
+            var playerToUpdate = battle.GetBattleStateInAction().Player;
+            var battleEvent = await _battleManager.CreateBattleEvent(battle, command.EnemyId, playerToUpdate, command.Action);
             await _battleEventRepository.AddAsync(battleEvent);
             await _battleRepository.UpdateAsync(battle);
+
+            if (battle.BattleInfo == Core.Entities.Battles.BattleInfo.Won)
+            {
+                await _playerRepository.UpdateAsync(playerToUpdate);
+            }
 
             return battleEvent.AsDto();
         }

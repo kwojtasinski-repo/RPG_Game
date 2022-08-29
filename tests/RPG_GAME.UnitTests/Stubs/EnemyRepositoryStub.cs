@@ -33,6 +33,14 @@ namespace RPG_GAME.UnitTests.Stubs
             return Task.FromResult(_enemies.SingleOrDefault(e => e.Id == id));
         }
 
+        public async Task<IEnumerable<Enemy>> GetByMapIdAsync(Guid mapId)
+        {
+            await Task.CompletedTask;
+            var enemies = _enemies
+               .Where(e => e.MapsAssignedTo.Contains(mapId)).ToList();
+            return enemies;
+        }
+
         public Task UpdateAsync(Enemy enemy)
         {
             return Task.CompletedTask;

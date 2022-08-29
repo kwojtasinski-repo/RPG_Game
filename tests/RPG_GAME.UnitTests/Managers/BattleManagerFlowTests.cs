@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Microsoft.Extensions.Logging;
 using RPG_GAME.Application.Managers;
 using RPG_GAME.Application.Mappings;
 using RPG_GAME.Application.Time;
@@ -37,7 +36,7 @@ namespace RPG_GAME.UnitTests.Managers
 
             battleEvent.Should().NotBeNull();
             battleEvent.BattleId.Should().Be(battle.Id);
-            var currentBattleState = await _currentBattleStateRepository.GetAsync(battle.Id);
+            var currentBattleState = await _currentBattleStateRepository.GetByBattleIdAsync(battle.Id);
             currentBattleState.Should().NotBeNull();
             currentBattleState.ModifiedDate.Should().Be(dateExpected);
         }
@@ -80,9 +79,9 @@ namespace RPG_GAME.UnitTests.Managers
 
             battleEvent.Should().NotBeNull();
             battle.BattleStates.Should().HaveCount(3);
-            battle.BattleInfo.Should().Be(Core.Entities.Battles.BattleInfo.Lost);
+            battle.BattleInfo.Should().Be(BattleInfo.Lost);
             var battleState = battle.GetLatestBattleState();
-            battleState.BattleStatus.Should().Be(Core.Entities.Battles.BattleStatus.Completed);
+            battleState.BattleStatus.Should().Be(BattleStatus.Completed);
         }
 
         [Fact]
@@ -103,7 +102,7 @@ namespace RPG_GAME.UnitTests.Managers
             battleEvent.Action.Should().NotBeNull();
             battleEvent.Action.CharacterId.Should().Be(enemy.Id);
             battleEvent.Action.AttackInfo.Should().Be("dead");
-            var currentBattleState = await _currentBattleStateRepository.GetAsync(battle.Id);
+            var currentBattleState = await _currentBattleStateRepository.GetByBattleIdAsync(battle.Id);
             currentBattleState.Should().NotBeNull();
             currentBattleState.EnemyHealth.Should().BeLessThanOrEqualTo(0);
         }

@@ -435,14 +435,16 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 PlayerId = currentBattleState.PlayerId,
                 PlayerCurrentHealth = currentBattleState.PlayerCurrentHealth,
                 PlayerLevel = currentBattleState.PlayerLevel,
-                ModifiedDate = currentBattleState.ModifiedDate
+                ModifiedDate = currentBattleState.ModifiedDate,
+                EnemiesKilled = currentBattleState.EnemiesKilled
             };
         }
 
         public static CurrentBattleState AsEntity(this CurrentBattleStateDocument currentBattleStateDocument)
         {
             return new CurrentBattleState(currentBattleStateDocument.Id, currentBattleStateDocument.BattleId, currentBattleStateDocument.PlayerId, currentBattleStateDocument.PlayerCurrentHealth, currentBattleStateDocument.PlayerLevel,
-                                currentBattleStateDocument.EnemyId, currentBattleStateDocument.EnemyHealth, currentBattleStateDocument.ModifiedDate);
+                                currentBattleStateDocument.EnemyId, currentBattleStateDocument.EnemyHealth, currentBattleStateDocument.ModifiedDate,
+                                currentBattleStateDocument.EnemiesKilled);
         }
     }
 }

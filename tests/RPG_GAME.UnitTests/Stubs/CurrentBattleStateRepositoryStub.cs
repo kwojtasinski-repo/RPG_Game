@@ -17,7 +17,7 @@ namespace RPG_GAME.UnitTests.Stubs
             _currentBattleStates.Add(currentBattleState);
         }
 
-        public async Task<CurrentBattleState> GetAsync(Guid battleId)
+        public async Task<CurrentBattleState> GetByBattleIdAsync(Guid battleId)
         {
             await Task.CompletedTask;
             return _currentBattleStates.SingleOrDefault(cbs => cbs.BattleId == battleId);

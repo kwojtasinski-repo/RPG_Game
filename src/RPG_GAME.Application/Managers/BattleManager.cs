@@ -58,7 +58,6 @@ namespace RPG_GAME.Application.Managers
 
         public async Task<EnemyAssign> CalculateEnemy(Battle battle, Guid enemyId, int playerLevel)
         {
-
             var enemy = await _enemyRepository.GetAsync(enemyId);
 
             if (enemy is null)
@@ -86,18 +85,35 @@ namespace RPG_GAME.Application.Managers
                 throw new HeroNotFoundException(player.Hero.Id);
             }
 
-            var currentEnemyAssignInBattle = battle.Map.Enemies.Select(e => e.Enemy).FirstOrDefault(e => e.Id == enemyId);
-            await CalculateEnemy(battle, enemyId, player.Level);
+            var enemiesToKill = battle.Map.Enemies.Sum(e => e.Quantity);
+
+            var currentEnemiesInBattle = battle.Map.Enemies.FirstOrDefault(e => e.Enemy.Id == enemyId);
+            var currentEnemyAssignInBattle = currentEnemiesInBattle.Enemy;
+            var quantity = currentEnemiesInBattle.Quantity;
 
             // id enemy is needed and battles enemyKilled have to verify how many left also check current hp enemy and hero
-            var lastBattleState = await _currentBattleStateRepository.GetAsync(battle.Id);
-            var currentBattleState = CreateCurrentBattleState(lastBattleState, battle.Id, player, currentEnemyAssignInBattle);
-            IsEnemyAlive(currentBattleState);
+            var lastBattleState = await _currentBattleStateRepository.GetByBattleIdAsync(battle.Id);
+            
+            if (battle.EnemiesKilled.Sum(ek => ek.Value) >= enemiesToKill)
+            {
+                //_playerIncreaseStatsManager.IncreasePlayerStats(player, hero); REFRESH PLAYER STATS
+                var battleStateCompleted = BattleState.Completed(battle.Id, player, _clock.CurrentDate());
+                battle.EndBattle(_clock.CurrentDate(), BattleInfo.Won.ToString(), battleStateCompleted);
+                return new BattleEvent(Guid.NewGuid(), battle.Id,
+                new FightAction(currentEnemyAssignInBattle.Id,
+                        CharacterType.ENEMY.ToString(), currentEnemyAssignInBattle.EnemyName,
+                        0, lastBattleState.EnemyHealth, FightAction.FIGHT_ACTION_ENEMY_IS_DEAD), _clock.CurrentDate());
+            }
+
+            var currentBattleState = CreateCurrentBattleState(lastBattleState, battle.Id, player, currentEnemiesInBattle, battle.Map);
+            IsEnemyAlive(currentBattleState, quantity);
             DoAction(action, player, currentBattleState);
             
             if (currentBattleState.EnemyHealth <= 0)
             {
-                IncreaseExpAndLevel(player, currentEnemyAssignInBattle.Experience, hero);
+                currentBattleState.AddEnemyKilled(enemyId);
+                battle.AddKilledEnemy(enemyId);
+                await IncreaseExp(battle, player, currentEnemyAssignInBattle, hero);
                 UpdatePlayer(player, battle);
                 await AddOrUpdateBattleState(currentBattleState, lastBattleState);
 
@@ -139,23 +155,45 @@ namespace RPG_GAME.Application.Managers
             battleState.UpdatePlayer(player, _clock.CurrentDate());
         }
 
-        private CurrentBattleState CreateCurrentBattleState(CurrentBattleState lastBattleState, Guid battleId, Player player, EnemyAssign enemyAssign)
+        // TODO: Refactor in future
+        private CurrentBattleState CreateCurrentBattleState(CurrentBattleState lastBattleState, Guid battleId, Player player, Enemies enemies, Map map)
         {
             if (lastBattleState is null)
             {
-                return new CurrentBattleState(Guid.NewGuid(), battleId, player.Id, player.Hero.Health, player.Level, enemyAssign.Id, enemyAssign.Health, _clock.CurrentDate());
+                return new CurrentBattleState(Guid.NewGuid(), battleId, player.Id, player.Hero.Health, player.Level, enemies.Enemy.Id, enemies.Enemy.Health, _clock.CurrentDate());
             }
 
-            var currentBattleState = new CurrentBattleState(Guid.NewGuid(), lastBattleState.BattleId, lastBattleState.PlayerId, lastBattleState.PlayerCurrentHealth, 
-                lastBattleState.PlayerCurrentHealth, lastBattleState.EnemyId, lastBattleState.EnemyHealth, _clock.CurrentDate());
+            var allLastEnemiesToKill = map.Enemies.SingleOrDefault(e => e.Enemy.Id == lastBattleState.EnemyId).Quantity;
+            var enemiesKilled = lastBattleState.EnemiesKilled.Where(ek => ek == lastBattleState.EnemyId).Count();
+
+            if (allLastEnemiesToKill <= enemiesKilled)
+            {
+                return new CurrentBattleState(lastBattleState.Id, lastBattleState.BattleId, lastBattleState.PlayerId, lastBattleState.PlayerCurrentHealth,
+                    lastBattleState.PlayerLevel, enemies.Enemy.Id, enemies.Enemy.Health, _clock.CurrentDate(),
+                    lastBattleState.EnemiesKilled);
+            }
+
+            if (lastBattleState.EnemyHealth < 0)
+            {
+                return new CurrentBattleState(lastBattleState.Id, lastBattleState.BattleId, lastBattleState.PlayerId, lastBattleState.PlayerCurrentHealth,
+                    lastBattleState.PlayerLevel, lastBattleState.EnemyId, enemies.Enemy.Health, _clock.CurrentDate(),
+                    lastBattleState.EnemiesKilled);
+            }
+
+            var currentBattleState = new CurrentBattleState(lastBattleState.Id, lastBattleState.BattleId, lastBattleState.PlayerId, lastBattleState.PlayerCurrentHealth,
+                lastBattleState.PlayerLevel, lastBattleState.EnemyId, lastBattleState.EnemyHealth, _clock.CurrentDate(),
+                lastBattleState.EnemiesKilled);
+            
             return currentBattleState;
         }
 
-        private static void IsEnemyAlive(CurrentBattleState currentBattleState)
+        private static void IsEnemyAlive(CurrentBattleState currentBattleState, int quantity)
         {
-            if (currentBattleState.EnemyHealth <= 0)
+            var enemiesKilled = currentBattleState.EnemiesKilled.Where(ek => ek == currentBattleState.EnemyId).Count();
+
+            if (currentBattleState.EnemyHealth <= 0 && enemiesKilled >= quantity)
             {
-                throw new InvalidOperationException("Enemy with id: '' is dead");
+                throw new InvalidOperationException($"Enemy with id: '{currentBattleState.EnemyId}' is dead");
             }
         }
 
@@ -202,7 +240,7 @@ namespace RPG_GAME.Application.Managers
 
             foreach(var skill in skills)
             {
-                if (skill.Name == action)
+                if (skill.Name.ToLowerInvariant() == action.ToLowerInvariant())
                 {
                     return skill.Attack;
                 }
@@ -223,9 +261,9 @@ namespace RPG_GAME.Application.Managers
             }
         }
 
-        private void IncreaseExpAndLevel(Player player, decimal experience, Hero hero)
+        private async Task IncreaseExp(Battle battle, Player player, EnemyAssign enemyAssign, Hero hero)
         {
-            var experienceToIncrease = experience;
+            var experienceToIncrease = enemyAssign.Experience;
             do
             {
                 var previousPlayerLevel = player.Level;
@@ -234,6 +272,7 @@ namespace RPG_GAME.Application.Managers
                 if (player.Level > previousPlayerLevel)
                 {
                     _playerIncreaseStatsManager.IncreasePlayerStats(player, hero);
+                    await CalculateEnemy(battle, enemyAssign.Id, player.Level);
                 }
             }
             while (player.CurrentExp > player.RequiredExp);

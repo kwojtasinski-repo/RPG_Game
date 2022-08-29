@@ -1,4 +1,6 @@
-﻿using RPG_GAME.Core.Entities.Battles;
+﻿using MongoDB.Driver;
+using MongoDB.Driver.Linq;
+using RPG_GAME.Core.Entities.Battles;
 using RPG_GAME.Core.Repositories;
 using RPG_GAME.Infrastructure.Mongo.Documents.Battles;
 using RPG_GAME.Infrastructure.Mongo.Mappings;
@@ -20,9 +22,10 @@ namespace RPG_GAME.Infrastructure.Mongo.Repositories
             await _repository.AddAsync(document);
         }
 
-        public async Task<CurrentBattleState> GetAsync(Guid battleId)
+        public async Task<CurrentBattleState> GetByBattleIdAsync(Guid battleId)
         {
-            var currentBattleState = await _repository.GetAsync(battleId);
+            var currentBattleState = await _repository.Collection.AsQueryable()
+                .SingleOrDefaultAsync(cbs => cbs.BattleId == battleId);
             return currentBattleState?.AsEntity();
         }
 

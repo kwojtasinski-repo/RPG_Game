@@ -10,5 +10,6 @@
         public Guid EnemyId { get; set; }
         public int EnemyHealth { get; set; }
         public DateTime ModifiedDate { get; set; }
+        public IEnumerable<Guid> EnemiesKilled { get; set; }
     }
 }
