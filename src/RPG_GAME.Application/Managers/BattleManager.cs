@@ -71,7 +71,7 @@ namespace RPG_GAME.Application.Managers
             return currentEnemyAssignInBattle;
         }
 
-        public async Task<BattleEvent> CreateBattleEvent(Battle battle, Guid enemyId, Player player, string action)
+        public async Task<BattleEvent> CreateBattleEvent2(Battle battle, Guid enemyId, Player player, string action)
         {
             if (battle.BattleInfo != BattleInfo.InProgress)
             {
@@ -93,18 +93,6 @@ namespace RPG_GAME.Application.Managers
 
             // id enemy is needed and battles enemyKilled have to verify how many left also check current hp enemy and hero
             var lastBattleState = await _currentBattleStateRepository.GetByBattleIdAsync(battle.Id);
-            
-            if (battle.EnemiesKilled.Sum(ek => ek.Value) >= enemiesToKill)
-            {
-                //_playerIncreaseStatsManager.IncreasePlayerStats(player, hero); REFRESH PLAYER STATS
-                var battleStateCompleted = BattleState.Completed(battle.Id, player, _clock.CurrentDate());
-                battle.EndBattle(_clock.CurrentDate(), BattleInfo.Won.ToString(), battleStateCompleted);
-                return new BattleEvent(Guid.NewGuid(), battle.Id,
-                new FightAction(currentEnemyAssignInBattle.Id,
-                        CharacterType.ENEMY.ToString(), currentEnemyAssignInBattle.EnemyName,
-                        0, lastBattleState.EnemyHealth, FightAction.FIGHT_ACTION_ENEMY_IS_DEAD), _clock.CurrentDate());
-            }
-
             var currentBattleState = CreateCurrentBattleState(lastBattleState, battle.Id, player, currentEnemiesInBattle, battle.Map);
             IsEnemyAlive(currentBattleState, quantity);
             DoAction(action, player, currentBattleState);
@@ -116,6 +104,17 @@ namespace RPG_GAME.Application.Managers
                 await IncreaseExp(battle, player, currentEnemyAssignInBattle, hero);
                 UpdatePlayer(player, battle);
                 await AddOrUpdateBattleState(currentBattleState, lastBattleState);
+
+                if (battle.EnemiesKilled.Sum(ek => ek.Value) >= enemiesToKill)
+                {
+                    //_playerIncreaseStatsManager.IncreasePlayerStats(player, hero); REFRESH PLAYER STATS
+                    var battleStateCompleted = BattleState.Completed(battle.Id, player, _clock.CurrentDate());
+                    battle.EndBattle(_clock.CurrentDate(), BattleInfo.Won.ToString(), battleStateCompleted);
+                    return new BattleEvent(Guid.NewGuid(), battle.Id,
+                    new FightAction(enemyId, CharacterType.ENEMY.ToString(),
+                        currentEnemyAssignInBattle.EnemyName, 0, currentBattleState.EnemyHealth, FightAction.FIGHT_ACTION_ENEMY_IS_DEAD),
+                        _clock.CurrentDate());
+                }
 
                 return new BattleEvent(Guid.NewGuid(), battle.Id,
                 new FightAction(enemyId, CharacterType.ENEMY.ToString(),
@@ -148,11 +147,129 @@ namespace RPG_GAME.Application.Managers
                         CharacterType.ENEMY.ToString(), currentEnemyAssignInBattle.EnemyName, 
                         enemyAttack.Damage, currentBattleState.EnemyHealth, enemyAttack.AttackName), _clock.CurrentDate());
         }
+        
+        public async Task<BattleEvent> CreateBattleEvent(Battle battle, Guid enemyId, Player player, string action)
+        {
+            if (battle.BattleInfo != BattleInfo.InProgress)
+            {
+                throw new CannotCreateEventForBattleWithInfoException(battle.Id, battle.BattleInfo.ToString());
+            }
+
+            var hero = await _heroRepository.GetAsync(player.Hero.Id);
+
+            if (hero is null)
+            {
+                throw new HeroNotFoundException(player.Hero.Id);
+            }
+
+            var enemiesToKill = battle.Map.Enemies.Sum(e => e.Quantity);
+            var currentEnemiesInBattle = battle.Map.Enemies.FirstOrDefault(e => e.Enemy.Id == enemyId);
+            var currentEnemyAssignInBattle = currentEnemiesInBattle.Enemy;
+            var quantity = currentEnemiesInBattle.Quantity;
+
+            if (battle.EnemiesKilled.Sum(e => e.Value) >= enemiesToKill)
+            {
+                throw new InvalidOperationException($"All enemies was killed for battle with id: '{battle.Id}'");
+            }
+
+            var enemyKilled = battle.EnemiesKilled.Where(e => e.Key == enemyId).SingleOrDefault();
+
+            if ((!enemyKilled.Equals(default(KeyValuePair<Guid, int>))) && enemyKilled.Value >= quantity)
+            {
+                throw new InvalidOperationException($"Enemy with id: '{enemyId}' was killed '{enemyKilled.Value}' times");
+            }
+
+            var previousPlayerLevel = player.Level;
+            var currentBattleState = await StrikeAsync(player, currentEnemyAssignInBattle, battle.Id, action);
+
+            if (currentBattleState.EnemyHealth <= 0)
+            {
+                battle.AddKilledEnemy(enemyId);
+
+                if (player.Level > previousPlayerLevel)
+                {
+                    _playerIncreaseStatsManager.IncreasePlayerStats(player, hero);
+                    await CalculateEnemy(battle, currentEnemyAssignInBattle.Id, player.Level);
+                    await _currentBattleStateRepository.UpdateAsync(currentBattleState);
+                }
+
+                UpdatePlayer(player, battle);
+                
+                if (battle.EnemiesKilled.Sum(ek => ek.Value) >= enemiesToKill)
+                {
+                    //_playerIncreaseStatsManager.IncreasePlayerStats(player, hero); REFRESH PLAYER STATS
+                    var battleStateCompleted = BattleState.Completed(battle.Id, player, _clock.CurrentDate());
+                    battle.EndBattle(_clock.CurrentDate(), BattleInfo.Won.ToString(), battleStateCompleted);
+                }
+
+                return new BattleEvent(Guid.NewGuid(), battle.Id,
+                new FightAction(enemyId, CharacterType.ENEMY.ToString(),
+                        currentEnemyAssignInBattle.EnemyName, 0, currentBattleState.EnemyHealth, FightAction.FIGHT_ACTION_ENEMY_IS_DEAD),
+                        _clock.CurrentDate());
+            }
+
+            UpdatePlayer(player, battle);
+
+            if (currentBattleState.PlayerCurrentHealth <= 0)
+            {
+                var battleStateCompleted = BattleState.Completed(battle.Id, player, _clock.CurrentDate());
+                battle.EndBattle(_clock.CurrentDate(), BattleInfo.Lost.ToString(), battleStateCompleted);
+            }
+
+            return new BattleEvent(Guid.NewGuid(), battle.Id,
+                new FightAction(currentEnemyAssignInBattle.Id,
+                        CharacterType.ENEMY.ToString(), currentEnemyAssignInBattle.EnemyName,
+                        currentBattleState.EnemyDamageDealt, currentBattleState.EnemyHealth, currentBattleState.EnemyAttackName), _clock.CurrentDate());
+        }
+
+        public async Task<CurrentBattleState> StrikeAsync(Player player, EnemyAssign enemyAssign, Guid battleId, string action)
+        {
+            var lastBattleState = await _currentBattleStateRepository.GetByBattleIdAsync(battleId);
+            var currentBattleState = CreateCurrentBattleState(lastBattleState, battleId, player, enemyAssign);
+            DoAction(action, player, currentBattleState);
+
+            if (currentBattleState.EnemyHealth <= 0)
+            {
+                currentBattleState.AddEnemyKilled(enemyAssign.Id);
+                IncreaseExp(player, enemyAssign);
+                await AddOrUpdateBattleState(currentBattleState, lastBattleState);
+                return currentBattleState;
+            }
+
+            var enemyAttack = _enemyAttackManager.AttackHeroWithDamage(enemyAssign);
+            var healthHero = player.Hero.Health;
+            player.Hero.ChangeHealth(healthHero - enemyAttack.Damage);
+            currentBattleState.MakeDamageToPlayer(enemyAttack.Damage);
+            currentBattleState.EnemyDamageDealt = enemyAttack.Damage;
+            currentBattleState.EnemyAttackName = enemyAttack.AttackName;
+            await AddOrUpdateBattleState(currentBattleState, lastBattleState);
+
+            return currentBattleState;
+        }
 
         private void UpdatePlayer(Player player, Battle battle)
         {
             var battleState = battle.GetBattleStateInAction();
             battleState.UpdatePlayer(player, _clock.CurrentDate());
+        }
+
+        private CurrentBattleState CreateCurrentBattleState(CurrentBattleState lastBattleState, Guid battleId, Player player, EnemyAssign enemyAssign)
+        {
+            if (lastBattleState is null)
+            {
+                return new CurrentBattleState(Guid.NewGuid(), battleId, player.Id, player.Hero.Health, player.Level, enemyAssign.Id, enemyAssign.Health, _clock.CurrentDate());
+            }
+
+            if (lastBattleState.EnemyHealth <= 0)
+            {
+                return new CurrentBattleState(Guid.NewGuid(), battleId, player.Id, player.Hero.Health, player.Level, enemyAssign.Id, enemyAssign.Health, _clock.CurrentDate());
+            }
+
+            var currentBattleState = new CurrentBattleState(lastBattleState.Id, lastBattleState.BattleId, lastBattleState.PlayerId, lastBattleState.PlayerCurrentHealth,
+               lastBattleState.PlayerLevel, lastBattleState.EnemyId, lastBattleState.EnemyHealth, _clock.CurrentDate(),
+               lastBattleState.EnemiesKilled);
+
+            return currentBattleState;
         }
 
         // TODO: Refactor in future
@@ -202,6 +319,7 @@ namespace RPG_GAME.Application.Managers
             if (action.ToLowerInvariant() == "heal")
             {
                 HealPlayer(player, currentBattleState);
+                currentBattleState.PlayerAction = "heal";
                 return;
             }
 
@@ -222,6 +340,8 @@ namespace RPG_GAME.Application.Managers
         {
             var damage = GetPlayerDamage(action, player);
             currentBattleState.MakeDamageToEnemy(damage);
+            currentBattleState.PlayerDamageDealt = damage;
+            currentBattleState.PlayerAction = action;
         }
 
         private static int GetPlayerDamage(string action, Player player)
@@ -259,6 +379,16 @@ namespace RPG_GAME.Application.Managers
             {
                 await _currentBattleStateRepository.UpdateAsync(currentBattleState);
             }
+        }
+
+        private void IncreaseExp(Player player, EnemyAssign enemyAssign)
+        {
+            var experienceToIncrease = enemyAssign.Experience;
+            do
+            {
+                experienceToIncrease = player.IncreaseCurrentExpBy(experienceToIncrease);
+            }
+            while (player.CurrentExp > player.RequiredExp);
         }
 
         private async Task IncreaseExp(Battle battle, Player player, EnemyAssign enemyAssign, Hero hero)

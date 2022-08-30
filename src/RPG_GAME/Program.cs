@@ -48,7 +48,7 @@ namespace RPG_GAME
                     ? enemyId : nextEnemy != null ? nextEnemy.Enemy.Id : enemyId;
             }
 
-            while (enemiesCount >= 0 && playerHealth > 0)
+            while (enemiesCount > 0 && playerHealth > 0)
             {
                 response = await client.AddBattleEventAsync(new AddBattleEventRequest { BattleId = battleId, Action = "Cyclon", EnemyId = enemyId, PlayerId = playerId });
                 Console.WriteLine(response.ToString());
@@ -73,6 +73,7 @@ namespace RPG_GAME
             {
                 Console.WriteLine("Battle Won!");
             }
+            Console.WriteLine($"Player Health {playerHealth}");
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
         }

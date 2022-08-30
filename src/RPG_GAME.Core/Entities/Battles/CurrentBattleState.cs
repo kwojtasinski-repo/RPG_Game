@@ -12,8 +12,12 @@ namespace RPG_GAME.Core.Entities.Battles
         public Guid PlayerId { get; }
         public int PlayerCurrentHealth { get; private set; }
         public int PlayerLevel { get; private set; }
+        public int PlayerDamageDealt { get; set; }
+        public string PlayerAction { get; set; }
         public Guid EnemyId { get; }
         public int EnemyHealth { get; private set; }
+        public string EnemyAttackName { get; set; }
+        public int EnemyDamageDealt { get; set; }
         public DateTime ModifiedDate { get; }
         public IEnumerable<Guid> EnemiesKilled => _enemiesKilled;
         
