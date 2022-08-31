@@ -2,11 +2,11 @@
 {
     public sealed class HeroNotFoundException : BusinessException
     {
-        public Guid Id { get; }
+        public Guid HeroId { get; }
 
-        public HeroNotFoundException(Guid id) : base($"Hero with id '{id}' was not found.")
+        public HeroNotFoundException(Guid heroId) : base($"Hero with id '{heroId}' was not found.")
         {
-            Id = id;
+            HeroId = heroId;
         }
     }
 }

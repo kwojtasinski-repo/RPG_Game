@@ -14,18 +14,18 @@ namespace RPG_GAME.Application.Managers
             _logger = logger;
         }
 
-        public void IncreaseHeroStats(int level, HeroAssign heroAssign, Hero hero)
+        public void CalculateHeroStats(int level, HeroAssign heroAssign, Hero hero)
         {
             heroAssign.ChangeAttack(CalculateStats(hero.Attack.Value, hero.Attack.IncreasingState.Value, hero.Attack.IncreasingState.StrategyIncreasing, level));
             heroAssign.ChangeHealLvl(CalculateStats(hero.HealLvl.Value, hero.HealLvl.IncreasingState.Value, hero.HealLvl.IncreasingState.StrategyIncreasing, level));
             heroAssign.ChangeHealth(CalculateStats(hero.Health.Value, hero.Health.IncreasingState.Value, hero.Health.IncreasingState.StrategyIncreasing, level));
-            IncreaseHeroSkills(level, heroAssign, hero.Skills);
+            CalculateHeroSkills(level, heroAssign, hero.Skills);
         }
 
-        public void IncreasePlayerStats(Player player, Hero hero)
+        public void CalculatePlayerStats(Player player, Hero hero)
         {
             player.ChangeRequiredExp(CalculateStats(player.RequiredExp, hero.BaseRequiredExperience.IncreasingState.Value, hero.BaseRequiredExperience.IncreasingState.StrategyIncreasing, player.Level));
-            IncreaseHeroStats(player.Level, player.Hero, hero);
+            CalculateHeroStats(player.Level, player.Hero, hero);
         }
 
         private int CalculateStats(int stats, int increasingValue, StrategyIncreasing strategyIncreasing, int level)
@@ -80,7 +80,7 @@ namespace RPG_GAME.Application.Managers
             }
         }
 
-        public void IncreaseHeroSkills(int level, HeroAssign heroAssign, IEnumerable<SkillHero> skills)
+        public void CalculateHeroSkills(int level, HeroAssign heroAssign, IEnumerable<SkillHero> skills)
         {
             foreach (var skill in heroAssign.Skills)
             {

@@ -169,14 +169,14 @@ namespace RPG_GAME.Application.Managers
 
             if (battle.EnemiesKilled.Sum(e => e.Value) >= enemiesToKill)
             {
-                throw new InvalidOperationException($"All enemies was killed for battle with id: '{battle.Id}'");
+                throw new EnemiesWereKilledForBattleException(battle.Id);
             }
 
             var enemyKilled = battle.EnemiesKilled.Where(e => e.Key == enemyId).SingleOrDefault();
 
             if ((!enemyKilled.Equals(default(KeyValuePair<Guid, int>))) && enemyKilled.Value >= quantity)
             {
-                throw new InvalidOperationException($"Enemy with id: '{enemyId}' was killed '{enemyKilled.Value}' times");
+                throw new EnemyWasKilledException(enemyId, enemyKilled.Value);
             }
 
             var previousPlayerLevel = player.Level;
@@ -188,7 +188,7 @@ namespace RPG_GAME.Application.Managers
 
                 if (player.Level > previousPlayerLevel)
                 {
-                    _playerIncreaseStatsManager.IncreasePlayerStats(player, hero);
+                    _playerIncreaseStatsManager.CalculatePlayerStats(player, hero);
                     await CalculateEnemy(battle, currentEnemyAssignInBattle.Id, player.Level);
                     await _currentBattleStateRepository.UpdateAsync(currentBattleState);
                 }
@@ -197,7 +197,7 @@ namespace RPG_GAME.Application.Managers
                 
                 if (battle.EnemiesKilled.Sum(ek => ek.Value) >= enemiesToKill)
                 {
-                    //_playerIncreaseStatsManager.IncreasePlayerStats(player, hero); REFRESH PLAYER STATS
+                    _playerIncreaseStatsManager.CalculatePlayerStats(player, hero);
                     var battleStateCompleted = BattleState.Completed(battle.Id, player, _clock.CurrentDate());
                     battle.EndBattle(_clock.CurrentDate(), BattleInfo.Won.ToString(), battleStateCompleted);
                 }
@@ -401,7 +401,7 @@ namespace RPG_GAME.Application.Managers
 
                 if (player.Level > previousPlayerLevel)
                 {
-                    _playerIncreaseStatsManager.IncreasePlayerStats(player, hero);
+                    _playerIncreaseStatsManager.CalculatePlayerStats(player, hero);
                     await CalculateEnemy(battle, enemyAssign.Id, player.Level);
                 }
             }

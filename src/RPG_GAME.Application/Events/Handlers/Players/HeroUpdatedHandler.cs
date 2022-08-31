@@ -40,7 +40,7 @@ namespace RPG_GAME.Application.Events.Handlers.Players
                 }
 
                 await _heroAssignUpdaterDomainService.ChangeHeroAssignFieldsAsync(player.Hero, new HeroAssignFieldsToUpdate(@event.HeroName, @event.SkillsToUpdate));
-                _playerIncreaseStatsManager.IncreaseHeroSkills(player.Level, player.Hero, @event.Skills);
+                _playerIncreaseStatsManager.CalculateHeroSkills(player.Level, player.Hero, @event.Skills);
                 await _playerRepository.UpdateAsync(player);
             }
         }

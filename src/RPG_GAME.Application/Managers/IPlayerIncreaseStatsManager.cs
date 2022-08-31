@@ -5,8 +5,8 @@ namespace RPG_GAME.Application.Managers
 {
     public interface IPlayerIncreaseStatsManager
     {
-        void IncreaseHeroStats(int level, HeroAssign heroAssign, Hero hero);
-        void IncreasePlayerStats(Player player, Hero hero);
-        void IncreaseHeroSkills(int level, HeroAssign hero, IEnumerable<SkillHero> skills);
+        void CalculateHeroStats(int level, HeroAssign heroAssign, Hero hero);
+        void CalculatePlayerStats(Player player, Hero hero);
+        void CalculateHeroSkills(int level, HeroAssign hero, IEnumerable<SkillHero> skills);
     }
 }
