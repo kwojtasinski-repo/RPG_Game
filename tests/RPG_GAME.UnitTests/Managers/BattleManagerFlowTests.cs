@@ -9,6 +9,7 @@ using RPG_GAME.Core.Entities.Enemies;
 using RPG_GAME.Core.Entities.Heroes;
 using RPG_GAME.Core.Entities.Maps;
 using RPG_GAME.Core.Entities.Players;
+using RPG_GAME.Core.Exceptions.Battles;
 using RPG_GAME.Core.Repositories;
 using RPG_GAME.UnitTests.Fixtures;
 using RPG_GAME.UnitTests.Stubs;
@@ -178,7 +179,7 @@ namespace RPG_GAME.UnitTests.Managers
             var map = CreateMap(enemy);
             var hero = EntitiesFixture.CreateDefaultHero();
             var player = CreatePlayer(hero, userId);
-            var action = "attack";
+            var action = HeroAssign.Action.BASE_ATTACK;
             var battle = BattleFixture.CreateBattleInProgress(_clock.CurrentDate(), userId, map, player);
             var expectedException = new HeroNotFoundException(hero.Id);
 
@@ -229,13 +230,7 @@ namespace RPG_GAME.UnitTests.Managers
             var player = CreatePlayer(hero, userId);
             var action = hero.Skills.First().Name;
             var battle = BattleFixture.CreateBattleInProgress(_clock.CurrentDate(), userId, map, player);
-            map.Enemies.ToList().ForEach(e =>
-            {
-                for (int i = 0; i < e.Quantity; i++)
-                {
-                    battle.AddKilledEnemy(e.Enemy.Id);
-                }
-            });
+            AddAllKilledEnemiesToBattle(battle, map);
             var expectedException = new EnemiesWereKilledForBattleException(battle.Id);
 
             var exception = await Record.ExceptionAsync(() => _battleManager.CreateBattleEvent(battle, enemy.Id, player, action));
@@ -244,6 +239,163 @@ namespace RPG_GAME.UnitTests.Managers
             exception.Message.Should().Be(expectedException.Message);
             exception.Should().BeOfType(expectedException.GetType());
             ((EnemiesWereKilledForBattleException)exception).BattleId.Should().Be(expectedException.BattleId);
+        }
+
+        [Fact]
+        public async Task player_should_strike_enemy_and_kill()
+        {
+            Guid userId = Guid.NewGuid();
+            var hero = await AddDefaultHero();
+            var player = CreatePlayer(hero, userId);
+            var enemy = EntitiesFixture.CreateDefaultEnemy().AsAssign();
+            enemy.ChangeHealth(1);
+            var battleId = Guid.NewGuid();
+            var action = HeroAssign.Action.BASE_ATTACK;
+
+            var currentBattleState = await _battleManager.StrikeAsync(player, enemy, battleId, action);
+
+            currentBattleState.Should().NotBeNull();
+            currentBattleState.PlayerAction.Should().Be(action);
+            currentBattleState.EnemyHealth.Should().BeLessThanOrEqualTo(0);
+            currentBattleState.EnemiesKilled.Should().NotBeEmpty();
+            currentBattleState.EnemiesKilled.Should().Contain(enemy.Id);
+        }
+
+        [Fact]
+        public async Task player_should_strike_enemy()
+        {
+            Guid userId = Guid.NewGuid();
+            var hero = await AddDefaultHero();
+            var player = CreatePlayer(hero, userId);
+            var enemy = EntitiesFixture.CreateDefaultEnemy().AsAssign();
+            enemy.ChangeHealth(1000);
+            var battleId = Guid.NewGuid();
+            var action = HeroAssign.Action.BASE_ATTACK;
+
+            var currentBattleState = await _battleManager.StrikeAsync(player, enemy, battleId, action);
+
+            currentBattleState.Should().NotBeNull();
+            currentBattleState.PlayerAction.Should().Be(action);
+            currentBattleState.EnemyDamageDealt.Should().BeGreaterThan(0);
+        }
+
+        [Fact]
+        public async Task player_should_strike_enemy_and_be_killed()
+        {
+            Guid userId = Guid.NewGuid();
+            var hero = await AddDefaultHero();
+            var player = CreatePlayer(hero, userId);
+            player.Hero.ChangeHealth(1);
+            var enemy = EntitiesFixture.CreateDefaultEnemy().AsAssign();
+            enemy.ChangeHealth(1000);
+            var battleId = Guid.NewGuid();
+            var action = HeroAssign.Action.BASE_ATTACK;
+
+            var currentBattleState = await _battleManager.StrikeAsync(player, enemy, battleId, action);
+
+            currentBattleState.Should().NotBeNull();
+            currentBattleState.PlayerAction.Should().Be(action);
+            currentBattleState.PlayerCurrentHealth.Should().BeLessThanOrEqualTo(0);
+            currentBattleState.EnemyDamageDealt.Should().BeGreaterThan(0);
+        }
+
+        [Fact]
+        public async Task given_invalid_action_when_strike_shouldnt_do_any_dmg()
+        {
+            Guid userId = Guid.NewGuid();
+            var hero = await AddDefaultHero();
+            var player = CreatePlayer(hero, userId);
+            player.Hero.ChangeHealth(1000);
+            var enemy = EntitiesFixture.CreateDefaultEnemy().AsAssign();
+            var battleId = Guid.NewGuid();
+            var action = "test123";
+
+            var currentBattleState = await _battleManager.StrikeAsync(player, enemy, battleId, action);
+
+            currentBattleState.Should().NotBeNull();
+            currentBattleState.PlayerDamageDealt.Should().Be(0);
+        }
+
+        [Fact]
+        public async Task given_null_action_when_strike_should_throw_an_exception()
+        {
+            Guid userId = Guid.NewGuid();
+            var hero = await AddDefaultHero();
+            var player = CreatePlayer(hero, userId);
+            player.Hero.ChangeHealth(1000);
+            var enemy = EntitiesFixture.CreateDefaultEnemy().AsAssign();
+            var battleId = Guid.NewGuid();
+            var expectedException = new InvalidAttackException(null);
+
+            var exception = await Record.ExceptionAsync(() => _battleManager.StrikeAsync(player, enemy, battleId, null));
+
+            exception.Should().NotBeNull();
+            exception.Message.Should().Be(expectedException.Message);
+            exception.Should().BeOfType(expectedException.GetType());
+        }
+
+        [Fact]
+        public async Task should_complete_battle_as_won()
+        {
+            var enemy = await AddDefaultEnemy();
+            var enemy2 = await AddDefaultEnemy();
+            var quantity = 2;
+            var map = CreateMap(new List<Enemy>() { enemy, enemy2 }, quantity);
+            Guid userId = Guid.NewGuid();
+            var hero = await AddDefaultHero();
+            var player = CreatePlayer(hero, userId);
+            var battle = BattleFixture.CreateBattleInProgress(_clock.CurrentDate(), userId, map, player);
+            AddAllKilledEnemiesToBattle(battle, map);
+
+            await _battleManager.CompleteBattle(battle, player);
+
+            battle.BattleInfo.Should().Be(BattleInfo.Won);
+        }
+
+        [Fact]
+        public async Task should_complete_battle_as_lost()
+        {
+            var enemy = await AddDefaultEnemy();
+            Guid userId = Guid.NewGuid();
+            var map = CreateMap(enemy);
+            var hero = await AddDefaultHero();
+            var player = CreatePlayer(hero, userId);
+            var battle = BattleFixture.CreateBattleInProgress(_clock.CurrentDate(), userId, map, player);
+
+            await _battleManager.CompleteBattle(battle, player);
+
+            battle.BattleInfo.Should().Be(BattleInfo.Lost);
+        }
+
+        [Fact]
+        public async Task given_invalid_battle_when_complete_should_throw_an_exception()
+        {
+            var enemy = await AddDefaultEnemy();
+            Guid userId = Guid.NewGuid();
+            var map = CreateMap(enemy);
+            var hero = await AddDefaultHero();
+            var player = CreatePlayer(hero, userId);
+            var battle = BattleFixture.CreateBattleAtPrepare(_clock.CurrentDate(), userId, map, player);
+            await _battleManager.CompleteBattle(battle, player);
+            var expectedException = new BattleStateAlreadyExistsException(BattleStatus.Completed);
+
+            var exception = await Record.ExceptionAsync(() => _battleManager.CompleteBattle(battle, player));
+
+            exception.Should().NotBeNull();
+            exception.Message.Should().Be(expectedException.Message);
+            exception.Should().BeOfType(expectedException.GetType());
+            ((BattleStateAlreadyExistsException)exception).BattleStatus.Should().Be(expectedException.BattleStatus);
+        }
+
+        private void AddAllKilledEnemiesToBattle(Battle battle, Map map)
+        {
+            map.Enemies.ToList().ForEach(e =>
+            {
+                for (int i = 0; i < e.Quantity; i++)
+                {
+                    battle.AddKilledEnemy(e.Enemy.Id);
+                }
+            });
         }
 
         private async Task<Enemy> AddDefaultEnemy()

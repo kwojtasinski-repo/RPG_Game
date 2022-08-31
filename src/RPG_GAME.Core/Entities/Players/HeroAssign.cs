@@ -76,5 +76,10 @@ namespace RPG_GAME.Core.Entities.Players
 
             _skills = skills.ToList();
         }
+
+        public static class Action
+        {
+            public const string BASE_ATTACK = "attack";
+        }
     }
 }
