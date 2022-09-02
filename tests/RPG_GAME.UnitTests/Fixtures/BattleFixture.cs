@@ -22,7 +22,7 @@ namespace RPG_GAME.UnitTests.Fixtures
         public static Battle CreateBattleInProgress(DateTime startDate, Guid userId, Map map, Player player)
         {
             var battle = CreateBattleAtPrepare(startDate, userId, map, player);
-            battle.AddBattleStateAtInProgress(BattleState.InAction(battle.Id, player, startDate));
+            battle.AddBattleStateAtInAction(BattleState.InAction(battle.Id, player, startDate));
             return battle;
         }
     }

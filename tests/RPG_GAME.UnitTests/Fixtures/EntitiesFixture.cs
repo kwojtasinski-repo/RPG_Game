@@ -1,10 +1,12 @@
 ﻿using RPG_GAME.Application.DTO.Common;
 using RPG_GAME.Application.DTO.Enemies;
 using RPG_GAME.Application.DTO.Heroes;
+using RPG_GAME.Application.Mappings;
 using RPG_GAME.Core.Entities.Common;
 using RPG_GAME.Core.Entities.Enemies;
 using RPG_GAME.Core.Entities.Heroes;
 using RPG_GAME.Core.Entities.Maps;
+using RPG_GAME.Core.Entities.Players;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +70,16 @@ namespace RPG_GAME.UnitTests.Fixtures
                 new State<decimal>(hero.BaseRequiredExperience.Value, new IncreasingState<decimal>(hero.BaseRequiredExperience.IncreasingState.Value, hero.BaseRequiredExperience.IncreasingState.StrategyIncreasing.ToString())),
                 hero.Skills.Select(s => new SkillHero(s.Id, s.Name, s.BaseAttack, new IncreasingState<int>(s.IncreasingState.Value, s.IncreasingState.StrategyIncreasing.ToString()))),
                 hero.PlayersAssignedTo.Select(p => p));
+        }
+
+        public static Player CreateDefaultPlayer(Hero hero, Guid userId)
+        { 
+            return Player.Create("Player#1", hero.AsAssign(), 1000, userId);
+        }
+
+        public static Player CreateDefaultPlayer(HeroAssign hero, Guid userId)
+        { 
+            return Player.Create("Player#1", hero, 1000, userId);
         }
 
         public static HeroDto Clone(HeroDto heroDto)

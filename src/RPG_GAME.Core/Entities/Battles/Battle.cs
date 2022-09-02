@@ -80,15 +80,25 @@ namespace RPG_GAME.Core.Entities.Battles
                 throw new InvalidBattleStateException();
             }
 
+            if (battleState.BattleStatus != BattleStatus.Prepare)
+            {
+                throw new InvalidBattleStatusException(battleState.BattleStatus.ToString());
+            }
+
             PolicyAddingBattleStates(battleState);
             _battleStates.Add(battleState);
         }
 
-        public void AddBattleStateAtInProgress(BattleState battleState)
+        public void AddBattleStateAtInAction(BattleState battleState)
         {
             if (battleState is null)
             {
                 throw new InvalidBattleStateException();
+            }
+
+            if (battleState.BattleStatus != BattleStatus.InAction)
+            {
+                throw new InvalidBattleStatusException(battleState.BattleStatus.ToString());
             }
 
             BattleInfo = BattleInfo.InProgress;

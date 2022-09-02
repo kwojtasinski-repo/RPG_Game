@@ -57,7 +57,7 @@ namespace RPG_GAME.Application.Commands.Battles.Handlers
             }
 
             var battleState = BattleState.InAction(command.BattleId, player, _clock.CurrentDate());
-            battle.AddBattleStateAtInProgress(battleState);
+            battle.AddBattleStateAtInAction(battleState);
             await _battleRepository.UpdateAsync(battle);
             var enemy = battle.GetEnemyToFight();
 
