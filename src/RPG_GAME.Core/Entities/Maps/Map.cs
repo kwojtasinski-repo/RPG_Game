@@ -59,6 +59,11 @@ namespace RPG_GAME.Core.Entities.Maps
                 throw new InvalidMapDifficultyException(difficulty);
             }
 
+            if (!Enum.IsDefined(difficultyType))
+            {
+                throw new InvalidMapDifficultyException(difficulty);
+            }
+
             Difficulty = difficultyType;
         }
 

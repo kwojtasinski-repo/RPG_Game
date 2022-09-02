@@ -40,6 +40,11 @@ namespace RPG_GAME.Core.Entities.Maps
                 throw new InvalidEnemyAssignDifficultyException(difficulty);
             }
 
+            if (!Enum.IsDefined(difficultyType))
+            {
+                throw new InvalidEnemyAssignDifficultyException(difficulty);
+            }
+
             Difficulty = difficultyType;
 
             var parsedCategory = Enum.TryParse<Category>(category, out var categoryType);

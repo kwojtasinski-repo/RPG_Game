@@ -23,6 +23,11 @@ namespace RPG_GAME.Core.Entities.Common
             {
                 throw new InvalidStrategyIncreasingException(strategyIncreasing);
             }
+            
+            if (!Enum.IsDefined(strategyIncreasingParsed))
+            {
+                throw new InvalidStrategyIncreasingException(strategyIncreasing);
+            }
 
             StrategyIncreasing = strategyIncreasingParsed;
         }

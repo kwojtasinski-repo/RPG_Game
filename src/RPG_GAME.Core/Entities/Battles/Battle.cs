@@ -70,7 +70,7 @@ namespace RPG_GAME.Core.Entities.Battles
 
         public static Battle Create(DateTime startDate, Guid userId, Map map)
         {
-            return new Battle(Guid.NewGuid(), startDate, userId, "Starting", map);
+            return new Battle(Guid.NewGuid(), startDate, userId, BattleInfo.Starting.ToString(), map);
         }
 
         public void AddBattleStateAtPrepare(BattleState battleState)
@@ -160,6 +160,11 @@ namespace RPG_GAME.Core.Entities.Battles
                 throw new InvalidBattleInfoException(battleInfo);
             }
 
+            if (!Enum.IsDefined(battleInfoParsed))
+            {
+                throw new InvalidBattleInfoException(battleInfo);
+            }
+
             BattleInfo = battleInfoParsed;
         }
 
@@ -195,7 +200,7 @@ namespace RPG_GAME.Core.Entities.Battles
             return battleState.Player;
         }
 
-        public void ChangeMap(Map map)
+        private void ChangeMap(Map map)
         {
             if (map is null)
             {
@@ -207,9 +212,28 @@ namespace RPG_GAME.Core.Entities.Battles
 
         public void AddKilledEnemy(Guid enemyId)
         {
+            if (BattleInfo != BattleInfo.InProgress)
+            {
+                throw new CannotAddKilledEnemyToBattleWithBattleInfoException(BattleInfo);
+            }
+
             if (enemyId == Guid.Empty)
             {
                 throw new InvalidEnemyIdException();
+            }
+
+            var enemy = Map.Enemies.SingleOrDefault(e => e.Enemy.Id == enemyId);
+
+            if (enemy is null)
+            {
+                throw new CannotAddEnemyOutsideMapException(enemyId);
+            }
+
+            var countEnemy = _enemiesKilled.Where(e => e == enemyId).Count();
+
+            if (countEnemy == enemy.Quantity)
+            {
+                throw new EnemiesKilledQuantityHasBeenExceededException(enemyId);
             }
 
             _enemiesKilled.Add(enemyId);

@@ -121,6 +121,11 @@ namespace RPG_GAME.Core.Entities.Enemies
                 throw new InvalidEnemyDifficultyException(difficulty);
             }
 
+            if (!Enum.IsDefined(difficultyType))
+            {
+                throw new InvalidEnemyDifficultyException(difficulty);
+            }
+
             Difficulty = difficultyType;
         }
 
@@ -129,6 +134,11 @@ namespace RPG_GAME.Core.Entities.Enemies
             var parsed = Enum.TryParse<Category>(category, out var categoryType);
 
             if (!parsed)
+            {
+                throw new InvalidEnemyCategoryException(category);
+            }
+
+            if (!Enum.IsDefined(categoryType))
             {
                 throw new InvalidEnemyCategoryException(category);
             }

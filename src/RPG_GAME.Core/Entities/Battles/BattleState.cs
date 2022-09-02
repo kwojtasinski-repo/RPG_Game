@@ -47,6 +47,11 @@ namespace RPG_GAME.Core.Entities.Battles
                 throw new InvalidBattleStatusException(battleStatus);
             }
 
+            if (!Enum.IsDefined(battleStatusParsed))
+            {
+                throw new InvalidBattleStatusException(battleStatus);
+            }
+
             BattleStatus = battleStatusParsed;
         }
 

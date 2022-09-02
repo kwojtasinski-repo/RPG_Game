@@ -34,6 +34,11 @@ namespace RPG_GAME.Core.Entities.Battles.Actions
                 throw new InvalidCharacterTypeException(character);
             }
 
+            if (!Enum.IsDefined(characterParsed))
+            {
+                throw new InvalidCharacterTypeException(character);
+            }
+
             Character = characterParsed;
         }
     }
