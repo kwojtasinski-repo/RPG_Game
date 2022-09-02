@@ -46,7 +46,7 @@ namespace RPG_GAME.Application.Managers
                     for (int i = 1; i < level; i++)
                     {
                         var increasedValue = (int)Math.Ceiling(increasingValue * stats / 100.0);
-                        value += increasedValue + value;
+                        value += increasedValue;
                     }
 
                     return value;
@@ -54,7 +54,7 @@ namespace RPG_GAME.Application.Managers
                     value = stats;
                     for (int i = 1; i < level; i++)
                     {
-                        value += increasingValue + value;
+                        value += increasingValue;
                     }
 
                     return value;
@@ -72,7 +72,7 @@ namespace RPG_GAME.Application.Managers
                     for (int i = 1; i < level; i++)
                     {
                         var increasedValue = increasingValue * stats / 100;
-                        value += increasedValue + value;
+                        value += increasedValue;
                     }
 
                     return value;
@@ -80,7 +80,7 @@ namespace RPG_GAME.Application.Managers
                     value = stats;
                     for (int i = 1; i < level; i++)
                     {
-                        value += increasingValue + value;
+                        value += increasingValue;
                     }
 
                     return value;
