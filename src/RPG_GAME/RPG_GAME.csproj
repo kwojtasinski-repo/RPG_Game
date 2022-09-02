@@ -6,16 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RPG_GAME.Service\RPG_GAME.Service.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
 	<PackageReference Include="Google.Protobuf" Version="3.21.5" />
 	<PackageReference Include="Grpc.Net.Client" Version="2.47.0" />
 	<PackageReference Include="Grpc.Tools" Version="2.48.0">
 		<PrivateAssets>all</PrivateAssets>
 		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	</PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RPG_GAME.Application\RPG_GAME.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

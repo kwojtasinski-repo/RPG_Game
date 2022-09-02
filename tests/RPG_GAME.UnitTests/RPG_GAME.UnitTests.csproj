@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\RPG_GAME.Application\RPG_GAME.Application.csproj" />
-    <ProjectReference Include="..\..\src\RPG_GAME.Service\RPG_GAME.Service.csproj" />
   </ItemGroup>
 
 </Project>

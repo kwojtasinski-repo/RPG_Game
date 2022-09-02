@@ -25,17 +25,17 @@ namespace RPG_GAME.Core.Entities.Battles
 
         public static BattleState Prepare(Guid battleId, Player player, DateTime created)
         {
-            return new BattleState(Guid.NewGuid(), "Prepare", battleId, player, created);
+            return new BattleState(Guid.NewGuid(), BattleStatus.Prepare.ToString(), battleId, player, created);
         }
 
         public static BattleState InAction(Guid battleId, Player player, DateTime created)
         {
-            return new BattleState(Guid.NewGuid(), "InAction", battleId, player, created);
+            return new BattleState(Guid.NewGuid(), BattleStatus.InAction.ToString(), battleId, player, created);
         }
 
         public static BattleState Completed(Guid battleId, Player player, DateTime created)
         {
-            return new BattleState(Guid.NewGuid(), "Completed", battleId, player, created);
+            return new BattleState(Guid.NewGuid(), BattleStatus.Completed.ToString(), battleId, player, created);
         }
 
         private void ChangeBattleStatus(string battleStatus)
@@ -70,6 +70,16 @@ namespace RPG_GAME.Core.Entities.Battles
             if (player.Hero is null)
             {
                 throw new InvalidPlayerException();
+            }
+
+            if (modified == default)
+            {
+                throw new InvalidModifiedDateException();
+            }
+
+            if (Modified is not null && Modified > modified)
+            {
+                throw new ModifiedDateCannotBeBeforeException(Modified.Value, modified);
             }
 
             Player = player;
