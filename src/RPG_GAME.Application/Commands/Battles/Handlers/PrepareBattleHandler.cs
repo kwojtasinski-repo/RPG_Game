@@ -2,6 +2,7 @@
 using RPG_GAME.Application.Exceptions.Auth;
 using RPG_GAME.Application.Exceptions.Battles;
 using RPG_GAME.Application.Exceptions.Enemies;
+using RPG_GAME.Application.Exceptions.Maps;
 using RPG_GAME.Application.Managers;
 using RPG_GAME.Application.Mappings;
 using RPG_GAME.Application.Time;
@@ -51,6 +52,12 @@ namespace RPG_GAME.Application.Commands.Battles.Handlers
             }
 
             var map = await _mapRepository.GetAsync(command.MapId);
+
+            if (map is null)
+            {
+                throw new MapNotFoundException(command.MapId);
+            }
+
             await CalculateMapEnemies(map, player.Level);
             var battle = Battle.Create(_clock.CurrentDate(), command.UserId, map);
             var battleState = BattleState.Prepare(battle.Id, player, _clock.CurrentDate());
@@ -62,6 +69,11 @@ namespace RPG_GAME.Application.Commands.Battles.Handlers
 
         private async Task CalculateMapEnemies(Map map, int level)
         {
+            if (!map.Enemies.Any())
+            {
+                throw new CannotPrepareBattleForMapWithEmptyEnemiesException(map.Id);
+            }
+
             foreach(var enemies in map.Enemies)
             {
                 // TODO change getting data to get all for map not 1 by 1 from db

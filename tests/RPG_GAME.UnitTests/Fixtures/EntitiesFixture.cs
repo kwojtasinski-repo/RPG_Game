@@ -7,6 +7,7 @@ using RPG_GAME.Core.Entities.Enemies;
 using RPG_GAME.Core.Entities.Heroes;
 using RPG_GAME.Core.Entities.Maps;
 using RPG_GAME.Core.Entities.Players;
+using RPG_GAME.Core.Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,11 @@ namespace RPG_GAME.UnitTests.Fixtures
             return new Enemy(Guid.NewGuid(), "Enemy", new State<int>(100, DefaultIncreasingState<int>()), new State<int>(100, DefaultIncreasingState<int>()),
                     new State<int>(10, DefaultIncreasingState<int>()), new State<decimal>(1000, DefaultIncreasingState<decimal>()),
                     "EASY", "Knight");
+        }
+
+        public static User CreateDefaultUser(string email, string password, string role = null, DateTime? created = null)
+        {
+            return new User(Guid.NewGuid(), email, password, role ?? "user", created ?? DateTime.UtcNow);
         }
 
         public static IncreasingState<T> DefaultIncreasingState<T>()

@@ -9,7 +9,7 @@ namespace RPG_GAME.UnitTests.Fixtures
     {
         public static Battle CreateDefaultBattle(DateTime startDate, Guid userId, Map map, string battleInfo = null)
         {
-            return new Battle(Guid.NewGuid(), startDate, userId, battleInfo ?? "Starting", map);
+            return new Battle(Guid.NewGuid(), startDate, userId, battleInfo ?? BattleInfo.Starting.ToString(), map);
         }
 
         public static Battle CreateBattleAtPrepare(DateTime startDate, Guid userId, Map map, Player player)

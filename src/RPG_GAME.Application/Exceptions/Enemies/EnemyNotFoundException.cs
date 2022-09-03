@@ -2,11 +2,11 @@
 {
     public sealed class EnemyNotFoundException : BusinessException
     {
-        public Guid Id { get; }
+        public Guid EnemyId { get; }
 
-        public EnemyNotFoundException(Guid id) : base($"Enemy with id '{id}' was not found.")
+        public EnemyNotFoundException(Guid enemyId) : base($"Enemy with id '{enemyId}' was not found.")
         {
-            Id = id;
+            EnemyId = enemyId;
         }
     }
 }
