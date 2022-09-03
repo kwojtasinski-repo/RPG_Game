@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using RPG_GAME.Infrastructure.Grpc.Interceptors;
 using RPG_GAME.Infrastructure.Grpc.Services;
 
 namespace RPG_GAME.Infrastructure.Grpc
@@ -8,7 +9,10 @@ namespace RPG_GAME.Infrastructure.Grpc
     {
         public static IServiceCollection AddGrpcCommunication(this IServiceCollection services)
         {
-            services.AddGrpc();
+            services.AddGrpc(options =>
+            {
+                options.Interceptors.Add<GrpcExceptionInterceptor>();
+            });
             return services;
         }
 
