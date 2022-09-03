@@ -39,13 +39,14 @@ namespace RPG_GAME.Application.Commands.Battles.Handlers
                 throw new BattleNotFoundException(command.BattleId);
             }
 
-            if ((battle.UserId != command.UserId) || (user.Role.ToLowerInvariant() != "admin"))
+            if (battle.UserId != command.UserId && user.Role.ToLowerInvariant() != "admin")
             {
-                throw new CannotStartBattleForUserException(command.BattleId, command.UserId);
+                throw new CannotCompleteBattleForUserException(command.BattleId, command.UserId);
             }
 
             var battleStateInAction = battle.GetBattleStateInAction();
             var playerToUpdate = await _battleManager.CompleteBattle(battle, battleStateInAction.Player);
+            await _battleRepository.UpdateAsync(battle);
             await _playerRepository.UpdateAsync(playerToUpdate);
             
             return battle.AsDetailsDto();

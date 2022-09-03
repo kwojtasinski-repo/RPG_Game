@@ -25,5 +25,12 @@ namespace RPG_GAME.UnitTests.Fixtures
             battle.AddBattleStateAtInAction(BattleState.InAction(battle.Id, player, startDate));
             return battle;
         }
+
+        public static Battle CreateBattleCompleted(DateTime startDate, Guid userId, Map map, Player player, BattleInfo battleInfo)
+        {
+            var battle = CreateBattleInProgress(startDate, userId, map, player);
+            battle.EndBattle(startDate, battleInfo.ToString(), BattleState.Completed(battle.Id, player, startDate));
+            return battle;
+        }
     }
 }

@@ -42,11 +42,11 @@ namespace RPG_GAME.Application.Managers
 
             if (battle.EnemiesKilled.Sum(ek => ek.Value) != enemiesToKill)
             {
-                var playerNotChanged = battle.EndBattle(_clock.CurrentDate(), "Lost", battleState);
+                var playerNotChanged = battle.EndBattle(_clock.CurrentDate(), BattleInfo.Lost.ToString(), battleState);
                 return Task.FromResult(playerNotChanged);
             }
 
-            var playerToUpdate = battle.EndBattle(_clock.CurrentDate(), "Won", battleState);
+            var playerToUpdate = battle.EndBattle(_clock.CurrentDate(), BattleInfo.Won.ToString(), battleState);
             return Task.FromResult(playerToUpdate);
         }
 

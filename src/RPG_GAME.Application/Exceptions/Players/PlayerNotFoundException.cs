@@ -2,11 +2,11 @@
 {
     public sealed class PlayerNotFoundException : BusinessException
     {
-        public Guid Id { get; }
+        public Guid PlayerId { get; }
 
-        public PlayerNotFoundException(Guid id) : base($"Player with id '{id}' was not found.")
+        public PlayerNotFoundException(Guid playerId) : base($"Player with id '{playerId}' was not found.")
         {
-            Id = id;
+            PlayerId = playerId;
         }
     }
 }

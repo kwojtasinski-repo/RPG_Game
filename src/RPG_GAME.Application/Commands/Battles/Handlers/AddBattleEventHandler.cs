@@ -1,5 +1,6 @@
 ﻿using RPG_GAME.Application.DTO.Battles;
 using RPG_GAME.Application.Exceptions.Battles;
+using RPG_GAME.Application.Exceptions.Players;
 using RPG_GAME.Application.Managers;
 using RPG_GAME.Application.Mappings;
 using RPG_GAME.Core.Repositories;
@@ -33,14 +34,14 @@ namespace RPG_GAME.Application.Commands.Battles.Handlers
 
             if (battle.BattleInfo != Core.Entities.Battles.BattleInfo.InProgress)
             {
-                throw new InvalidOperationException("Battle is not in correct state");
+                throw new CannotAddBattleEventForBattleInfoException(battle.BattleInfo);
             }
 
             var player = await _playerRepository.GetAsync(command.PlayerId);
             
             if (player is null)
             {
-                throw new PlayerForUserNotFoundException(command.PlayerId);
+                throw new PlayerNotFoundException(command.PlayerId);
             }
 
             var playerToUpdate = battle.GetBattleStateInAction().Player;
