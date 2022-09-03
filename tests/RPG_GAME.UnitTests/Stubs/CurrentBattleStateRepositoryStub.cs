@@ -26,6 +26,9 @@ namespace RPG_GAME.UnitTests.Stubs
         public async Task UpdateAsync(CurrentBattleState currentBattleState)
         {
             await Task.CompletedTask;
+            var battleState = _currentBattleStates.Single(cbs => cbs.Id == currentBattleState.Id);
+            _currentBattleStates.Remove(battleState);
+            _currentBattleStates.Add(currentBattleState);
         }
     }
 }

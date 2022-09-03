@@ -6,7 +6,7 @@ namespace RPG_GAME.UnitTests.Stubs
     internal sealed class LoggerStub<T>
         where T : class
     {
-        private static readonly object s_lock = new object();
+        private static readonly object s_lock = new();
         private static ILogger<T> _logger = null;
 
         private LoggerStub() { }

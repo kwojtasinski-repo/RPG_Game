@@ -179,7 +179,7 @@ namespace RPG_GAME.Application.Managers
 
             if (lastBattleState.EnemyHealth <= 0)
             {
-                return new CurrentBattleState(Guid.NewGuid(), battleId, player.Id, player.Hero.Health, player.Level, enemyAssign.Id, enemyAssign.Health, _clock.CurrentDate());
+                return new CurrentBattleState(lastBattleState.Id, battleId, player.Id, player.Hero.Health, player.Level, enemyAssign.Id, enemyAssign.Health, _clock.CurrentDate(), lastBattleState.EnemiesKilled);
             }
 
             var currentBattleState = new CurrentBattleState(lastBattleState.Id, lastBattleState.BattleId, lastBattleState.PlayerId, lastBattleState.PlayerCurrentHealth,
