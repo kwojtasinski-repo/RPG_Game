@@ -1,13 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Common\Protos\battle.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.8" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="Shouldly" Version="4.0.3" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -19,10 +22,28 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+	<PackageReference Include="Google.Protobuf" Version="3.21.5" />
+	<PackageReference Include="Grpc.Net.Client" Version="2.47.0" />
+	<PackageReference Include="Grpc.Tools" Version="2.48.0">
+		<PrivateAssets>all</PrivateAssets>
+		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\RPG_Game.Infrastructure\RPG_Game.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\RPG_GAME.Api\RPG_GAME.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Api\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Common\Protos\battle.proto" GrpcServices="Client" />
+  </ItemGroup>
+	
+  <ItemGroup>
+	<InternalsVisibleTo Include="RPG_GAME.IntegrationTests" />
   </ItemGroup>
 
 </Project>
