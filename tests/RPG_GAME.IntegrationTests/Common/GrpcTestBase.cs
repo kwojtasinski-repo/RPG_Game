@@ -4,7 +4,8 @@ using Xunit;
 
 namespace RPG_GAME.IntegrationTests.Common
 {
-    public class GrpcTestBase : IClassFixture<TestApplicationFactory<Program>>, IDisposable
+    [Collection("TestCollection")]
+    public class GrpcTestBase : IDisposable
     {
         private GrpcChannel _channel;
 

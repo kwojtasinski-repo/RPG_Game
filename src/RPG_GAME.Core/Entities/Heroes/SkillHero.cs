@@ -29,7 +29,7 @@ namespace RPG_GAME.Core.Entities.Heroes
     public class SkillHero<T>
         where T : struct
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; private set; } = Guid.NewGuid();
         public string Name { get; private set; }
         public virtual T BaseAttack { get; private set; }
         public IncreasingState<T> IncreasingState { get; private set; }

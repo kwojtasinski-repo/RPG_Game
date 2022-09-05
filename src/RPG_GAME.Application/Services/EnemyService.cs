@@ -122,10 +122,10 @@ namespace RPG_GAME.Application.Services
                 throw new InvalidEnemyDifficultyException(enemyDto.Difficulty);
             }
 
-            ValidateState(enemyDto.BaseAttack);
-            ValidateState(enemyDto.BaseHealLvl);
-            ValidateState(enemyDto.BaseHealth);
-            ValidateState(enemyDto.Experience);
+            ValidateState(enemyDto.BaseAttack, nameof(EnemyDto.BaseAttack));
+            ValidateState(enemyDto.BaseHealLvl, nameof(EnemyDto.BaseHealLvl));
+            ValidateState(enemyDto.BaseHealth, nameof(EnemyDto.BaseHealth));
+            ValidateState(enemyDto.Experience, nameof(EnemyDto.Experience));
 
             ValidateStrategyIncresing(enemyDto.BaseAttack.IncreasingState.StrategyIncreasing);
             ValidateStrategyIncresing(enemyDto.BaseHealLvl.IncreasingState.StrategyIncreasing);
@@ -153,17 +153,17 @@ namespace RPG_GAME.Application.Services
             }
         }
 
-        private static void ValidateState<T>(StateDto<T> state)
+        private static void ValidateState<T>(StateDto<T> state, string name)
             where T : struct
         {
             if (state is null)
             {
-                throw new InvalidEnemyStateException();
+                throw new InvalidEnemyStateException(name);
             }
 
             if (state.IncreasingState is null)
             {
-                throw new InvalidEnemyIncreasingStateException();
+                throw new InvalidEnemyIncreasingStateException(name);
             }
         }
     }

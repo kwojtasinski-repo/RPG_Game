@@ -2,8 +2,11 @@
 {
     public sealed class InvalidEnemyIncreasingStateException : BusinessException
     {
-        public InvalidEnemyIncreasingStateException() : base("Invalid enemy increasing state")
+        public string Name { get; }
+
+        public InvalidEnemyIncreasingStateException(string name) : base($"Invalid enemy increasing state '{name}'")
         {
+            Name = name;
         }
     }
 }

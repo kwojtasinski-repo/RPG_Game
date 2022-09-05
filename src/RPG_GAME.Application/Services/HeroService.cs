@@ -111,10 +111,10 @@ namespace RPG_GAME.Application.Services
 
         private static void Validate(HeroDto heroDto)
         {
-            ValidateState(heroDto.Attack);
-            ValidateState(heroDto.HealLvl);
-            ValidateState(heroDto.Health);
-            ValidateState(heroDto.BaseRequiredExperience);
+            ValidateState(heroDto.Attack, nameof(HeroDto.Attack));
+            ValidateState(heroDto.HealLvl, nameof(HeroDto.HealLvl));
+            ValidateState(heroDto.Health, nameof(HeroDto.Health));
+            ValidateState(heroDto.BaseRequiredExperience, nameof(HeroDto.BaseRequiredExperience));
 
             ValidateStrategyIncresing(heroDto.Attack.IncreasingState.StrategyIncreasing);
             ValidateStrategyIncresing(heroDto.HealLvl.IncreasingState.StrategyIncreasing);
@@ -132,17 +132,17 @@ namespace RPG_GAME.Application.Services
             }
         }
 
-        private static void ValidateState<T>(StateDto<T> state)
+        private static void ValidateState<T>(StateDto<T> state, string name)
             where T : struct
         {
             if (state is null)
             {
-                throw new InvalidHeroStateException();
+                throw new InvalidHeroStateException(name);
             }
 
             if (state.IncreasingState is null)
             {
-                throw new InvalidHeroIncreasingStateException();
+                throw new InvalidHeroIncreasingStateException(name);
             }
         }
 

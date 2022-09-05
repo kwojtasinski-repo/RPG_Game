@@ -2,8 +2,11 @@
 {
     public sealed class InvalidEnemyStateException : BusinessException
     {
-        public InvalidEnemyStateException() : base("Invalid enemy state")
+        public string Name { get; }
+
+        public InvalidEnemyStateException(string name) : base($"Invalid enemy state '{name}'")
         {
+            Name = name;
         }
     }
 }

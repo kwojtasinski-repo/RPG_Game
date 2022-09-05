@@ -2,8 +2,11 @@
 {
     public sealed class InvalidHeroStateException : BusinessException
     {
-        public InvalidHeroStateException() : base("Invalid hero state")
+        public string Name { get; }
+
+        public InvalidHeroStateException(string name) : base($"Invalid hero state '{name}'")
         {
+            Name = name;
         }
     }
 }

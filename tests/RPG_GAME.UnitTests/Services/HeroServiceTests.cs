@@ -44,7 +44,7 @@ namespace RPG_GAME.UnitTests.Services
                 HealLvl = new StateDto<int> { Value = 5, IncreasingState = new IncreasingStateDto<int> { Value = 1, StrategyIncreasing = "ADDITIVE" } },
                 BaseRequiredExperience = new StateDto<decimal> { Value = 100, IncreasingState = new IncreasingStateDto<decimal> { Value = 20, StrategyIncreasing = "ADDITIVE" } }
             };
-            var expectedException = new InvalidHeroStateException();
+            var expectedException = new InvalidHeroStateException(nameof(HeroDto.Attack));
 
             var exception = await Record.ExceptionAsync(() => _heroService.AddAsync(hero));
 
@@ -63,7 +63,7 @@ namespace RPG_GAME.UnitTests.Services
                 HealLvl = new StateDto<int> { Value = 5, IncreasingState = new IncreasingStateDto<int> { Value = 1, StrategyIncreasing = "ADDITIVE" } },
                 BaseRequiredExperience = new StateDto<decimal> { Value = 100, IncreasingState = new IncreasingStateDto<decimal> { Value = 20, StrategyIncreasing = "ADDITIVE" } }
             };
-            var expectedException = new InvalidHeroIncreasingStateException();
+            var expectedException = new InvalidHeroIncreasingStateException(nameof(HeroDto.Attack));
 
             var exception = await Record.ExceptionAsync(() => _heroService.AddAsync(hero));
 

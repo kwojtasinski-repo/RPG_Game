@@ -2,8 +2,11 @@
 {
     public sealed class InvalidHeroIncreasingStateException : BusinessException
     {
-        public InvalidHeroIncreasingStateException() : base("Invalid hero increasing state")
+        public string Name { get; }
+
+        public InvalidHeroIncreasingStateException(string name) : base("Invalid hero increasing state '{name}'")
         {
+            Name = name;
         }
     }
 }

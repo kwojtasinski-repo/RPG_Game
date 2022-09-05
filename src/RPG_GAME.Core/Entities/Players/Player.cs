@@ -78,6 +78,16 @@ namespace RPG_GAME.Core.Entities.Players
             return decimal.Zero;
         }
 
+        public void ChangeCurrentExp(decimal currentExp)
+        {
+            if (currentExp is < 0)
+            {
+                throw new PlayerCurrentExpCannotBeNegativeException(currentExp);
+            }
+
+            CurrentExp = currentExp;
+        }
+
         public void ChangeRequiredExp(decimal requiredExp)
         {
             if (requiredExp is <= 0)

@@ -49,7 +49,7 @@ namespace RPG_GAME.UnitTests.Services
                 Experience = new StateDto<decimal> { Value = 100, IncreasingState = new IncreasingStateDto<decimal> { Value = 20, StrategyIncreasing = "ADDITIVE" } },
                 Difficulty = "HARD"
             };
-            var expectedException = new InvalidEnemyStateException();
+            var expectedException = new InvalidEnemyStateException(nameof(EnemyDto.BaseAttack));
 
             var exception = await Record.ExceptionAsync(() => _enemyService.AddAsync(enemy));
 
@@ -89,7 +89,7 @@ namespace RPG_GAME.UnitTests.Services
                 Experience = new StateDto<decimal> { Value = 100, IncreasingState = new IncreasingStateDto<decimal> { Value = 20, StrategyIncreasing = "ADDITIVE" } },
                 Difficulty = "MEDIUM"
             };
-            var expectedException = new InvalidEnemyIncreasingStateException();
+            var expectedException = new InvalidEnemyIncreasingStateException(nameof(EnemyDto.BaseAttack));
 
             var exception = await Record.ExceptionAsync(() => _enemyService.AddAsync(enemy));
 
