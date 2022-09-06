@@ -20,7 +20,7 @@ namespace RPG_GAME.UnitTests.Stubs
         public async Task<BattleEvent> GetAsync(Guid id)
         {
             await Task.CompletedTask;
-            return _battleEvents.SingleOrDefault(b => b.BattleId == id);
+            return _battleEvents.SingleOrDefault(b => b.Id == id);
         }
 
         public async Task<IEnumerable<BattleEvent>> GetByBattleIdAsync(Guid battleId)

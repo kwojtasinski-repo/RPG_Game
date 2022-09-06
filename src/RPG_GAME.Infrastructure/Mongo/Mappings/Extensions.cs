@@ -386,6 +386,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
             return new FightActionDocument
             {
                 CharacterId = fightAction.CharacterId,
+                Character = Enum.Parse<Documents.CharacterType>(fightAction.Character.ToString()),
                 Name = fightAction.Name,
                 AttackInfo = fightAction.AttackInfo,
                 DamageDealt = fightAction.DamageDealt,

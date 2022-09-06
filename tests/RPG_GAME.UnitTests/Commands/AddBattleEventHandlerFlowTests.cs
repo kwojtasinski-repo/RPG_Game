@@ -45,6 +45,26 @@ namespace RPG_GAME.UnitTests.Commands
         }
 
         [Fact]
+        public async Task should_create_battle_event_and_store_in_database()
+        {
+            var userId = Guid.NewGuid();
+            var hero = await AddDefaultHero();
+            var player = await AddDefaultPlayer(hero, userId);
+            var enemy = await AddDefaultEnemy();
+            var map = EntitiesFixture.CreateDefaultMap(enemies: new List<Enemies> { new Enemies(enemy.AsAssign(), 2) });
+            var battle = await AddDefaultBattle(DateTime.Now, Guid.NewGuid(), map, player);
+            var command = new AddBattleEvent { BattleId = battle.Id, EnemyId = enemy.Id, PlayerId = player.Id, Action = HeroAssign.Action.BASE_ATTACK };
+
+            var battleEvent = await _handler.HandleAsync(command);
+
+            var battleEventAdded = await _battleEventRepository.GetAsync(battleEvent.Id);
+            battleEventAdded.Should().NotBeNull();
+            battleEventAdded.BattleId.Should().Be(battle.Id);
+            battleEventAdded.Action.CharacterId.Should().Be(enemy.Id);
+            battleEventAdded.Action.Character.Should().Be(CharacterType.ENEMY);
+        }
+
+        [Fact]
         public async Task should_create_battle_event_and_create_current_battle_state()
         {
             var userId = Guid.NewGuid();
