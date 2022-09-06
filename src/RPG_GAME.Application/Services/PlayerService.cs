@@ -76,7 +76,6 @@ namespace RPG_GAME.Application.Services
             player.ChangeRequiredExp(playerDto.RequiredExp);
             player.Hero.ChangeAttack(playerDto.HeroAttack);
             player.Hero.ChangeHealth(playerDto.HeroHealth);
-            player.Hero.ChangeHealLvl(playerDto.HeroHealLvl);
 
             if (playerDto.HeroSkills is null)
             {

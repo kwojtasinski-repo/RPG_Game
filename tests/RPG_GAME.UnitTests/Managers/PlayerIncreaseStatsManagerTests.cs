@@ -18,7 +18,7 @@ namespace RPG_GAME.UnitTests.Managers
         public void should_calculate_hero_skills()
         {
             var skillHero = new SkillHero(Guid.NewGuid(), "skill", 100, new IncreasingState<int>(10, StrategyIncreasing.PERCENTAGE.ToString()));
-            var heroAssign = new HeroAssign(Guid.NewGuid(), "hero", 120, 120, 10, new List<SkillHeroAssign> { skillHero.AsAssign() });
+            var heroAssign = new HeroAssign(Guid.NewGuid(), "hero", 120, 120, new List<SkillHeroAssign> { skillHero.AsAssign() });
             var level = 5;
             var calculatedSkillAttack = 140;
 
@@ -33,7 +33,7 @@ namespace RPG_GAME.UnitTests.Managers
         {
             var skillHero = new SkillHero(Guid.NewGuid(), "skill", 1000, new IncreasingState<int>(10, StrategyIncreasing.PERCENTAGE.ToString()));
             var hero = new Hero(Guid.NewGuid(), "hero", new State<int>(100, new IncreasingState<int>(10, StrategyIncreasing.PERCENTAGE.ToString())), new State<int>(100, new IncreasingState<int>(10, StrategyIncreasing.PERCENTAGE.ToString())),
-                    new State<int>(100, new IncreasingState<int>(10, StrategyIncreasing.PERCENTAGE.ToString())), new State<decimal>(1000, new IncreasingState<decimal>(10, StrategyIncreasing.PERCENTAGE.ToString())),
+                    new State<decimal>(1000, new IncreasingState<decimal>(10, StrategyIncreasing.PERCENTAGE.ToString())),
                     new List<SkillHero> { skillHero });
             var heroToCalculate = hero.AsAssign();
             var level = 5;
@@ -48,7 +48,6 @@ namespace RPG_GAME.UnitTests.Managers
             skillAfterCalculate.Attack.Should().Be(calculatedSkillAttack);
             heroToCalculate.Attack.Should().Be(calculatedAttack);
             heroToCalculate.Health.Should().Be(calculatedHealth);
-            heroToCalculate.HealLvl.Should().Be(calculatedHeal);
         }
 
         [Fact]
@@ -56,7 +55,7 @@ namespace RPG_GAME.UnitTests.Managers
         {
             var skillHero = new SkillHero(Guid.NewGuid(), "skill", 1000, new IncreasingState<int>(10, StrategyIncreasing.PERCENTAGE.ToString()));
             var hero = new Hero(Guid.NewGuid(), "hero", new State<int>(100, new IncreasingState<int>(10, StrategyIncreasing.PERCENTAGE.ToString())), new State<int>(100, new IncreasingState<int>(10, StrategyIncreasing.PERCENTAGE.ToString())),
-                    new State<int>(100, new IncreasingState<int>(10, StrategyIncreasing.PERCENTAGE.ToString())), new State<decimal>(1000, new IncreasingState<decimal>(10, StrategyIncreasing.PERCENTAGE.ToString())),
+                    new State<decimal>(1000, new IncreasingState<decimal>(10, StrategyIncreasing.PERCENTAGE.ToString())),
                     new List<SkillHero> { skillHero });
             var level = 5;
             var player = new Player(Guid.NewGuid(), "player", hero.AsAssign(), level, 0, 1000, Guid.NewGuid());
@@ -73,7 +72,6 @@ namespace RPG_GAME.UnitTests.Managers
             skillAfterCalculate.Attack.Should().Be(calculatedSkillAttack);
             player.Hero.Attack.Should().Be(calculatedAttack);
             player.Hero.Health.Should().Be(calculatedHealth);
-            player.Hero.HealLvl.Should().Be(calculatedHeal);
             player.RequiredExp.Should().Be(calculatedRequiredExp);
         }
 

@@ -28,7 +28,6 @@ namespace RPG_GAME.IntegrationTests.Api
                 HeroName = "Suop",
                 Attack = new StateDto<int> { Value = 10, IncreasingState = new IncreasingStateDto<int> { Value = 2, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
                 Health = new StateDto<int> { Value = 10, IncreasingState = new IncreasingStateDto<int> { Value = 2, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
-                HealLvl = new StateDto<int> { Value = 10, IncreasingState = new IncreasingStateDto<int> { Value = 2, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
                 BaseRequiredExperience = new StateDto<decimal> { Value = 1000, IncreasingState = new IncreasingStateDto<decimal> { Value = 200, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
                 Skills = new List<SkillHeroDto> { new SkillHeroDto { Name = "skill", BaseAttack = 20, IncreasingState = new IncreasingStateDto<int> { Value = 10, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } } }
             };
@@ -48,7 +47,6 @@ namespace RPG_GAME.IntegrationTests.Api
                 HeroName = "SuopA",
                 Attack = new StateDto<int> { Value = 10, IncreasingState = new IncreasingStateDto<int> { Value = 2, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
                 Health = new StateDto<int> { Value = 10, IncreasingState = new IncreasingStateDto<int> { Value = 2, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
-                HealLvl = new StateDto<int> { Value = 10, IncreasingState = new IncreasingStateDto<int> { Value = 2, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
                 BaseRequiredExperience = new StateDto<decimal> { Value = 1000, IncreasingState = new IncreasingStateDto<decimal> { Value = 200, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
                 Skills = new List<SkillHeroDto> { new SkillHeroDto { Name = "skill", BaseAttack = 20, IncreasingState = new IncreasingStateDto<int> { Value = 10, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } } }
             };
@@ -59,7 +57,6 @@ namespace RPG_GAME.IntegrationTests.Api
             var hero = await _repository.GetAsync(id);
             hero.Attack.Value.ShouldBe(dto.Attack.Value);
             hero.Health.Value.ShouldBe(dto.Health.Value);
-            hero.HealLvl.Value.ShouldBe(dto.HealLvl.Value);
             hero.BaseRequiredExperience.Value.ShouldBe(dto.BaseRequiredExperience.Value);
             hero.Skills.ShouldNotBeEmpty();
             hero.Skills.Count().ShouldBe(dto.Skills.Count());
@@ -75,7 +72,6 @@ namespace RPG_GAME.IntegrationTests.Api
                 HeroName = "SuopAC",
                 Attack = new StateDto<int> { Value = 10, IncreasingState = new IncreasingStateDto<int> { Value = 2, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
                 Health = new StateDto<int> { Value = 10, IncreasingState = new IncreasingStateDto<int> { Value = 2, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
-                HealLvl = new StateDto<int> { Value = 10, IncreasingState = new IncreasingStateDto<int> { Value = 2, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
                 BaseRequiredExperience = new StateDto<decimal> { Value = 1000, IncreasingState = new IncreasingStateDto<decimal> { Value = 200, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
                 Skills = new List<SkillHeroDto> { new SkillHeroDto { Name = "skill", BaseAttack = 20, IncreasingState = new IncreasingStateDto<int> { Value = 10, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } } }
             };
@@ -95,7 +91,6 @@ namespace RPG_GAME.IntegrationTests.Api
                 HeroName = "SuopB",
                 Attack = new StateDto<int> { Value = 12, IncreasingState = new IncreasingStateDto<int> { Value = 2, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
                 Health = new StateDto<int> { Value = 13, IncreasingState = new IncreasingStateDto<int> { Value = 2, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
-                HealLvl = new StateDto<int> { Value = 14, IncreasingState = new IncreasingStateDto<int> { Value = 2, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
                 BaseRequiredExperience = new StateDto<decimal> { Value = 1020, IncreasingState = new IncreasingStateDto<decimal> { Value = 200, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } },
                 Skills = new List<SkillHeroDto> { new SkillHeroDto { Name = "skillAbc", BaseAttack = 20, IncreasingState = new IncreasingStateDto<int> { Value = 10, StrategyIncreasing = StrategyIncreasing.ADDITIVE.ToString() } } }
             };
@@ -106,7 +101,6 @@ namespace RPG_GAME.IntegrationTests.Api
             var heroUpdated = await _repository.GetAsync(hero.Id);
             heroUpdated.Attack.Value.ShouldBe(dto.Attack.Value);
             heroUpdated.Health.Value.ShouldBe(dto.Health.Value);
-            heroUpdated.HealLvl.Value.ShouldBe(dto.HealLvl.Value);
             heroUpdated.BaseRequiredExperience.Value.ShouldBe(dto.BaseRequiredExperience.Value);
             heroUpdated.Skills.ShouldNotBeEmpty();
             heroUpdated.Skills.Count().ShouldBe(dto.Skills.Count());
@@ -217,7 +211,6 @@ namespace RPG_GAME.IntegrationTests.Api
             (
                 Guid.NewGuid(),
                 $"DefaultHero{Guid.NewGuid().ToString("N")}",
-                new State<int>(10, new IncreasingState<int>(2, StrategyIncreasing.ADDITIVE.ToString())),
                 new State<int>(10, new IncreasingState<int>(2, StrategyIncreasing.ADDITIVE.ToString())),
                 new State<int>(10, new IncreasingState<int>(2, StrategyIncreasing.ADDITIVE.ToString())),
                 new State<decimal>(1000, new IncreasingState<decimal>(200, StrategyIncreasing.ADDITIVE.ToString())),

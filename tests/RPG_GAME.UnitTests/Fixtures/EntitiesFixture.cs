@@ -19,7 +19,7 @@ namespace RPG_GAME.UnitTests.Fixtures
         public static Hero CreateDefaultHero()
         {
             return new Hero(Guid.NewGuid(), "Hero", new State<int>(100, DefaultIncreasingState<int>()), new State<int>(100, DefaultIncreasingState<int>()),
-                    new State<int>(10, DefaultIncreasingState<int>()), new State<decimal>(1000, DefaultIncreasingState<decimal>()));
+                    new State<decimal>(1000, DefaultIncreasingState<decimal>()));
         }
 
         public static Enemy CreateDefaultEnemy()
@@ -72,7 +72,7 @@ namespace RPG_GAME.UnitTests.Fixtures
         public static Hero Clone(Hero hero)
         {
             return new Hero(hero.Id, hero.HeroName, new State<int>(hero.Health.Value, new IncreasingState<int>(hero.Health.IncreasingState.Value, hero.Health.IncreasingState.StrategyIncreasing.ToString())),
-                new State<int>(hero.Attack.Value, new IncreasingState<int>(hero.Attack.IncreasingState.Value, hero.Attack.IncreasingState.StrategyIncreasing.ToString())), new State<int>(hero.HealLvl.Value, new IncreasingState<int>(hero.HealLvl.IncreasingState.Value, hero.HealLvl.IncreasingState.StrategyIncreasing.ToString())),
+                new State<int>(hero.Attack.Value, new IncreasingState<int>(hero.Attack.IncreasingState.Value, hero.Attack.IncreasingState.StrategyIncreasing.ToString())),
                 new State<decimal>(hero.BaseRequiredExperience.Value, new IncreasingState<decimal>(hero.BaseRequiredExperience.IncreasingState.Value, hero.BaseRequiredExperience.IncreasingState.StrategyIncreasing.ToString())),
                 hero.Skills.Select(s => new SkillHero(s.Id, s.Name, s.BaseAttack, new IncreasingState<int>(s.IncreasingState.Value, s.IncreasingState.StrategyIncreasing.ToString()))),
                 hero.PlayersAssignedTo.Select(p => p));
@@ -96,7 +96,6 @@ namespace RPG_GAME.UnitTests.Fixtures
                 HeroName = heroDto.HeroName,
                 Attack = new StateDto<int> { Value = heroDto.Attack.Value, IncreasingState = new IncreasingStateDto<int> { Value = heroDto.Attack.IncreasingState.Value, StrategyIncreasing = heroDto.Attack.IncreasingState.StrategyIncreasing.ToString() } },
                 Health = new StateDto<int> { Value = heroDto.Health.Value, IncreasingState = new IncreasingStateDto<int> { Value = heroDto.Health.IncreasingState.Value, StrategyIncreasing = heroDto.Health.IncreasingState.StrategyIncreasing.ToString() } },
-                HealLvl = new StateDto<int> { Value = heroDto.HealLvl.Value, IncreasingState = new IncreasingStateDto<int> { Value = heroDto.HealLvl.IncreasingState.Value, StrategyIncreasing = heroDto.HealLvl.IncreasingState.StrategyIncreasing.ToString() } },
                 BaseRequiredExperience = new StateDto<decimal> { Value = heroDto.BaseRequiredExperience.Value, IncreasingState = new IncreasingStateDto<decimal> { Value = heroDto.BaseRequiredExperience.IncreasingState.Value, StrategyIncreasing = heroDto.BaseRequiredExperience.IncreasingState.StrategyIncreasing.ToString() } },
                 Skills = heroDto.Skills,
             };

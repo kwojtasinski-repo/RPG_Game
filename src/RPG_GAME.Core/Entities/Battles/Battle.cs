@@ -141,7 +141,7 @@ namespace RPG_GAME.Core.Entities.Battles
             {
                 var heroSkills = battleState.Player.Hero.Skills.Select(s => new SkillHeroAssign(s.Id, s.Name, s.Attack));
                 var hero = new HeroAssign(battleState.Player.Hero.Id, battleState.Player.Hero.HeroName, battleState.Player.Hero.Health, 
-                    battleState.Player.Hero.Attack, battleState.Player.Hero.HealLvl, heroSkills);
+                    battleState.Player.Hero.Attack, heroSkills);
                 var player = new Player(battleState.Player.Id, battleState.Player.Name, hero, 
                     battleState.Player.Level, battleState.Player.CurrentExp, battleState.Player.RequiredExp, battleState.Player.UserId);
                 battleStates.Add(new BattleState(battleState.Id, battleState.BattleStatus.ToString(), battleState.BattleId,

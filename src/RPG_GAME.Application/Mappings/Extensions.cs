@@ -47,7 +47,7 @@ namespace RPG_GAME.Application.Mappings
         {
             return new Hero(heroDto.Id, heroDto.HeroName,
                 heroDto.Health.AsEntity(), heroDto.Attack.AsEntity(),
-                heroDto.HealLvl.AsEntity(), heroDto.BaseRequiredExperience.AsEntity(),
+                heroDto.BaseRequiredExperience.AsEntity(),
                 heroDto.Skills.Select(s => s.AsEntity()));
         }
 
@@ -58,7 +58,6 @@ namespace RPG_GAME.Application.Mappings
                 hero.HeroName,
                 hero.Health.Value,
                 hero.Attack.Value,
-                hero.HealLvl.Value,
                 hero.Skills.Select(s => s.AsAssign())
             );
         }
@@ -70,7 +69,6 @@ namespace RPG_GAME.Application.Mappings
                 heroDto.HeroName,
                 heroDto.Health,
                 heroDto.Attack,
-                heroDto.HealLvl,
                 heroDto.Skills.Select(s => s.AsAssignEntity())
             );
         }
@@ -96,7 +94,6 @@ namespace RPG_GAME.Application.Mappings
                 Id = hero.Id,
                 HeroName = hero.HeroName,
                 Attack = hero.Attack,
-                HealLvl = hero.HealLvl,
                 Health = hero.Health,
                 Skills = hero.Skills.Select(s => s.AsDto())
             };
@@ -146,7 +143,6 @@ namespace RPG_GAME.Application.Mappings
             {
                 Id = hero.Id,
                 Attack = hero.Attack.AsDto(),
-                HealLvl = hero.HealLvl.AsDto(),
                 Health = hero.Health.AsDto(),
                 HeroName = hero.HeroName,
                 BaseRequiredExperience = hero.BaseRequiredExperience.AsDto(),
@@ -160,7 +156,6 @@ namespace RPG_GAME.Application.Mappings
             {
                 Id = hero.Id,
                 Attack = hero.Attack.AsDto(),
-                HealLvl = hero.HealLvl.AsDto(),
                 Health = hero.Health.AsDto(),
                 HeroName = hero.HeroName,
                 BaseRequiredExperience = hero.BaseRequiredExperience.AsDto(),

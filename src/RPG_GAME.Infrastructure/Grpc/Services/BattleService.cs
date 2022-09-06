@@ -80,7 +80,6 @@ namespace RPG_GAME.Infrastructure.Grpc.Services
                             Id = battle.Player.Hero.Id.ToString(),
                             HeroName = battle.Player.Hero.HeroName,
                             Attack = battle.Player.Hero.Attack,
-                            HealLvl = battle.Player.Hero.HealLvl,
                             Health = battle.Player.Hero.Health
                         }
                     }
@@ -178,7 +177,6 @@ namespace RPG_GAME.Infrastructure.Grpc.Services
                             Id = battle.Player.Hero.Id.ToString(),
                             HeroName = battle.Player.Hero.HeroName,
                             Attack = battle.Player.Hero.Attack,
-                            HealLvl = battle.Player.Hero.HealLvl,
                             Health = battle.Player.Hero.Health
                         }
                     }

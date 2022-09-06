@@ -25,7 +25,6 @@ namespace RPG_GAME.UnitTests.Services
                 Id = Guid.NewGuid(), HeroName = "Hero",
                 Attack = new StateDto<int> { Value = 10, IncreasingState = new IncreasingStateDto<int> { Value = 2, StrategyIncreasing = "ADDITIVE" } },
                 Health = new StateDto<int> { Value = 20, IncreasingState = new IncreasingStateDto<int> { Value = 5, StrategyIncreasing = "ADDITIVE" } },
-                HealLvl = new StateDto<int> { Value = 5, IncreasingState = new IncreasingStateDto<int> { Value = 1, StrategyIncreasing = "ADDITIVE" } },
                 BaseRequiredExperience = new StateDto<decimal> { Value = 100, IncreasingState = new IncreasingStateDto<decimal> { Value = 20, StrategyIncreasing = "ADDITIVE" } }
                 };
 
@@ -41,7 +40,6 @@ namespace RPG_GAME.UnitTests.Services
             {
                 Attack = null,
                 Health = new StateDto<int> { Value = 20, IncreasingState = new IncreasingStateDto<int> { Value = 5, StrategyIncreasing = "ADDITIVE" } },
-                HealLvl = new StateDto<int> { Value = 5, IncreasingState = new IncreasingStateDto<int> { Value = 1, StrategyIncreasing = "ADDITIVE" } },
                 BaseRequiredExperience = new StateDto<decimal> { Value = 100, IncreasingState = new IncreasingStateDto<decimal> { Value = 20, StrategyIncreasing = "ADDITIVE" } }
             };
             var expectedException = new InvalidHeroStateException(nameof(HeroDto.Attack));
@@ -60,7 +58,6 @@ namespace RPG_GAME.UnitTests.Services
             {
                 Attack = new StateDto<int> { Value = 20 },
                 Health = new StateDto<int> { Value = 20, IncreasingState = new IncreasingStateDto<int> { Value = 5, StrategyIncreasing = "ADDITIVE" } },
-                HealLvl = new StateDto<int> { Value = 5, IncreasingState = new IncreasingStateDto<int> { Value = 1, StrategyIncreasing = "ADDITIVE" } },
                 BaseRequiredExperience = new StateDto<decimal> { Value = 100, IncreasingState = new IncreasingStateDto<decimal> { Value = 20, StrategyIncreasing = "ADDITIVE" } }
             };
             var expectedException = new InvalidHeroIncreasingStateException(nameof(HeroDto.Attack));
@@ -79,7 +76,6 @@ namespace RPG_GAME.UnitTests.Services
             {
                 Attack = new StateDto<int> { Value = 20, IncreasingState = new IncreasingStateDto<int> { Value = 5, StrategyIncreasing = "" } },
                 Health = new StateDto<int> { Value = 20, IncreasingState = new IncreasingStateDto<int> { Value = 5, StrategyIncreasing = "ADDITIVE" } },
-                HealLvl = new StateDto<int> { Value = 5, IncreasingState = new IncreasingStateDto<int> { Value = 1, StrategyIncreasing = "ADDITIVE" } },
                 BaseRequiredExperience = new StateDto<decimal> { Value = 100, IncreasingState = new IncreasingStateDto<decimal> { Value = 20, StrategyIncreasing = "ADDITIVE" } }
             };
             var expectedException = new InvalidHeroStrategyIncreasingException(hero.Attack.IncreasingState.StrategyIncreasing);

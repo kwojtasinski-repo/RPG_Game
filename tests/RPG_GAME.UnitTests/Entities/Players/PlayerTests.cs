@@ -280,7 +280,7 @@ namespace RPG_GAME.UnitTests.Entities.Players
 
         private static HeroAssign DefaultHeroAssign()
         {
-            return new HeroAssign(Guid.NewGuid(), "Hero", 100, 20, 5);
+            return new HeroAssign(Guid.NewGuid(), "Hero", 100, 20);
         }
     }
 }

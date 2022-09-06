@@ -94,7 +94,6 @@ namespace RPG_GAME.UnitTests.Services
             playerUpdated.Name.Should().Be(dto.Name);
             playerUpdated.Hero.Attack.Should().Be(dto.HeroAttack);
             playerUpdated.Hero.Health.Should().Be(dto.HeroHealth);
-            playerUpdated.Hero.HealLvl.Should().Be(dto.HeroHealLvl);
             playerUpdated.CurrentExp.Should().Be(dto.CurrentExp);
             playerUpdated.RequiredExp.Should().Be(dto.RequiredExp);
         }

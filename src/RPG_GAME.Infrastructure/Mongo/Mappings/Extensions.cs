@@ -64,7 +64,6 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 Id = hero.Id,
                 HeroName = hero.HeroName,
                 Attack = hero.Attack,
-                HealLvl = hero.HealLvl,
                 Health = hero.Health,
                 Skills = hero.Skills.Select(s => s.AsDocument()),
             };
@@ -100,7 +99,6 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 heroAssignDocument.HeroName,
                 heroAssignDocument.Health,
                 heroAssignDocument.Attack,
-                heroAssignDocument.HealLvl,
                 heroAssignDocument.Skills.Select(s => s.AsEntity())
             );
         }
@@ -121,7 +119,6 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
                 Id = hero.Id,
                 HeroName = hero.HeroName,
                 Attack = hero.Attack.AsDocument(),
-                HealLvl = hero.HealLvl.AsDocument(),
                 Health = hero.Health.AsDocument(),
                 BaseRequiredExperience = hero.BaseRequiredExperience.AsDocument(),
                 Skills = hero.Skills.Select(s => s.AsDocument()),
@@ -164,8 +161,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
         {
             return new Hero(heroDocument.Id, heroDocument.HeroName,
                     heroDocument.Health.AsEntity(),
-                    heroDocument.Attack.AsEntity(), 
-                    heroDocument.HealLvl.AsEntity(), 
+                    heroDocument.Attack.AsEntity(),
                     heroDocument.BaseRequiredExperience.AsEntity(),
                     heroDocument.Skills.Select(s => s.AsEntity()), 
                     heroDocument.PlayersAssignedTo);

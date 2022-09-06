@@ -14,13 +14,13 @@ namespace RPG_GAME.UnitTests.Entities.Heroes
         private Hero Act(string heroName, int health, int attack, int healLvl, decimal experience,
             IEnumerable<SkillHero> skills = null)
                 => new Hero(Guid.NewGuid(), heroName, new State<int>(health, DefaultIncreasingState<int>()), new State<int>(attack, DefaultIncreasingState<int>()),
-                    new State<int>(healLvl, DefaultIncreasingState<int>()), new State<decimal>(experience, DefaultIncreasingState<decimal>()),
+                    new State<decimal>(experience, DefaultIncreasingState<decimal>()),
                     skills);
 
         private Hero Act(string heroName, int health, IncreasingState<int> healthIncreasing, int attack, IncreasingState<int> attackIncreasing, int healLvl, IncreasingState<int> healLvlIncreasing,
             decimal experience, IncreasingState<decimal> experienceIncreasing, IEnumerable<SkillHero> skills = null)
                 => new Hero(Guid.NewGuid(), heroName, new State<int>(health, healthIncreasing), new State<int>(attack, attackIncreasing),
-                    new State<int>(healLvl, healLvlIncreasing), new State<decimal>(experience, experienceIncreasing), skills);
+                    new State<decimal>(experience, experienceIncreasing), skills);
 
         [Fact]
         public void should_create_hero()
@@ -38,7 +38,6 @@ namespace RPG_GAME.UnitTests.Entities.Heroes
             hero.HeroName.Should().Be(name);
             hero.Attack.Value.Should().Be(attack);
             hero.Health.Value.Should().Be(health);
-            hero.HealLvl.Value.Should().Be(heal);
             hero.BaseRequiredExperience.Value.Should().Be(experience);
         }
 
@@ -64,8 +63,6 @@ namespace RPG_GAME.UnitTests.Entities.Heroes
             hero.HeroName.Should().Be(name);
             hero.Attack.Value.Should().Be(attack);
             hero.Attack.IncreasingState.Value.Should().Be(attackIncrease.Value);
-            hero.HealLvl.Value.Should().Be(heal);
-            hero.HealLvl.IncreasingState.Value.Should().Be(healIncrease.Value);
             hero.Health.Value.Should().Be(health);
             hero.Health.IncreasingState.Value.Should().Be(healthIncrease.Value);
             hero.BaseRequiredExperience.Value.Should().Be(experience);
@@ -119,7 +116,7 @@ namespace RPG_GAME.UnitTests.Entities.Heroes
             var expectedException = new InvalidHeroHealthException();
 
             var exception = Record.Exception(() => new Hero(Guid.NewGuid(), name, null, new State<int>(attack, DefaultIncreasingState<int>()),
-                    new State<int>(heal, DefaultIncreasingState<int>()), new State<decimal>(experience, DefaultIncreasingState<decimal>())));
+                    new State<decimal>(experience, DefaultIncreasingState<decimal>())));
 
             exception.Should().NotBeNull();
             exception.Should().BeOfType(expectedException.GetType());
@@ -169,7 +166,7 @@ namespace RPG_GAME.UnitTests.Entities.Heroes
             var expectedException = new InvalidHeroAttackException();
 
             var exception = Record.Exception(() => new Hero(Guid.NewGuid(), name, new State<int>(health, DefaultIncreasingState<int>()), null,
-                    new State<int>(heal, DefaultIncreasingState<int>()), new State<decimal>(experience, DefaultIncreasingState<decimal>())));
+                    new State<decimal>(experience, DefaultIncreasingState<decimal>())));
 
             exception.Should().NotBeNull();
             exception.Should().BeOfType(expectedException.GetType());
@@ -210,56 +207,6 @@ namespace RPG_GAME.UnitTests.Entities.Heroes
         }
 
         [Fact]
-        public void given_null_heal_should_throw_an_exception()
-        {
-            var name = "AbCDeF";
-            var health = 5;
-            var attack = 20;
-            var experience = 50M;
-            var expectedException = new InvalidHeroHealLvlException();
-
-            var exception = Record.Exception(() => new Hero(Guid.NewGuid(), name, new State<int>(health, DefaultIncreasingState<int>()), new State<int>(attack, DefaultIncreasingState<int>()),
-                    null, new State<decimal>(experience, DefaultIncreasingState<decimal>())));
-
-            exception.Should().NotBeNull();
-            exception.Should().BeOfType(expectedException.GetType());
-            exception.Message.Should().Be(expectedException.Message);
-        }
-
-        [Fact]
-        public void given_invalid_heal_should_throw_an_exception()
-        {
-            var name = "AbCDeF";
-            var health = 210;
-            var attack = 20;
-            var heal = 0;
-            var experience = 50M;
-            var expectedException = new HeroHealLvlCannotBeZeroOrNegativeException(heal);
-
-            var exception = Record.Exception(() => Act(name, health, attack, heal, experience));
-
-            exception.Should().NotBeNull();
-            exception.Should().BeOfType(expectedException.GetType());
-            exception.Message.Should().Be(expectedException.Message);
-        }
-
-        [Fact]
-        public void given_valid_heal_should_change_value()
-        {
-            var name = "Hero #1";
-            var health = 100;
-            var attack = 20;
-            var heal = 5;
-            var healModified = 120;
-            var experience = 50M;
-            var hero = Act(name, health, attack, heal, experience);
-
-            hero.ChangeHealLvl(new State<int>(healModified, DefaultIncreasingState<int>()));
-
-            hero.HealLvl.Value.Should().Be(healModified);
-        }
-
-        [Fact]
         public void given_null_experience_should_throw_an_exception()
         {
             var name = "AbCDeF";
@@ -269,7 +216,7 @@ namespace RPG_GAME.UnitTests.Entities.Heroes
             var expectedException = new InvalidHeroBaseRequiredExperienceException();
 
             var exception = Record.Exception(() => new Hero(Guid.NewGuid(), name, new State<int>(health, DefaultIncreasingState<int>()), new State<int>(attack, DefaultIncreasingState<int>()),
-                    new State<int>(heal, DefaultIncreasingState<int>()), null));
+                    null));
 
             exception.Should().NotBeNull();
             exception.Should().BeOfType(expectedException.GetType());
@@ -472,7 +419,7 @@ namespace RPG_GAME.UnitTests.Entities.Heroes
         private static Hero CreateDefaultHero()
         {
             return new Hero(Guid.NewGuid(), "Hero", new State<int>(100, DefaultIncreasingState<int>()), new State<int>(100, DefaultIncreasingState<int>()),
-                    new State<int>(10, DefaultIncreasingState<int>()), new State<decimal>(1000, DefaultIncreasingState<decimal>()));
+                    new State<decimal>(1000, DefaultIncreasingState<decimal>()));
         }
 
         private static IncreasingState<T> DefaultIncreasingState<T>()

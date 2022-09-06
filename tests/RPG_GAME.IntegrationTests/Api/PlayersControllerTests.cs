@@ -49,7 +49,6 @@ namespace RPG_GAME.IntegrationTests.Api
             var player = await _repository.GetAsync(id);
             player.Hero.Attack.ShouldBe(hero.Attack.Value);
             player.Hero.Health.ShouldBe(hero.Health.Value);
-            player.Hero.HealLvl.ShouldBe(hero.HealLvl.Value);
             player.RequiredExp.ShouldBe(hero.BaseRequiredExperience.Value);
             player.UserId.ShouldBe(user.Id);
         }
@@ -94,7 +93,6 @@ namespace RPG_GAME.IntegrationTests.Api
             var playerUpdated = await _repository.GetAsync(player.Id);
             playerUpdated.Hero.Attack.ShouldBe(updatePlayer.HeroAttack);
             playerUpdated.Hero.Health.ShouldBe(updatePlayer.HeroHealth);
-            playerUpdated.Hero.HealLvl.ShouldBe(updatePlayer.HeroHealLvl);
             playerUpdated.CurrentExp.ShouldBe(updatePlayer.CurrentExp);
             playerUpdated.RequiredExp.ShouldBe(updatePlayer.RequiredExp);
             playerUpdated.Hero.Skills.ShouldNotBeEmpty();
@@ -190,7 +188,6 @@ namespace RPG_GAME.IntegrationTests.Api
             (
                 Guid.NewGuid(),
                 $"DefaultHero{Guid.NewGuid().ToString("N")}",
-                new State<int>(10, new IncreasingState<int>(2, StrategyIncreasing.ADDITIVE.ToString())),
                 new State<int>(10, new IncreasingState<int>(2, StrategyIncreasing.ADDITIVE.ToString())),
                 new State<int>(10, new IncreasingState<int>(2, StrategyIncreasing.ADDITIVE.ToString())),
                 new State<decimal>(1000, new IncreasingState<decimal>(200, StrategyIncreasing.ADDITIVE.ToString())),

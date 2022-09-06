@@ -17,7 +17,6 @@ namespace RPG_GAME.Application.Managers
         public void CalculateHeroStats(int level, HeroAssign heroAssign, Hero hero)
         {
             heroAssign.ChangeAttack(CalculateStats(hero.Attack.Value, hero.Attack.IncreasingState.Value, hero.Attack.IncreasingState.StrategyIncreasing, level));
-            heroAssign.ChangeHealLvl(CalculateStats(hero.HealLvl.Value, hero.HealLvl.IncreasingState.Value, hero.HealLvl.IncreasingState.StrategyIncreasing, level));
             heroAssign.ChangeHealth(CalculateStats(hero.Health.Value, hero.Health.IncreasingState.Value, hero.Health.IncreasingState.StrategyIncreasing, level));
             CalculateHeroSkills(level, heroAssign, hero.Skills);
         }

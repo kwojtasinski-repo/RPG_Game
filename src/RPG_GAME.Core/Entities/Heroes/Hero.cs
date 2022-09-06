@@ -12,7 +12,6 @@ namespace RPG_GAME.Core.Entities.Heroes
         public string HeroName { get; private set; }
         public State<int> Health { get; private set; }
         public State<int> Attack { get; private set; }
-        public State<int> HealLvl { get; private set;  }
         public State<decimal> BaseRequiredExperience { get; private set; }
         public IEnumerable<SkillHero> Skills => _skills;
         public IEnumerable<Guid> PlayersAssignedTo => _playersAssignedTo;
@@ -20,14 +19,13 @@ namespace RPG_GAME.Core.Entities.Heroes
         private IList<Guid> _playersAssignedTo = new List<Guid>();
         private IList<SkillHero> _skills = new List<SkillHero>();
 
-        public Hero(Guid id, string heroName, State<int> health, State<int> attack, State<int> healLvl, State<decimal> baseRequiredExperience,
+        public Hero(Guid id, string heroName, State<int> health, State<int> attack, State<decimal> baseRequiredExperience,
             IEnumerable<SkillHero> skills = null, IEnumerable<Guid> playersAssignedTo = null)
         {
             Id = id;
             ChangeHeroName(heroName);
             ChangeAttack(attack);
             ChangeHealth(health);
-            ChangeHealLvl(healLvl);
             ChangeBaseRequiredExperience(baseRequiredExperience);
 
             if (skills is not null)
@@ -90,21 +88,6 @@ namespace RPG_GAME.Core.Entities.Heroes
             }
 
             Attack = attack;
-        }
-
-        public void ChangeHealLvl(State<int> healLvl)
-        {
-            if (healLvl is null)
-            {
-                throw new InvalidHeroHealLvlException();
-            }
-
-            if (healLvl.Value <= 0)
-            {
-                throw new HeroHealLvlCannotBeZeroOrNegativeException(healLvl.Value);
-            }
-
-            HealLvl = healLvl;
         }
 
         public void ChangeBaseRequiredExperience(State<decimal> baseRequiredExperience)

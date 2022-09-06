@@ -70,7 +70,6 @@ namespace RPG_GAME.Application.Services
             heroExists.ChangeHeroName(heroDto.HeroName);
             heroExists.ChangeAttack(heroDto.Attack.AsEntity());
             heroExists.ChangeHealth(heroDto.Health.AsEntity());
-            heroExists.ChangeHealLvl(heroDto.HealLvl.AsEntity());
             heroExists.ChangeBaseRequiredExperience(heroDto.BaseRequiredExperience.AsEntity());
 
             if (heroDto.Skills is null)
@@ -112,12 +111,10 @@ namespace RPG_GAME.Application.Services
         private static void Validate(HeroDto heroDto)
         {
             ValidateState(heroDto.Attack, nameof(HeroDto.Attack));
-            ValidateState(heroDto.HealLvl, nameof(HeroDto.HealLvl));
             ValidateState(heroDto.Health, nameof(HeroDto.Health));
             ValidateState(heroDto.BaseRequiredExperience, nameof(HeroDto.BaseRequiredExperience));
 
             ValidateStrategyIncresing(heroDto.Attack.IncreasingState.StrategyIncreasing);
-            ValidateStrategyIncresing(heroDto.HealLvl.IncreasingState.StrategyIncreasing);
             ValidateStrategyIncresing(heroDto.Health.IncreasingState.StrategyIncreasing);
             ValidateStrategyIncresing(heroDto.BaseRequiredExperience.IncreasingState.StrategyIncreasing);
 

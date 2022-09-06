@@ -7,7 +7,6 @@
         public string HeroName { get; set; }
         public StateDocument<int> Health { get; set; }
         public StateDocument<int> Attack { get; set; }
-        public StateDocument<int> HealLvl { get; set; }
         public StateDocument<decimal> BaseRequiredExperience { get; set; }
         public IEnumerable<SkillHeroDocument> Skills { get; set; }
         public IEnumerable<Guid> PlayersAssignedTo { get; set; }

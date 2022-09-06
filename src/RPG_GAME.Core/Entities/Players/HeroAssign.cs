@@ -13,18 +13,16 @@ namespace RPG_GAME.Core.Entities.Players
         public string HeroName { get; private set; }
         public int Health { get; private set; }
         public int Attack { get; private set; }
-        public int HealLvl { get; private set; }
         public IEnumerable<SkillHeroAssign> Skills => _skills;
 
         private IList<SkillHeroAssign> _skills = new List<SkillHeroAssign>();
 
-        public HeroAssign(Guid id, string heroName, int health, int attack, int healLvl, IEnumerable<SkillHeroAssign> skills = null)
+        public HeroAssign(Guid id, string heroName, int health, int attack, IEnumerable<SkillHeroAssign> skills = null)
         {
             Id = id;
             HeroName = heroName;
             ChangeHealth(health);
             ChangeAttack(attack);
-            ChangeHealLvl(healLvl);
 
             if (skills is not null)
             {
@@ -45,16 +43,6 @@ namespace RPG_GAME.Core.Entities.Players
             }
 
             Attack = attack;
-        }
-
-        public void ChangeHealLvl(int healLvl) 
-        {
-            if (healLvl is <= 0)
-            {
-                throw new HeroAssignHealLvlCannotBeZeroOrNegativeException(healLvl);
-            }
-
-            HealLvl = healLvl;
         }
 
         internal void ChangeHeroName(string heroName)
