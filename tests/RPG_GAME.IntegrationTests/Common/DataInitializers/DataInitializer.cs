@@ -23,22 +23,21 @@ namespace RPG_GAME.IntegrationTests.Common.DataInitializers
             using var scope = _serviceProvider.CreateScope();
             var heroRepository = scope.ServiceProvider.GetRequiredService<IHeroRepository>();
             var heroes = SharedData.GetHeroes();
-
-            foreach(var hero in heroes)
+            foreach (var hero in heroes)
             {
                 await heroRepository.AddAsync(hero);
             }
 
             var enemyRepository = scope.ServiceProvider.GetRequiredService<IEnemyRepository>();
             var enemies = SharedData.GetEnemies();
-            foreach(var enemy in enemies)
+            foreach (var enemy in enemies)
             {
                 await enemyRepository.AddAsync(enemy);
             }
 
             var playerRepository = scope.ServiceProvider.GetRequiredService<IPlayerRepository>();
             var players = SharedData.GetPlayers();
-            foreach(var player in players)
+            foreach (var player in players)
             {
                 await playerRepository.AddAsync(player);
             }
@@ -54,9 +53,16 @@ namespace RPG_GAME.IntegrationTests.Common.DataInitializers
 
             var mapRepository = scope.ServiceProvider.GetRequiredService<IMapRepository>();
             var maps = SharedData.GetMaps();
-            foreach(var map in maps)
+            foreach (var map in maps)
             {
                 await mapRepository.AddAsync(map);
+            }
+
+            var battleRepository = scope.ServiceProvider.GetRequiredService<IBattleRepository>();
+            var battles = SharedData.GetBattles();
+            foreach (var battle in battles)
+            {
+                await battleRepository.AddAsync(battle);
             }
         }
 

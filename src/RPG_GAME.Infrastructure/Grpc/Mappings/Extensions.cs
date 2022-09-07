@@ -9,7 +9,7 @@ namespace RPG_GAME.Infrastructure.Grpc.Mappings
     {
         public static BattleResponse AsResponse(this BattleDetailsDto battleDetailsDto)
         {
-            var response = new BattleResponse() { Id = battleDetailsDto.Id.ToString(), UserId = battleDetailsDto.UserId.ToString(), BattleInfo = battleDetailsDto.BattleInfo, StartDate = Timestamp.FromDateTime(battleDetailsDto.StartDate), EndDate = Timestamp.FromDateTime(battleDetailsDto.EndDate.Value) };
+            var response = new BattleResponse() { Id = battleDetailsDto.Id.ToString(), UserId = battleDetailsDto.UserId.ToString(), BattleInfo = battleDetailsDto.BattleInfo, StartDate = Timestamp.FromDateTime(battleDetailsDto.StartDate), EndDate = battleDetailsDto.EndDate.HasValue ? Timestamp.FromDateTime(battleDetailsDto.EndDate.Value) : null };
             response.Map = new Map { Id = battleDetailsDto.Map.Id.ToString(), Difficulty = battleDetailsDto.Map.Difficulty, Name = battleDetailsDto.Map.Name };
             foreach (var enemies in battleDetailsDto.Map.Enemies)
             {

@@ -5,7 +5,6 @@ using RPG_GAME.Application.Time;
 using RPG_GAME.Core.Entities.Battles;
 using RPG_GAME.Core.Entities.Battles.Actions;
 using RPG_GAME.Core.Entities.Common;
-using RPG_GAME.Core.Entities.Heroes;
 using RPG_GAME.Core.Entities.Maps;
 using RPG_GAME.Core.Entities.Players;
 using RPG_GAME.Core.Repositories;
@@ -81,6 +80,12 @@ namespace RPG_GAME.Application.Managers
 
             var enemiesToKill = battle.Map.Enemies.Sum(e => e.Quantity);
             var currentEnemiesInBattle = battle.Map.Enemies.FirstOrDefault(e => e.Enemy.Id == enemyId);
+
+            if (currentEnemiesInBattle is null)
+            {
+                throw new EnemyNotFoundException(enemyId);
+            }
+
             var currentEnemyAssignInBattle = currentEnemiesInBattle.Enemy;
             var quantity = currentEnemiesInBattle.Quantity;
 

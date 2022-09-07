@@ -1,4 +1,5 @@
 ﻿using Grpc.Net.Client;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xunit;
 
@@ -29,6 +30,11 @@ namespace RPG_GAME.IntegrationTests.Common
         public void Dispose()
         {
             _channel = null;
+        }
+
+        public T GetService<T>()
+        {
+            return Fixture.Services.GetService<T>();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using RPG_GAME.Application.Mappings;
 using RPG_GAME.Core.Common;
+using RPG_GAME.Core.Entities.Battles;
 using RPG_GAME.Core.Entities.Common;
 using RPG_GAME.Core.Entities.Enemies;
 using RPG_GAME.Core.Entities.Heroes;
@@ -88,11 +89,44 @@ namespace RPG_GAME.IntegrationTests.Common
             var enemies = GetEnemies().ToList();
             yield return new Map(new Guid("00000000-0000-0000-0000-000000000001"), Guid.NewGuid().ToString("N"), Difficulty.EASY.ToString(),
                 new List<Enemies> { new Enemies(enemies[0].AsAssign(), 2), new Enemies(enemies[2].AsAssign(), 1) });
-            yield return new Map(new Guid("00000000-0000-0000-0000-000000000002"), Guid.NewGuid().ToString("N"), Difficulty.EASY.ToString(),
+            yield return new Map(new Guid("00000000-0000-0000-0000-000000000002"), Guid.NewGuid().ToString("N"), Difficulty.MEDIUM.ToString(),
                 new List<Enemies> { new Enemies(enemies[1].AsAssign(), 3), new Enemies(enemies[3].AsAssign(), 2) });
-            yield return new Map(new Guid("00000000-0000-0000-0000-000000000003"), Guid.NewGuid().ToString("N"), Difficulty.EASY.ToString(),
+            yield return new Map(new Guid("00000000-0000-0000-0000-000000000003"), Guid.NewGuid().ToString("N"), Difficulty.HARD.ToString(),
                 new List<Enemies> { new Enemies(enemies[0].AsAssign(), 3), new Enemies(enemies[1].AsAssign(), 2), new Enemies(enemies[2].AsAssign(), 2),
                             new Enemies(enemies[3].AsAssign(), 1), new Enemies(enemies[4].AsAssign(), 1) });
+            yield return new Map(new Guid("00000000-0000-0000-0000-000000000004"), Guid.NewGuid().ToString("N"), Difficulty.EASY.ToString(),
+                new List<Enemies> { new Enemies(enemies[0].AsAssign(), 3) });
+            yield return new Map(new Guid("00000000-0000-0000-0000-000000000005"), Guid.NewGuid().ToString("N"), Difficulty.EASY.ToString(),
+                new List<Enemies> { new Enemies(enemies[0].AsAssign(), 3) });
+        }
+
+        public static IEnumerable<Battle> GetBattles()
+        {
+            var maps = GetMaps().ToList();
+            var players = GetPlayers().ToList();
+            var battle1 = new Battle(new Guid("00000000-0000-0000-0000-000000000001"), DateTime.UtcNow, new Guid("00000000-0000-0000-0000-000000000002"), BattleInfo.Starting.ToString(), maps[4]);
+            battle1.AddBattleStateAtPrepare(new BattleState(new Guid("00000000-0000-0000-0000-000000000001"), BattleStatus.Prepare.ToString(), battle1.Id, players[0], DateTime.UtcNow));
+            var battle2 = new Battle(new Guid("00000000-0000-0000-0000-000000000002"), DateTime.UtcNow, new Guid("00000000-0000-0000-0000-000000000002"), BattleInfo.Starting.ToString(), maps[4]);
+            battle2.AddBattleStateAtPrepare(new BattleState(new Guid("00000000-0000-0000-0000-000000000002"), BattleStatus.Prepare.ToString(), battle2.Id, players[0], DateTime.UtcNow));
+            battle2.AddBattleStateAtInAction(new BattleState(new Guid("00000000-0000-0000-0000-000000000003"), BattleStatus.InAction.ToString(), battle2.Id, players[0], DateTime.UtcNow));
+            var battle3 = new Battle(new Guid("00000000-0000-0000-0000-000000000003"), DateTime.UtcNow, new Guid("00000000-0000-0000-0000-000000000002"), BattleInfo.Starting.ToString(), maps[4]);
+            battle3.AddBattleStateAtPrepare(new BattleState(new Guid("00000000-0000-0000-0000-000000000004"), BattleStatus.Prepare.ToString(), battle2.Id, players[0], DateTime.UtcNow));
+            battle3.AddBattleStateAtInAction(new BattleState(new Guid("00000000-0000-0000-0000-000000000005"), BattleStatus.InAction.ToString(), battle2.Id, players[0], DateTime.UtcNow));
+            var enemies = GetEnemies().ToList();
+            battle3.AddKilledEnemy(enemies[0].Id);
+            battle3.AddKilledEnemy(enemies[0].Id);
+            battle3.AddKilledEnemy(enemies[0].Id);
+            var battle4 = new Battle(new Guid("00000000-0000-0000-0000-000000000004"), DateTime.UtcNow, new Guid("00000000-0000-0000-0000-000000000002"), BattleInfo.Starting.ToString(), maps[4]);
+            battle4.AddBattleStateAtPrepare(new BattleState(new Guid("00000000-0000-0000-0000-000000000006"), BattleStatus.Prepare.ToString(), battle2.Id, players[0], DateTime.UtcNow));
+            battle4.AddBattleStateAtInAction(new BattleState(new Guid("00000000-0000-0000-0000-000000000007"), BattleStatus.InAction.ToString(), battle2.Id, players[0], DateTime.UtcNow));
+            var battle5 = new Battle(new Guid("00000000-0000-0000-0000-000000000005"), DateTime.UtcNow, new Guid("00000000-0000-0000-0000-000000000002"), BattleInfo.Starting.ToString(), maps[4]);
+            battle5.AddBattleStateAtPrepare(new BattleState(new Guid("00000000-0000-0000-0000-000000000008"), BattleStatus.Prepare.ToString(), battle2.Id, players[0], DateTime.UtcNow));
+            battle5.AddBattleStateAtInAction(new BattleState(new Guid("00000000-0000-0000-0000-000000000009"), BattleStatus.InAction.ToString(), battle2.Id, players[0], DateTime.UtcNow));
+            yield return battle1; 
+            yield return battle2;
+            yield return battle3;
+            yield return battle4;
+            yield return battle5;
         }
     }
 }
