@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MongoDB.Driver;
 using RPG_GAME.Infrastructure.Database;
+using RPG_GAME.IntegrationTests.Common.DataInitializers;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -23,6 +24,10 @@ namespace RPG_GAME.IntegrationTests.Common
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            builder.ConfigureServices(services =>
+            {
+                services.AddHostedService<DataInitializer>();
+            });
             builder.UseEnvironment("test")
                    .UseTestServer();
         }
