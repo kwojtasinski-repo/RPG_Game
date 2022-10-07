@@ -1,7 +1,7 @@
 <template>
     <div class="header">
-        <div class="clock">
-            {{ currentTime }}
+        <div class="clock text-info">
+            user@user.com {{ currentTime }}
         </div>
     </div>
 </template>
@@ -32,9 +32,6 @@
         display: flex;
         justify-content: end;
         margin-right: 1rem;
-        align-items: center;
-        overflow: hidden;
-        position: relative;
     }
 
     .clock {

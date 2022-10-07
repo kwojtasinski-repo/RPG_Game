@@ -13,10 +13,11 @@ export default {
     methods: {
       menuItems() {
         return [
-          'Start fight',
-          'Profile',
-          'History',
-          'Logout'
+          { text: 'Start fight', action: () => this.$router.push({ name: 'menu' }) },
+          { text: 'Profile', action: () => this.$router.push({ name: 'menu' }) },
+          { text: 'History', action: () => this.$router.push({ name: 'menu' }) },
+          { text: 'Maps', action: () => this.$router.push({ name: 'menu' }) },
+          { text: 'Logout', action: () => this.$router.push({ name: 'menu' }) }
         ]
       }
     }

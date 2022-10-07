@@ -1,14 +1,16 @@
 <template>
     <div>
-        <div class="menuImage"></div>
+        <div class="menuText text-warning">
+            RPG GAME
+        </div>
         <div class="mt-2 mb-2">
             <div class="justify-content-center align-items-center"
                 v-for="menuItem of menuItems" :key="menuItem">
                 <div>
-                    <div @click="menuItemClicked(menuItem)">
+                    <div @click="menuItem.action()">
                         <MenuItemComponent :linkClass="'menuElement text-warning mt-2 mb-2'"
-                            :linkActiveClass="'.menuElementActive bg-dark'"
-                            :textLink="menuItem" />
+                            :linkActiveClass="'.menuElementActive bg-secondary'"
+                            :textLink="menuItem.text" />
                     </div>
                 </div>
             </div>
@@ -32,7 +34,7 @@ import MenuItemComponent from './MenuItemComponent.vue'
     },
     methods: {
         menuItemClicked(menuItem) {
-            console.log('menuItemClicked', menuItem);
+            this.$emit('menuItemClicked', menuItem);
         }
     }
   }
@@ -47,17 +49,8 @@ import MenuItemComponent from './MenuItemComponent.vue'
         position: relative;
     }
 
-    .menuImage {
-        background-image: url('~@/assets/logo.png');
-        background-size: 100%;
-        position: absolute;
-        background-repeat: no-repeat;
-        background-position: center;
-        top: 0;
-        bottom: 0%;
-        left: 0%;
-        right: 0%;
-        z-index: -1;
+    .menuText {
+        font-size: 5rem;
     }
 
     .menuElement {
