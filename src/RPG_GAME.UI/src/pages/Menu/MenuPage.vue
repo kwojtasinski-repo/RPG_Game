@@ -16,7 +16,8 @@ export default {
           { text: 'Start fight', action: () => this.$router.push({ name: 'menu' }) },
           { text: 'Profile', action: () => this.$router.push({ name: 'menu' }) },
           { text: 'History', action: () => this.$router.push({ name: 'menu' }) },
-          { text: 'Maps', action: () => this.$router.push({ name: 'menu' }) },
+          { text: 'Characters', action: () => this.$router.push({ name: 'characters' }) },
+          { text: 'Maps', action: () => this.$router.push({ name: 'all-maps' }) },
           { text: 'Logout', action: () => this.$router.push({ name: 'menu' }) }
         ]
       }

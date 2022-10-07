@@ -1,7 +1,13 @@
 <template>
-  <HeaderComponent />
-  <router-view />
-  <FooterComponent />
+  <div class="mb-4" >
+    <HeaderComponent />
+  </div>
+  <div class="mb-4" >
+    <router-view />
+  </div>
+  <div class="mb-4" >
+    <FooterComponent />
+  </div>
   <notifications />
 </template>
 
@@ -25,7 +31,6 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #255db9;
-    background-color: #000000;
     width: 100vw;
     height: 100vh;
   }

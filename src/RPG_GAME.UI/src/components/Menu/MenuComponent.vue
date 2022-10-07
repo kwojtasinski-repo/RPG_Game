@@ -1,15 +1,12 @@
 <template>
     <div>
-        <div class="menuText text-warning">
-            RPG GAME
-        </div>
         <div class="mt-2 mb-2">
             <div class="justify-content-center align-items-center"
                 v-for="menuItem of menuItems" :key="menuItem">
                 <div>
                     <div @click="menuItem.action()">
-                        <MenuItemComponent :linkClass="'menuElement text-warning mt-2 mb-2'"
-                            :linkActiveClass="'.menuElementActive bg-secondary'"
+                        <MenuItemComponent :linkClass="'menuElement text-primary mt-2 mb-2'"
+                            :linkActiveClass="'menuElementActive bg-dark'"
                             :textLink="menuItem.text" />
                     </div>
                 </div>
@@ -49,12 +46,8 @@ import MenuItemComponent from './MenuItemComponent.vue'
         position: relative;
     }
 
-    .menuText {
-        font-size: 5rem;
-    }
-
     .menuElement {
-        font-size: 3rem;
+        font-size: 2.5rem;
         padding-right: 1rem;
         padding-left: 1rem;
         display: inline-block;
