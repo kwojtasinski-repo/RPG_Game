@@ -1,0 +1,84 @@
+{
+    "heroes": [
+        {
+            "id": "abc16166-f4de-4ef2-be4e-427d19e0d2b5",
+            "heroName": "Hero#1",
+            "health": {
+                "value": 100,
+                "increasingState": {
+                    "strategyIncreasing": "PERCENTAGE",
+                    "value": 2
+                }
+            },
+            "attack": {
+                "value": 10,
+                "increasingState": {
+                    "strategyIncreasing": "PERCENTAGE",
+                    "value": 2
+                }
+            },
+            "baseRequiredExperience": {
+                "value": 100,
+                "increasingState": {
+                    "strategyIncreasing": "PERCENTAGE",
+                    "value": 20
+                }
+            },
+            "skills": [
+                {
+                    "id": "abc16166-f4de-4ef2-be4e-427d19e0d2b5",
+                    "name": "Cyclon",
+                    "baseAttack": 20,
+                    "increasingState": {
+                        "strategyIncreasing": "PERCENTAGE",
+                        "value": 10
+                    }
+                }
+            ],
+            "playersAssignedTo": [
+                "abcd6166-f4de-4ef2-be4e-427d19e0d2b5",
+                "abcde166-f4de-4ef2-be4e-427d19e0d2b5"
+            ]
+        },
+        {
+            "id": "cd836ed4-1e40-498a-8437-108b8cabf553",
+            "heroName": "Hero#2",
+            "health": {
+                "value": 100,
+                "increasingState": {
+                    "strategyIncreasing": "PERCENTAGE",
+                    "value": 2
+                }
+            },
+            "attack": {
+                "value": 10,
+                "increasingState": {
+                    "strategyIncreasing": "PERCENTAGE",
+                    "value": 2
+                }
+            },
+            "baseRequiredExperience": {
+                "value": 100,
+                "increasingState": {
+                    "strategyIncreasing": "PERCENTAGE",
+                    "value": 20
+                }
+            },
+            "skills": [
+                {
+                    "id": "cd836ed4-1e40-498a-8437-108b8cabf553",
+                    "name": "Magic Seed",
+                    "baseAttack": 15,
+                    "increasingState": {
+                        "strategyIncreasing": "PERCENTAGE",
+                        "value": 20
+                    }
+                }
+            ],
+            "playersAssignedTo": [
+                "cda36ed4-1e40-498a-8437-108b8cabf553",
+                "ababe166-f4de-4ef2-be4e-427d19e0d2b5"
+            ]
+        }
+    ]
+}
