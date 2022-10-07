@@ -37,12 +37,12 @@ const routes = [
         component: AddHeroPage
     },
     {
-        path: '/heroes/edit/:id',
+        path: '/heroes/edit/:heroId',
         name: 'edit-hero',
         component: EditHeroPage
     },
     {
-        path: '/heroes/view/:id',
+        path: '/heroes/view/:heroId',
         name: 'view-hero',
         component: ViewHeroPage
     },

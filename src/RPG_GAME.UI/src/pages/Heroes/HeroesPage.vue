@@ -9,28 +9,27 @@
                 <thead>
                     <tr>
                     <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Health</th>
+                    <th scope="col">Attack</th>
+                    <th scope="col">Base Required Experience</th>
+                    <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
+                    <tr v-for="hero in heroes" :key="hero.id">
+                        <td> {{ hero.id }} </td>
+                        <td> {{ hero.heroName }} </td>
+                        <td> {{ hero.health.value }} </td>
+                        <td> {{ hero.attack.value }} </td>
+                        <td> {{ hero.baseRequiredExperience.value }} </td>
+                        <td>
+                            <RouterButtonComponent :namedRoute="{ name: 'view-hero', params: { heroId: hero.id } }" :buttonText="'View'" :buttonClass="'btn btn-primary me-2'" />
+                            <RouterButtonComponent :namedRoute="{ name: 'edit-hero', params: { heroId: hero.id } }" :buttonText="'Edit'" :buttonClass="'btn btn-warning me-2'" />
+                            <button class="btn btn-danger">
+                                Delete
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -40,12 +39,25 @@
 
 <script>
   import RouterButtonComponent from '@/components/RouterButton/RouterButtonComponent.vue';
-  //import * as heroes from '@/stubs/heroes.json';
+  import * as response from '@/stubs/heroes.json';
 
   export default {
     name: 'HeroesPage',
     components: {
         RouterButtonComponent
+    },
+    data() {
+        return {
+            heroes: []
+        }
+    },
+    methods: {
+        fetchHeroes() {
+            return response.heroes;
+        }
+    },
+    created() {
+        this.heroes = this.fetchHeroes();
     }
   }
 </script>
