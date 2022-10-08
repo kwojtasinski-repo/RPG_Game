@@ -15,14 +15,16 @@ namespace RPG_GAME.Application.Services
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IAuthManager _authManager;
         private readonly IClock _clock;
+        private readonly IRefreshTokenService _refreshTokenService;
 
         public IdentityService(IUserRepository userRepository, IPasswordHasher<User> passwordHasher,
-            IAuthManager authManager, IClock clock)
+            IAuthManager authManager, IClock clock, IRefreshTokenService refreshTokenService)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
             _authManager = authManager;
             _clock = clock;
+            _refreshTokenService = refreshTokenService;
         }
 
         public async Task<JsonWebToken> SignInAsync(SignInDto dto)
@@ -41,6 +43,7 @@ namespace RPG_GAME.Application.Services
             }
 
             var jwt = GenerateToken(user);
+            jwt.RefreshToken = await _refreshTokenService.CreateAsync(user.Id);
 
             return jwt;
         }

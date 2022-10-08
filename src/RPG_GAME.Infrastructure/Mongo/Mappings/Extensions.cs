@@ -13,6 +13,7 @@ using RPG_GAME.Infrastructure.Mongo.Documents.Battles;
 using RPG_GAME.Core.Entities.Battles;
 using RPG_GAME.Core.Entities.Battles.Actions;
 using RPG_GAME.Infrastructure.Mongo.Documents.Battles.Actions;
+using RPG_GAME.Infrastructure.Mongo.Documents.Users;
 
 namespace RPG_GAME.Infrastructure.Mongo.Mappings
 {
@@ -442,6 +443,25 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
             return new CurrentBattleState(currentBattleStateDocument.Id, currentBattleStateDocument.BattleId, currentBattleStateDocument.PlayerId, currentBattleStateDocument.PlayerCurrentHealth, currentBattleStateDocument.PlayerLevel,
                                 currentBattleStateDocument.EnemyId, currentBattleStateDocument.EnemyHealth, currentBattleStateDocument.ModifiedDate,
                                 currentBattleStateDocument.EnemiesKilled);
+        }
+
+        public static RefreshToken AsEntity(this RefreshTokenDocument refreshTokenDocument)
+        {
+            return new RefreshToken(refreshTokenDocument.Id, refreshTokenDocument.UserId, 
+                refreshTokenDocument.Token, refreshTokenDocument.CreatedAt, 
+                refreshTokenDocument.RevokedAt);
+        }
+
+        public static RefreshTokenDocument AsDocument(this RefreshToken refreshToken)
+        {
+            return new RefreshTokenDocument
+            {
+                Id = refreshToken.Id,
+                Token = refreshToken.Token,
+                UserId = refreshToken.UserId,
+                CreatedAt = refreshToken.CreatedAt,
+                RevokedAt = refreshToken.RevokedAt
+            };
         }
     }
 }

@@ -13,6 +13,7 @@ using RPG_GAME.Core.Repositories;
 using RPG_GAME.Infrastructure.Mongo.Documents;
 using Microsoft.AspNetCore.Builder;
 using RPG_GAME.Infrastructure.Mongo.Documents.Battles;
+using RPG_GAME.Infrastructure.Mongo.Documents.Users;
 
 namespace RPG_GAME.Infrastructure.Mongo
 {
@@ -49,6 +50,9 @@ namespace RPG_GAME.Infrastructure.Mongo
 
             services.AddTransient<ICurrentBattleStateRepository, CurrentBattleStateRepository>();
             services.AddMongoRepository<CurrentBattleStateDocument, Guid>("current-battle-states");
+            
+            services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddMongoRepository<RefreshTokenDocument, Guid>("refresh-tokens");
 
             return services;
         }
@@ -148,6 +152,17 @@ namespace RPG_GAME.Infrastructure.Mongo
                 var battleEventBuilder = Builders<BattleEventDocument>.IndexKeys;
                 Task.Run(async () => await battleEventRepo.Collection.Indexes.CreateOneAsync(
                     new CreateIndexModel<BattleEventDocument>(battleEventBuilder.Ascending(i => i.BattleId))));
+
+                var refreshTokenRepo = scope.ServiceProvider.GetService<IMongoRepository<RefreshTokenDocument, Guid>>();
+                var refreshTokenBuilder = Builders<RefreshTokenDocument>.IndexKeys;
+                Task.Run(async () =>
+                {
+                    await refreshTokenRepo.Collection.Indexes.CreateOneAsync(
+                        new CreateIndexModel<RefreshTokenDocument>(refreshTokenBuilder.Text(i => i.Token)));
+
+                    await refreshTokenRepo.Collection.Indexes.CreateOneAsync(
+                    new CreateIndexModel<RefreshTokenDocument>(refreshTokenBuilder.Ascending(i => i.UserId)));
+                });
             }
 
             return app;

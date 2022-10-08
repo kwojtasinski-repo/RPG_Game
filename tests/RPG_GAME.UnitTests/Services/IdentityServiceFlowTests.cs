@@ -8,7 +8,6 @@ using RPG_GAME.Application.Time;
 using RPG_GAME.Core.Entities.Users;
 using RPG_GAME.Core.Repositories;
 using RPG_GAME.UnitTests.Stubs;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
@@ -27,6 +26,12 @@ namespace RPG_GAME.UnitTests.Services
 
             jwt.Should().NotBeNull();
             jwt.AccessToken.Should().NotBeEmpty();
+            var token = await _refreshTokenRepository.GetAsync(jwt.RefreshToken);
+            token.Should().NotBeNull();
+            var user = await _userRepository.GetAsync(dto.Email);
+            token.UserId.Should().Be(user.Id);
+            token.Token.Should().NotBeNullOrWhiteSpace();
+            token.Revoked.Should().BeFalse();
         }
 
         [Fact]
@@ -124,6 +129,8 @@ namespace RPG_GAME.UnitTests.Services
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IAuthManager _authManager;
         private readonly IClock _clock;
+        private readonly IRefreshTokenService _refreshTokenService;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
         public IdentityServiceFlowTests()
         {
@@ -131,7 +138,9 @@ namespace RPG_GAME.UnitTests.Services
             _passwordHasher = new PasswordHasher<User>();
             _authManager = new AuthManagerStub();
             _clock = new ClockStub();
-            _identityService = new IdentityService(_userRepository, _passwordHasher, _authManager, _clock);
+            _refreshTokenRepository = new RefreshTokenRepositoryStub();
+            _refreshTokenService = new RefreshTokenService(_refreshTokenRepository, _userRepository, _authManager, _clock);
+            _identityService = new IdentityService(_userRepository, _passwordHasher, _authManager, _clock, _refreshTokenService);
         }
     }
 }

@@ -22,6 +22,7 @@ namespace RPG_GAME.Application
             services.AddSingleton<IEnemyAttackManager, EnemyAttackManager>();
             services.AddSingleton<IEnemyIncreaseStatsManager, EnemyIncreaseStatsManager>();
             services.AddSingleton<IPlayerIncreaseStatsManager, PlayerIncreaseStatsManager>();
+            services.AddTransient<IRefreshTokenService, RefreshTokenService>();
             return services;
         }
     }

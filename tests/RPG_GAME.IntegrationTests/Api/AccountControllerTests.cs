@@ -51,7 +51,7 @@ namespace RPG_GAME.IntegrationTests.Api
         public async Task when_sign_in_should_return_jwt_token_with_valid_content()
         {
             var timeBeforeSendRequest = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
-            var signUp = new SignUpDto { Email = "email@email2.test.com", Password = "passwordAB63", Role = "user" };
+            var signUp = new SignUpDto { Email = "email@email2abv.test.com", Password = "passwordAB63", Role = "user" };
             var response = await _client.Request($"{Path}").PostJsonAsync(signUp);
             response.StatusCode.ShouldBe((int)HttpStatusCode.OK);
             var signIn = new SignInDto { Email = signUp.Email, Password = signUp.Password };
@@ -80,6 +80,7 @@ namespace RPG_GAME.IntegrationTests.Api
             var timeJwtExpired = long.Parse(claimJwtExpired.Value) * 1000;
             var expectedTimeJwtExpired = DateTimeOffset.FromUnixTimeMilliseconds(timeIssuedAt).AddHours(1).ToUnixTimeSeconds() * 1000;
             timeJwtExpired.ShouldBe(expectedTimeJwtExpired);
+            jwt.RefreshToken.ShouldNotBeNullOrWhiteSpace();
         }
 
         private const string Path = "api/Account";

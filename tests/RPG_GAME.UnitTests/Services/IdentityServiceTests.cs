@@ -30,6 +30,7 @@ namespace RPG_GAME.UnitTests.Services
             var jwt = await _identityService.SignInAsync(dto);
 
             jwt.Should().NotBeNull();
+            _refreshTokenService.Verify(r => r.CreateAsync(It.IsAny<Guid>()), times: Times.Once);
         }
 
         [Fact]
@@ -104,6 +105,7 @@ namespace RPG_GAME.UnitTests.Services
         private readonly Mock<IPasswordHasher<User>> _passwordHasher;
         private readonly Mock<IAuthManager> _authManager;
         private readonly Mock<IClock> _clock;
+        private readonly Mock<IRefreshTokenService> _refreshTokenService;
 
         public IdentityServiceTests()
         {
@@ -112,8 +114,9 @@ namespace RPG_GAME.UnitTests.Services
             _authManager = new Mock<IAuthManager>();
             _clock = new Mock<IClock>();
             _clock.Setup(c => c.CurrentDate()).Returns(DateTime.UtcNow);
+            _refreshTokenService = new Mock<IRefreshTokenService>();
             _identityService = new IdentityService(_userRepository.Object, _passwordHasher.Object,
-                _authManager.Object, _clock.Object);
+                _authManager.Object, _clock.Object, _refreshTokenService.Object);
         }
     }
 }
