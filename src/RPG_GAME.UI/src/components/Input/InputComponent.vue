@@ -6,6 +6,7 @@
           :type = "type"
           :class = "error && showError ? 'form-control is-invalid' : 'form-control'"
           v-model="newValue"
+          :disabled="readonly"
           @change="valueChanged" />
       <div v-if="error && showError" class="invalid-feedback d-flex text-start">
           {{error}}
@@ -18,6 +19,7 @@
           :type = "type"
           :class = "error && showError ? 'form-control is-invalid' : 'form-control'"
           v-model="newValue"
+          :disabled="readonly"
           @change="valueChanged"></textarea>
       <div v-if="error && showError" className="invalid-feedback d-flex text-start">
           {{error}}
@@ -29,6 +31,7 @@
           :id="getAttributeConnectingInputAndLabel()"
           @change="valueChanged"
           v-model="newValue"
+          :disabled="readonly"
           :class = "error && showError ? 'form-control is-invalid' : 'form-control'">
               <option v-for="option in options" :value=option.value :key=option.value>{{option.label}}</option>
       </select>
@@ -44,6 +47,7 @@
           :class = "error && showError ? 'form-control is-invalid' : 'form-control'"
           v-model="newValue" 
           :step = "step"
+          :disabled="readonly"
           @change="valueChanged"
           @keypress="isNumber($event)" />
       <div v-if="error && showError" className="invalid-feedback d-flex text-start">
@@ -57,6 +61,7 @@
           :type = "type"
           :class = "error && showError ? 'form-control is-invalid' : 'form-control'"
           v-model="newValue"
+          :disabled="readonly"
           @change="valueChanged" />
       <div v-if="error && showError" className="invalid-feedback d-flex text-start">
           {{error}}
@@ -68,7 +73,7 @@
 
     export default {
       name: 'InputComponent',
-      props: ['type', 'value', 'label', 'options', 'step', 'error', 'showError'],
+      props: ['type', 'value', 'label', 'options', 'step', 'error', 'showError', 'readonly'],
       components: {
       },
       methods: {

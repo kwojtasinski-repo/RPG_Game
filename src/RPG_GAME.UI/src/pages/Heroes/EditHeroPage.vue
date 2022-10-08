@@ -3,7 +3,7 @@
         Edit Hero
     </h3>
     <div>
-        <HeroFormComponent :strategiesIncreasing="strategiesIncreasing" :hero="hero" />
+        <HeroFormComponent :readonly="manageSkills" :strategiesIncreasing="strategiesIncreasing" :hero="hero" @submitForm="submit" />
     </div>
 </template>
 
@@ -20,13 +20,16 @@
         return {
             strategiesIncreasing: [{label: 'Additive', value: 'ADDITIVE'}, {label: 'Percentage', value: 'PERCENTAGE'}],
             error: '',
-            hero: null
+            hero: null,
         }
     },
     methods: {
         fetchHero() {
             const hero = response.heroes.find(h => h.id == this.$route.params.heroId);
             return hero;
+        },
+        submit(formToSend) {
+            console.log('formToSend', formToSend);
         }
     },
     created() {

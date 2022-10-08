@@ -1,96 +1,117 @@
 <template>
-    <div class="hero-form-position">
-        <form class="hero-form" @submit.prevent="submit">
-            <div>
-                <InputComponent :label="'Hero Name'" :type="'text'" :value="newHero.heroName.value" 
-                        v-model="newHero.heroName.value" :showError="newHero.heroName.showError" 
-                        :error="newHero.heroName.error" 
-                        @valueChanged="onChangeInput($event, 'heroName')"/>
-            </div>
-            <div>
-                <InputComponent :label="'Health'" :type="'number'" :value="newHero.health.value" 
-                        v-model="newHero.health.value" :showError="newHero.health.showError" 
-                        :error="newHero.health.error" 
-                        @valueChanged="onChangeInput($event, 'health')" :step="0.01"/>
-            </div>
-            <div>
-                <InputComponent :label="'Health strategy increasing'" :type="'select'" :value="newHero.healthIncreasingState.value" 
-                        v-model="newHero.healthIncreasingState.value" :showError="newHero.healthIncreasingState.showError" 
-                        :error="newHero.healthIncreasingState.error" 
-                        :options="strategiesIncreasing" 
-                        @valueChanged="onChangeInput($event, 'healthIncreasingState')"/>
-            </div>
-            <div>
-                <InputComponent :label="'Health strategy increasing value'" :type="'number'" :value="newHero.healthIncreasingStateValue.value" 
-                        v-model="newHero.healthIncreasingStateValue.value" :showError="newHero.healthIncreasingStateValue.showError" 
-                        :error="newHero.healthIncreasingStateValue.error" 
-                        @valueChanged="onChangeInput($event, 'healthIncreasingStateValue')" :step="0.01"/>
-            </div>
-            <div>
-                <InputComponent :label="'Attack'" :type="'number'" :value="newHero.attack.value" 
-                        v-model="newHero.attack.value" :showError="newHero.attack.showError" 
-                        :error="newHero.attack.error" 
-                        @valueChanged="onChangeInput($event, 'attack')" :step="0.01"/>
-            </div>
-            <div>
-                <InputComponent :label="'Attack strategy increasing'" :type="'select'" :value="newHero.attackIncreasingState.value" 
-                        v-model="newHero.attackIncreasingState.value" :showError="newHero.attackIncreasingState.showError" 
-                        :error="newHero.attackIncreasingState.error" 
-                        :options="strategiesIncreasing" 
-                        @valueChanged="onChangeInput($event, 'attackIncreasingState')"/>
-            </div>
-            <div>
-                <InputComponent :label="'Attack strategy increasing value'" :type="'number'" :value="newHero.attackIncreasingStateValue.value" 
-                        v-model="newHero.attackIncreasingStateValue.value" :showError="newHero.attackIncreasingStateValue.showError" 
-                        :error="newHero.attackIncreasingStateValue.error" 
-                        @valueChanged="onChangeInput($event, 'attackIncreasingStateValue')" :step="0.01"/>
-            </div>
-            <div>
-                <InputComponent :label="'Base Required Experience'" :type="'number'" :value="newHero.baseRequiredExperience.value" 
-                        v-model="newHero.baseRequiredExperience.value" :showError="newHero.baseRequiredExperience.showError" 
-                        :error="newHero.baseRequiredExperience.error" 
-                        @valueChanged="onChangeInput($event, 'baseRequiredExperience')" :step="0.01"/>
-            </div>
-            <div>
-                <InputComponent :label="'Base Required Experience strategy increasing'" :type="'select'" :value="newHero.baseRequiredExperienceIncreasingState.value" 
-                        v-model="newHero.baseRequiredExperienceIncreasingState.value" :showError="newHero.baseRequiredExperienceIncreasingState.showError" 
-                        :error="newHero.baseRequiredExperienceIncreasingState.error" 
-                        :options="strategiesIncreasing" 
-                        @valueChanged="onChangeInput($event, 'baseRequiredExperienceIncreasingState')"/>
-            </div>
-            <div>
-                <InputComponent :label="'Base Required Experience strategy increasing value'" :type="'number'" :value="newHero.baseRequiredExperienceIncreasingStateValue.value" 
-                        v-model="newHero.baseRequiredExperienceIncreasingStateValue.value" :showError="newHero.baseRequiredExperienceIncreasingStateValue.showError" 
-                        :error="newHero.baseRequiredExperienceIncreasingStateValue.error" 
-                        @valueChanged="onChangeInput($event, 'baseRequiredExperienceIncreasingStateValue')" :step="0.01"/>
-            </div>
-            <div class="mt-2">
-                <button type="button" class="btn btn-outline-secondary me-2" @click="reset">
-                    Reset
-                </button>
-                <button type="button" class="btn btn-secondary me-2">
-                    Cancel
-                </button>
-                <button class="btn btn-success">
-                    Send
-                </button>
-            </div>
-        </form>
+    <div class="hero-form-page-position">
+        <div>
+            <button class="btn btn-success" v-if="!manageSkills" @click="() => manageSkills = true">Manage hero skills</button>
+        </div>
+        <div class="hero-form-position">
+            <form class="hero-form" @submit.prevent="submit">
+                <div>
+                    <InputComponent :label="'Hero Name'" :type="'text'" :value="newHero.heroName.value" 
+                            v-model="newHero.heroName.value" :showError="newHero.heroName.showError" 
+                            :error="newHero.heroName.error" 
+                            :readonly="manageSkills"
+                            @valueChanged="onChangeInput($event, 'heroName')"/>
+                </div>
+                <div>
+                    <InputComponent :label="'Health'" :type="'number'" :value="newHero.health.value" 
+                            v-model="newHero.health.value" :showError="newHero.health.showError" 
+                            :error="newHero.health.error" 
+                            :readonly="manageSkills"
+                            @valueChanged="onChangeInput($event, 'health')" :step="0.01"/>
+                </div>
+                <div>
+                    <InputComponent :label="'Health strategy increasing'" :type="'select'" :value="newHero.healthIncreasingState.value" 
+                            v-model="newHero.healthIncreasingState.value" :showError="newHero.healthIncreasingState.showError" 
+                            :error="newHero.healthIncreasingState.error" 
+                            :options="strategiesIncreasing" 
+                            :readonly="manageSkills"
+                            @valueChanged="onChangeInput($event, 'healthIncreasingState')"/>
+                </div>
+                <div>
+                    <InputComponent :label="'Health strategy increasing value'" :type="'number'" :value="newHero.healthIncreasingStateValue.value" 
+                            v-model="newHero.healthIncreasingStateValue.value" :showError="newHero.healthIncreasingStateValue.showError" 
+                            :error="newHero.healthIncreasingStateValue.error" 
+                            :readonly="manageSkills"
+                            @valueChanged="onChangeInput($event, 'healthIncreasingStateValue')" :step="0.01"/>
+                </div>
+                <div>
+                    <InputComponent :label="'Attack'" :type="'number'" :value="newHero.attack.value" 
+                            v-model="newHero.attack.value" :showError="newHero.attack.showError" 
+                            :error="newHero.attack.error" 
+                            :readonly="manageSkills"
+                            @valueChanged="onChangeInput($event, 'attack')" :step="0.01"/>
+                </div>
+                <div>
+                    <InputComponent :label="'Attack strategy increasing'" :type="'select'" :value="newHero.attackIncreasingState.value" 
+                            v-model="newHero.attackIncreasingState.value" :showError="newHero.attackIncreasingState.showError" 
+                            :error="newHero.attackIncreasingState.error" 
+                            :readonly="manageSkills"
+                            :options="strategiesIncreasing" 
+                            @valueChanged="onChangeInput($event, 'attackIncreasingState')"/>
+                </div>
+                <div>
+                    <InputComponent :label="'Attack strategy increasing value'" :type="'number'" :value="newHero.attackIncreasingStateValue.value" 
+                            v-model="newHero.attackIncreasingStateValue.value" :showError="newHero.attackIncreasingStateValue.showError" 
+                            :error="newHero.attackIncreasingStateValue.error" 
+                            :readonly="manageSkills"
+                            @valueChanged="onChangeInput($event, 'attackIncreasingStateValue')" :step="0.01"/>
+                </div>
+                <div>
+                    <InputComponent :label="'Base Required Experience'" :type="'number'" :value="newHero.baseRequiredExperience.value" 
+                            v-model="newHero.baseRequiredExperience.value" :showError="newHero.baseRequiredExperience.showError" 
+                            :error="newHero.baseRequiredExperience.error" 
+                            :readonly="manageSkills"
+                            @valueChanged="onChangeInput($event, 'baseRequiredExperience')" :step="0.01"/>
+                </div>
+                <div>
+                    <InputComponent :label="'Base Required Experience strategy increasing'" :type="'select'" :value="newHero.baseRequiredExperienceIncreasingState.value" 
+                            v-model="newHero.baseRequiredExperienceIncreasingState.value" :showError="newHero.baseRequiredExperienceIncreasingState.showError" 
+                            :error="newHero.baseRequiredExperienceIncreasingState.error" 
+                            :options="strategiesIncreasing" 
+                            :readonly="manageSkills"
+                            @valueChanged="onChangeInput($event, 'baseRequiredExperienceIncreasingState')"/>
+                </div>
+                <div>
+                    <InputComponent :label="'Base Required Experience strategy increasing value'" :type="'number'" :value="newHero.baseRequiredExperienceIncreasingStateValue.value" 
+                            v-model="newHero.baseRequiredExperienceIncreasingStateValue.value" :showError="newHero.baseRequiredExperienceIncreasingStateValue.showError" 
+                            :error="newHero.baseRequiredExperienceIncreasingStateValue.error"
+                            :readonly="manageSkills"
+                            @valueChanged="onChangeInput($event, 'baseRequiredExperienceIncreasingStateValue')" :step="0.01"/>
+                </div>
+                <div class="mt-2">
+                    <button type="button" :class="manageSkills ? 'btn btn-outline-secondary me-2 disabled' : 'btn btn-outline-secondary me-2'" @click="reset">
+                        Reset
+                    </button>
+                    <button type="button" :class="manageSkills ? 'btn btn-secondary me-2 disabled' : 'btn btn-secondary me-2'">
+                        Cancel
+                    </button>
+                    <button :class="manageSkills ? 'btn btn-success disabled' : 'btn btn-success'">
+                        Send
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div v-if="manageSkills" class="mt-2 mb-2">
+            <HeroSkillsFormComponent :skills="newHero.skills.value" :strategiesIncreasing="strategiesIncreasing" @cancelHeroSkills="cancelHeroSkills" @saveNewHeroSkills="saveNewHeroSkills" />
+        </div>
     </div>
 </template>
 
 <script>
     import InputComponent from '../Input/InputComponent.vue';
+    import HeroSkillsFormComponent from './HeroSkillsFormComponent.vue';
     
     export default {
         name: 'HeroFormComponent',
         props: ['hero', 'strategiesIncreasing'],
         components: {
-            InputComponent
+            InputComponent,
+            HeroSkillsFormComponent
         },
         data() {
             return {
-                newHero: this.initHero()
+                newHero: this.initHero(),
+                manageSkills: false
             }
         },
         methods: {
@@ -156,7 +177,7 @@
                         showError: false,
                         error: '',
                         rules: [
-                        v => v !== null || 'Health increasing state value is required',
+                            v => v !== null || 'Health increasing state value is required',
                             v => v.toString().length > 0 || 'Health increasing state value is required',
                             v => v >= 0 || 'Health increasing state value cannot be negative'
                         ]
@@ -175,7 +196,7 @@
                         showError: false,
                         error: '',
                         rules: [
-                        v => v !== null || 'Attack increasing state value is required',
+                            v => v !== null || 'Attack increasing state value is required',
                             v => v.toString().length > 0 || 'Attack increasing state value is required',
                             v => v >= 0 || 'Attack increasing state value cannot be negative'
                         ]
@@ -194,11 +215,15 @@
                         showError: false,
                         error: '',
                         rules: [
-                        v => v !== null || 'Base required experience increasing state value is required',
+                            v => v !== null || 'Base required experience increasing state value is required',
                             v => v.toString().length > 0 || 'Base required experience increasing state value is required',
                             v => v >= 0 || 'Base required experience increasing state value cannot be negative'
                         ]
                     },
+                    skills: {
+                        value: this.hero?.skills ?? [],
+                        rules: []
+                    }
                 }
             },
             submit() {
@@ -218,26 +243,27 @@
                     id: this.newHero.id.value,
                     heroName: this.newHero.heroName.value,
                     health: {
-                        value: this.newHero.health.value,
+                        value: Number(this.newHero.health.value),
                         increasingState: {
                             strategyIncreasing: this.newHero.healthIncreasingState.value,
                             value: this.newHero.healthIncreasingStateValue.value,
                         }
                     },
                     attack: {
-                        value: this.newHero.health.value,
+                        value: Number(this.newHero.health.value),
                         increasingState: {
                             strategyIncreasing: this.newHero.attackIncreasingState.value,
-                            value: this.newHero.attackIncreasingStateValue.value,
+                            value: Number(this.newHero.attackIncreasingStateValue.value),
                         }
                     },
                     baseRequiredExperience: {
-                        value: this.newHero.health.value,
+                        value: Number(this.newHero.health.value),
                         increasingState: {
                             strategyIncreasing: this.newHero.baseRequiredExperienceIncreasingState.value,
-                            value: this.newHero.baseRequiredExperienceIncreasingStateValue.value,
+                            value: Number(this.newHero.baseRequiredExperienceIncreasingStateValue.value),
                         }
-                    }
+                    },
+                    skills: this.newHero.skills.value
                 };
                 
                 if (formToSend.id === null){
@@ -250,7 +276,7 @@
                 this.newHero[fieldName].value = value;
             },
             reset() {
-                this.newHero = this.initProduct();
+                this.newHero = this.initHero();
             },
             validate(value, fieldName) {
                 const rules = this.newHero[fieldName].rules;
@@ -268,21 +294,30 @@
                 }
 
                 return '';
-            }
+            },
+            saveNewHeroSkills(skills) {
+                this.manageSkills = false;
+                this.newHero.skills.value = skills;
+            },
+            cancelHeroSkills() {
+                this.manageSkills = false;
+            },
         }
     }
 </script>
 
 <style>
+    .hero-form-page-position {
+        display: block;
+        text-align: center;
+    }
+
     .hero-form-position {
         display: flex;
         justify-content: center;
-        text-align: center;
-        align-items: center;
     }
 
     .hero-form {
-        display: flex;
         flex-direction: column;
         width: 50%;
         padding-left: 5px;
