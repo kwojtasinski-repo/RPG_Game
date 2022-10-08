@@ -16,7 +16,7 @@ namespace RPG_GAME.UnitTests.Stubs
         public const string _issuer = "rpg-game-test";
         private readonly SigningCredentials _signingCredentials = new(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_issuerKey)), SecurityAlgorithms.HmacSha256);
 
-        public JsonWebToken CreateToken(string userId, string role = null, string audience = null, IDictionary<string, IEnumerable<string>> claims = null)
+        public JsonWebToken CreateToken(string userId, string userEmail, string role = null, string audience = null, IDictionary<string, IEnumerable<string>> claims = null)
         {
             if (string.IsNullOrWhiteSpace(userId))
             {
@@ -28,6 +28,7 @@ namespace RPG_GAME.UnitTests.Stubs
             {
                 new(JwtRegisteredClaimNames.Sub, userId),
                 new(JwtRegisteredClaimNames.UniqueName, userId),
+                new(JwtRegisteredClaimNames.Email, userEmail),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new(JwtRegisteredClaimNames.Iat, new DateTimeOffset(now).ToUnixTimeMilliseconds().ToString())
             };
@@ -67,10 +68,7 @@ namespace RPG_GAME.UnitTests.Stubs
             return new JsonWebToken
             {
                 AccessToken = token,
-                RefreshToken = string.Empty,
-                Expires = new DateTimeOffset(expires).ToUnixTimeMilliseconds(),
-                Id = userId,
-                Role = role ?? string.Empty
+                RefreshToken = string.Empty
             };
         }
     }

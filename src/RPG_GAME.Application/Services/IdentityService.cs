@@ -74,8 +74,7 @@ namespace RPG_GAME.Application.Services
 
         private JsonWebToken GenerateToken(User user)
         {
-            var jwt = _authManager.CreateToken(user.Id.ToString(), user.Role);
-            jwt.Email = user.Email.Value;
+            var jwt = _authManager.CreateToken(user.Id.ToString(), user.Email.Value, user.Role);
             return jwt;
         }
     }

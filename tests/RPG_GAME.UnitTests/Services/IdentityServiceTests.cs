@@ -24,7 +24,7 @@ namespace RPG_GAME.UnitTests.Services
             var user = new User(Guid.NewGuid(), dto.Email, dto.Password, "user", DateTime.UtcNow);
             _userRepository.Setup(u => u.GetAsync(It.IsAny<string>())).Returns(Task.FromResult(user));
             _passwordHasher.Setup(p => p.VerifyHashedPassword(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>())).Returns(PasswordVerificationResult.Success);
-            _authManager.Setup(a => a.CreateToken(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IDictionary<string, IEnumerable<string>>>()))
+            _authManager.Setup(a => a.CreateToken(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IDictionary<string, IEnumerable<string>>>()))
                 .Returns(new JsonWebToken());
 
             var jwt = await _identityService.SignInAsync(dto);

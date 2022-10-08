@@ -30,7 +30,7 @@ namespace RPG_GAME.Infrastructure.Auth
             _issuer = authOptions.Issuer;
         }
 
-        public JsonWebToken CreateToken(string userId, string role = null, string audience = null, IDictionary<string, IEnumerable<string>> claims = null)
+        public JsonWebToken CreateToken(string userId, string userEmail, string role = null, string audience = null, IDictionary<string, IEnumerable<string>> claims = null)
         {
             if (string.IsNullOrWhiteSpace(userId))
             {
@@ -42,6 +42,7 @@ namespace RPG_GAME.Infrastructure.Auth
             {
                 new(JwtRegisteredClaimNames.Sub, userId),
                 new(JwtRegisteredClaimNames.UniqueName, userId),
+                new(JwtRegisteredClaimNames.Email, userEmail),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new(JwtRegisteredClaimNames.Iat, new DateTimeOffset(now).ToUnixTimeMilliseconds().ToString())
             };
@@ -81,10 +82,7 @@ namespace RPG_GAME.Infrastructure.Auth
             return new JsonWebToken
             {
                 AccessToken = token,
-                RefreshToken = string.Empty,
-                Expires = new DateTimeOffset(expires).ToUnixTimeMilliseconds(),
-                Id = userId,
-                Role = role ?? string.Empty
+                RefreshToken = string.Empty
             };
         }
     }
