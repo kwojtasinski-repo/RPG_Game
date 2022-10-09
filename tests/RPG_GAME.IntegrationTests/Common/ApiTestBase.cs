@@ -20,6 +20,8 @@ namespace RPG_GAME.IntegrationTests.Common
         {
             var (responseHeaderName, responseHeaderValue) = response.Headers.Where(h => h.Name == "Location").FirstOrDefault();
             responseHeaderValue.ShouldNotBeNull();
+            responseHeaderValue = responseHeaderValue.ToLowerInvariant();
+            path = path.ToLowerInvariant();
             var splitted = responseHeaderValue.Split(path + '/');
             var id= Guid.Parse(splitted[1]);
             return id;

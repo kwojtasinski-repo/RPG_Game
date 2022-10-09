@@ -15,7 +15,6 @@ using RPG_GAME.Core.Repositories;
 using RPG_GAME.UnitTests.Fixtures;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
