@@ -22,7 +22,7 @@ namespace RPG_GAME.IntegrationTests.Api
         {
             var signUp = new SignUpDto { Email = "email@email.test.com", Password = "PasSw0rdAbc12", Role = "user" };
 
-            var response = await _client.Request($"{Path}").PostJsonAsync(signUp);
+            var response = await _client.Request($"{Path}/sign-up").PostJsonAsync(signUp);
 
             response.StatusCode.ShouldBe((int)HttpStatusCode.OK);
             var user = await _repository.GetAsync(signUp.Email);
@@ -35,11 +35,11 @@ namespace RPG_GAME.IntegrationTests.Api
         public async Task should_sign_in()
         {
             var signUp = new SignUpDto { Email = "email@email2.test.com", Password = "passwordAB63", Role = "user" };
-            var response = await _client.Request($"{Path}").PostJsonAsync(signUp);
+            var response = await _client.Request($"{Path}/sign-up").PostJsonAsync(signUp);
             response.StatusCode.ShouldBe((int)HttpStatusCode.OK);
             var signIn = new SignInDto { Email = signUp.Email, Password = signUp.Password };
 
-            var responseSignIn = await _client.Request($"{Path}/me").PostJsonAsync(signIn);
+            var responseSignIn = await _client.Request($"{Path}/sign-in").PostJsonAsync(signIn);
 
             responseSignIn.StatusCode.ShouldBe((int)HttpStatusCode.OK);
             var jwt = await responseSignIn.ResponseMessage.Content.ReadFromJsonAsync<JsonWebToken>();
@@ -52,11 +52,11 @@ namespace RPG_GAME.IntegrationTests.Api
         {
             var timeBeforeSendRequest = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
             var signUp = new SignUpDto { Email = "email@email2abv.test.com", Password = "passwordAB63", Role = "user" };
-            var response = await _client.Request($"{Path}").PostJsonAsync(signUp);
+            var response = await _client.Request($"{Path}/sign-up").PostJsonAsync(signUp);
             response.StatusCode.ShouldBe((int)HttpStatusCode.OK);
             var signIn = new SignInDto { Email = signUp.Email, Password = signUp.Password };
 
-            var responseSignIn = await _client.Request($"{Path}/me").PostJsonAsync(signIn);
+            var responseSignIn = await _client.Request($"{Path}/sign-in").PostJsonAsync(signIn);
 
             responseSignIn.StatusCode.ShouldBe((int)HttpStatusCode.OK);
             var jwt = await responseSignIn.ResponseMessage.Content.ReadFromJsonAsync<JsonWebToken>();

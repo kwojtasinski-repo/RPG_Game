@@ -13,14 +13,14 @@ namespace RPG_GAME.Api.Controllers
             _identityService = identityService;
         }
 
-        [HttpPost]
+        [HttpPost("sign-up")]
         public async Task<ActionResult> SignUp(SignUpDto signUpDto)
         {
             await _identityService.SignUpAsync(signUpDto);
             return Ok();
         }
 
-        [HttpPost("me")]
+        [HttpPost("sign-in")]
         public async Task<JsonWebToken> SignIn(SignInDto signInDto)
         {
             var token = await _identityService.SignInAsync(signInDto);

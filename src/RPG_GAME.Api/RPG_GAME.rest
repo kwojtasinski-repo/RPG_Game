@@ -259,7 +259,7 @@ Content-Type: application/json
 }
 
 ###
-POST {{api}}/account
+POST {{api}}/account/sign-up
 Content-Type: application/json
 
 {
@@ -269,7 +269,7 @@ Content-Type: application/json
 }
 
 ###
-POST {{api}}/account/me
+POST {{api}}/account/sign-in
 Content-Type: application/json
 
 {
