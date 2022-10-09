@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using RPG_GAME.Infrastructure.Auth;
 using RPG_GAME.Infrastructure.Commands;
+using RPG_GAME.Infrastructure.Conventions;
 using RPG_GAME.Infrastructure.Database;
 using RPG_GAME.Infrastructure.Events;
 using RPG_GAME.Infrastructure.Grpc;
@@ -21,7 +22,7 @@ namespace RPG_GAME.Infrastructure
 
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(options => options.UseDashedConventionInRouting());
             services.AddAuth();
             services.AddMongo();
             services.AddTime();
