@@ -1,4 +1,6 @@
 <template>
+  <div class="img">
+  </div>
   <div class="mb-4" >
     <HeaderComponent />
   </div>
@@ -30,13 +32,25 @@ export default {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #255db9;
+    color: rgb(62, 62, 63);
+  }
+
+  .img {
     background-image: url('~@/assets/background-img.jpg');
-    --bs-table-border-color: rgba(0, 0, 0) !important;
-    background-size: 100%;
-    position: absolute;
+    background-size: cover;
+    position: fixed;
     background-repeat: no-repeat;
-    width: 100vw !important;
-    height: 100vh !important;
+    top: 0;
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+    z-index: -1;
+    opacity: 55%;
+    width: 100%;
+    height: auto;
+  }
+
+  .table {
+    --bs-table-border-color: rgba(0, 0, 0) !important;
   }
 </style>
