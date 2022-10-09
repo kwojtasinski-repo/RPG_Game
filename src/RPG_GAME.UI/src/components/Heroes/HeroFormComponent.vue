@@ -82,7 +82,7 @@
                     <button type="button" :class="manageSkills ? 'btn btn-outline-secondary me-2 disabled' : 'btn btn-outline-secondary me-2'" @click="reset">
                         Reset
                     </button>
-                    <button type="button" :class="manageSkills ? 'btn btn-secondary me-2 disabled' : 'btn btn-secondary me-2'">
+                    <button type="button" :class="manageSkills ? 'btn btn-secondary me-2 disabled' : 'btn btn-secondary me-2'" @click="cancel">
                         Cancel
                     </button>
                     <button :class="manageSkills ? 'btn btn-success disabled' : 'btn btn-success'">
@@ -302,6 +302,9 @@
             cancelHeroSkills() {
                 this.manageSkills = false;
             },
+            cancel() {
+                this.$emit('cancel');
+            }
         }
     }
 </script>

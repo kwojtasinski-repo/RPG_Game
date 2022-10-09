@@ -3,7 +3,7 @@
         Edit Hero
     </h3>
     <div>
-        <HeroFormComponent :readonly="manageSkills" :strategiesIncreasing="strategiesIncreasing" :hero="hero" @submitForm="submit" />
+        <HeroFormComponent :readonly="manageSkills" :strategiesIncreasing="strategiesIncreasing" :hero="hero" @submitForm="submit" @cancel="cancel" />
     </div>
 </template>
 
@@ -30,6 +30,9 @@
         },
         submit(formToSend) {
             console.log('formToSend', formToSend);
+        },
+        cancel() {
+            this.$router.push({ name: 'all-heroes' });
         }
     },
     created() {

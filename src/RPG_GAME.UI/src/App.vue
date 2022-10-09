@@ -31,7 +31,12 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #255db9;
-    width: 100vw;
-    height: 100vh;
+    background-image: url('~@/assets/background-img.jpg');
+    --bs-table-border-color: rgba(0, 0, 0) !important;
+    background-size: 100%;
+    position: absolute;
+    background-repeat: no-repeat;
+    width: 100vw !important;
+    height: 100vh !important;
   }
 </style>

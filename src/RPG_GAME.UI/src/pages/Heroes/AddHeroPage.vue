@@ -3,7 +3,7 @@
         Add Hero
     </h3>
     <div>
-        <HeroFormComponent :strategiesIncreasing="strategiesIncreasing" />
+        <HeroFormComponent :strategiesIncreasing="strategiesIncreasing" @submitForm="submit" @cancel="cancel" />
     </div>
 </template>
 
@@ -21,6 +21,14 @@
             error: ''
         }
     },
+    methods: {
+        submit(formToSend) {
+            console.log('formToSend', formToSend);
+        },
+        cancel() {
+            this.$router.push({ name: 'all-heroes' });
+        }
+    }
   }
 </script>
 
