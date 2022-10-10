@@ -250,14 +250,14 @@
                         }
                     },
                     attack: {
-                        value: Number(this.newHero.health.value),
+                        value: Number(this.newHero.attack.value),
                         increasingState: {
                             strategyIncreasing: this.newHero.attackIncreasingState.value,
                             value: Number(this.newHero.attackIncreasingStateValue.value),
                         }
                     },
                     baseRequiredExperience: {
-                        value: Number(this.newHero.health.value),
+                        value: Number(this.newHero.baseRequiredExperience.value),
                         increasingState: {
                             strategyIncreasing: this.newHero.baseRequiredExperienceIncreasingState.value,
                             value: Number(this.newHero.baseRequiredExperienceIncreasingStateValue.value),

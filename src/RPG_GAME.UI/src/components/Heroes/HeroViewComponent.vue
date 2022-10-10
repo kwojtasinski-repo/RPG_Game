@@ -118,7 +118,7 @@
 
 <script>
   export default {
-    name: 'ViewHeroPage',
+    name: 'HeroViewComponent',
     props: ['hero'],
     components: {
     },
