@@ -1,0 +1,96 @@
+{
+    "enemies": [
+        {
+            "id": "221e6cee-100e-4a73-9f67-37675ca885c3",
+            "enemyName": "Knight#1",
+            "baseAttack": {
+                "value": 2,
+                "increasingState": {
+                    "strategyIncreasing": "PERCENTAGE",
+                    "value": 3
+                }
+            },
+            "baseHealth": {
+                "value": 10,
+                "increasingState": {
+                    "strategyIncreasing": "PERCENTAGE",
+                    "value": 3
+                }
+            },
+            "baseHealLvl": {
+                "value": 2,
+                "increasingState": {
+                    "strategyIncreasing": "PERCENTAGE",
+                    "value": 2
+                }
+            },
+            "experience": {
+                "value": 100,
+                "increasingState": {
+                    "strategyIncreasing": "PERCENTAGE",
+                    "value": 10
+                }
+            },
+            "difficulty": "EASY",
+            "category": "Knight",
+            "skills": [
+                {
+                    "id": "221e6cee-100e-4a73-9f67-37675ca885c3",
+                    "name": "damage",
+                    "baseAttack": 4,
+                    "probability": 20,
+                    "increasingState": {
+                        "strategyIncreasing": "PERCENTAGE",
+                        "value": 5
+                    }
+                }
+            ]
+        },
+        {
+            "id": "234e6cee-100e-4a73-9f67-37675ca885c3",
+            "enemyName": "Knight#2",
+            "baseAttack": {
+                "value": 2,
+                "increasingState": {
+                    "strategyIncreasing": "PERCENTAGE",
+                    "value": 3
+                }
+            },
+            "baseHealth": {
+                "value": 10,
+                "increasingState": {
+                    "strategyIncreasing": "PERCENTAGE",
+                    "value": 3
+                }
+            },
+            "baseHealLvl": {
+                "value": 2,
+                "increasingState": {
+                    "strategyIncreasing": "PERCENTAGE",
+                    "value": 2
+                }
+            },
+            "experience": {
+                "value": 100,
+                "increasingState": {
+                    "strategyIncreasing": "PERCENTAGE",
+                    "value": 10
+                }
+            },
+            "difficulty": "EASY",
+            "category": "Knight",
+            "skills": [
+                {
+                    "id": "234e6cee-100e-4a73-9f67-37675ca885c3",
+                    "name": "damage",
+                    "baseAttack": 4,
+                    "probability": 20,
+                    "increasingState": {
+                        "strategyIncreasing": "PERCENTAGE",
+                        "value": 5
+                    }
+                }
+            ]
+        }
+    ]
+}
