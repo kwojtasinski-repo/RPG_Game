@@ -3,7 +3,7 @@
         Edit Hero
     </h3>
     <div>
-        <HeroFormComponent :readonly="manageSkills" :strategiesIncreasing="strategiesIncreasing" :hero="hero" @submitForm="submit" @cancel="cancel" />
+        <HeroFormComponent :strategiesIncreasing="strategiesIncreasing" :hero="hero" @submitForm="submit" @cancel="cancel" />
     </div>
 </template>
 
