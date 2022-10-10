@@ -1,6 +1,6 @@
 <template>
   <h3>
-      Edit Hero
+      Edit Enemy
   </h3>
   <div>
     <EnemyFormComponent :enemy="enemy" :strategiesIncreasing="strategiesIncreasing" :difficulties="difficulties" :categories="categories" @submitForm="submit" @cancel="cancel" />
