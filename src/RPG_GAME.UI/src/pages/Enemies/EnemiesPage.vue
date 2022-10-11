@@ -5,22 +5,22 @@
             <RouterButtonComponent :url="'/'" :buttonText="'Back to menu'" />
         </div>
         <div>
-            <table class="table">
+            <table class="table table-hover table-striped table-fit table-bordered">
                 <thead>
-                    <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Health</th>
-                    <th>Heal</th>
-                    <th>Attack</th>
-                    <th>Base Required Experience</th>
-                    <th>Difficulty</th>
-                    <th>Category</th>
-                    <th>Action</th>
+                    <tr class="table-dark">
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Health</th>
+                        <th>Heal</th>
+                        <th>Attack</th>
+                        <th>Base Required Experience</th>
+                        <th>Difficulty</th>
+                        <th>Category</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="enemy in enemies" :key="enemy.id">
+                    <tr v-for="enemy in enemies" :key="enemy.id" class="table-light">
                         <td> {{ enemy.id }} </td>
                         <td> {{ enemy.enemyName }} </td>
                         <td> {{ enemy.baseHealth.value }} </td>

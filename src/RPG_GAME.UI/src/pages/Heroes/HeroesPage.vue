@@ -5,19 +5,19 @@
             <RouterButtonComponent :url="'/'" :buttonText="'Back to menu'" />
         </div>
         <div>
-            <table class="table">
+            <table class="table table-hover table-striped table-fit table-bordered">
                 <thead>
-                    <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Health</th>
-                    <th scope="col">Attack</th>
-                    <th scope="col">Base Required Experience</th>
-                    <th scope="col">Action</th>
+                    <tr class="table-dark">
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Health</th>
+                        <th scope="col">Attack</th>
+                        <th scope="col">Base Required Experience</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="hero in heroes" :key="hero.id">
+                    <tr v-for="hero in heroes" :key="hero.id" class="table-light">
                         <td> {{ hero.id }} </td>
                         <td> {{ hero.heroName }} </td>
                         <td> {{ hero.health.value }} </td>

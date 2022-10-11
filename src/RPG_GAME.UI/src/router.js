@@ -2,6 +2,9 @@ import { createRouter, createWebHistory } from "vue-router"
 import MenuPage from "./pages/Menu/MenuPage.vue"
 import NotFoundPage from "./pages/NotFound/NotFoundPage.vue"
 import MapsPage from "./pages/Maps/MapsPage.vue"
+import AddMapPage from "./pages/Maps/AddMapPage.vue"
+import EditMapPage from "./pages/Maps/EditMapPage.vue"
+import ViewMapPage from "./pages/Maps/ViewMapPage.vue"
 import CharactersPage from "./pages/Characters/CharactersPage.vue"
 import HeroesPage from "./pages/Heroes/HeroesPage.vue"
 import AddHeroPage from "./pages/Heroes/AddHeroPage.vue"
@@ -18,10 +21,26 @@ const routes = [
         name: 'menu',
         component: MenuPage
     },
+    // --- heroes ---
     {
         path: '/maps',
         name: 'all-maps',
         component: MapsPage
+    },
+    {
+        path: '/maps',
+        name: 'add-map',
+        component: AddMapPage
+    },
+    {
+        path: '/maps/:mapId',
+        name: 'edit-map',
+        component: EditMapPage
+    },
+    {
+        path: '/maps/:mapId',
+        name: 'view-map',
+        component: ViewMapPage
     },
     {
         path: '/characters',

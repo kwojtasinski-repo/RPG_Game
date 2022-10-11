@@ -1,0 +1,60 @@
+{
+    "maps": [
+        {
+            "id": "1830d105-2492-4013-9d5b-ca6315f83904",
+            "name": "Map#1",
+            "difficulty": "EASY",
+            "enemies": [
+                {
+                    "enemy": {
+                        "id": "221e6cee-100e-4a73-9f67-37675ca885c3",
+                        "enemyName": "Knight#1",
+                        "baseAttack": 2,
+                        "baseHealth": 10,
+                        "baseHealLvl": 2,
+                        "experience": 100,
+                        "difficulty": "EASY",
+                        "category": "Knight",
+                        "skills": [
+                            {
+                                "id": "221e6cee-100e-4a73-9f67-37675ca885c3",
+                                "name": "damage",
+                                "baseAttack": 4,
+                                "probability": 20
+                            }
+                        ]
+                    },
+                    "quantity": 1
+                }
+            ]
+        },
+        {
+            "id": "1840d105-2492-4013-9d5b-ca6315f83904",
+            "name": "Map#2",
+            "difficulty": "EASY",
+            "enemies": [
+                {
+                    "enemy": {
+                        "id": "234e6cee-100e-4a73-9f67-37675ca885c3",
+                        "enemyName": "Knight#2",
+                        "baseAttack": 2,
+                        "baseHealth": 10,
+                        "baseHealLvl": 2,
+                        "experience": 100,
+                        "difficulty": "EASY",
+                        "category": "Knight",
+                        "skills": [
+                            {
+                                "id": "234e6cee-100e-4a73-9f67-37675ca885c3",
+                                "name": "damage",
+                                "baseAttack": 4,
+                                "probability": 20
+                            }
+                        ]
+                    },
+                    "quantity": 2
+                }
+            ]
+        }
+    ]
+}
