@@ -1,8 +1,6 @@
 <template>
     <div class="mt-2 mb-2">
-        <RouterButtonComponent :namedRoute="{ name: 'all-heroes' }" :buttonText="'Heroes'" />
-    </div>
-    <div class="mt-2 mb-2">
+        <RouterButtonComponent :namedRoute="{ name: 'all-heroes' }" :buttonText="'Heroes'" :buttonClass="'btn btn-primary me-2'" />
         <RouterButtonComponent :namedRoute="{ name: 'all-enemies' }" :buttonText="'Enemies'" />
     </div>
     <div class="mt-2 mb-2">
@@ -12,10 +10,11 @@
 
 <script>
 import RouterButtonComponent from '@/components/RouterButton/RouterButtonComponent.vue';
+
   export default {
     name: 'CharactersPage',
     components: {
-        RouterButtonComponent
+      RouterButtonComponent
     }
   }
 </script>
