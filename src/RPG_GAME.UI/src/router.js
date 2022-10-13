@@ -16,6 +16,7 @@ import EditEnemyPage from "./pages/Enemies/EditEnemyPage.vue"
 import ViewEnemyPage from "./pages/Enemies/ViewEnemyPage.vue"
 
 const routes = [
+    // --- menu ---
     {
         path: '/',
         name: 'menu',
@@ -42,6 +43,7 @@ const routes = [
         name: 'view-map',
         component: ViewMapPage
     },
+    // --- characters ---
     {
         path: '/characters',
         name: 'characters',

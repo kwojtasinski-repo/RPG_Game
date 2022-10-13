@@ -16,12 +16,19 @@
                 </th>
             </tr>
         </thead>
-            <tbody class="table-group-divider">
-                <tr v-for="item in sortedData" :key='item' class="table-light">
-                    <td v-for="(value, field) in item" :key='field'>{{ value }}</td>
-                </tr>
+        <tbody class="table-group-divider">
+            <tr v-for="item in dataPerPage" :key='item' :class="markedElement && markedElement.id === item.id ? 'bg-info' : 'table-light'" @click="() => setCellAsMarked(item)">
+                <td v-for="(value, field) in item" :key='field'>{{ value }}</td>
+            </tr>
         </tbody>
     </table>
+    <div class="d-flex background-pager-click">
+        <div class="page-clicker">
+            <span v-for="n in pages" :key="n" class="col ms-2 me-2 text-primary link" @click="() => getNextPage(n)">
+                {{n}}
+            </span>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -41,14 +48,22 @@ export default {
         },
         filterBy: {
             type: String
-        }
+        },
+        elementsPerPage: {
+            type: Number,
+            default: 25
+        },
     },
     data() {
         return {
             sortedData: [],
             lastIndex: -1,
             sortClick: 0,
-            searchQuery: ''
+            searchQuery: '',
+            currentPage: 1,
+            pages: 1,
+            dataPerPage: [],
+            markedElement: null
         }
     },
     methods: {
@@ -80,7 +95,7 @@ export default {
         },
         dynamicSort(property, sort) {
             var sortOrder = 1;
-            if(property[0] === "-") {
+            if (property[0] === "-") {
                 sortOrder = -1;
                 property = property.substr(1);
             }
@@ -98,10 +113,35 @@ export default {
           this.sortedData = this.data.filter(i => {
             return i[this.filterBy].toLowerCase().indexOf(this.searchQuery.toLowerCase()) !== -1;
           });
+          this.calculatePages();
+          this.setDataOnPage(1);
         },
+        calculatePages() {
+          const pages = Math.ceil(this.sortedData.length/this.elementsPerPage);
+          this.pages = pages;
+        },
+        setDataOnPage(page) {
+          const startIndex = (page - 1) * this.elementsPerPage;
+          const endIndex = startIndex + this.elementsPerPage;
+          this.dataPerPage = this.sortedData.slice(startIndex, endIndex);
+        },
+        getNextPage(page) {
+          this.setDataOnPage(page);
+        },
+        setCellAsMarked(item) {
+            if (item && this.markedElement && item.id == this.markedElement.id) {
+                this.markedElement = null;
+                return;
+            }
+
+            this.markedElement = item;
+            this.$emit("markedElement", this.markedElement);
+        }
     },
     created() {
         this.sortedData = [...this.data];
+        this.calculatePages();
+        this.setDataOnPage(1);
     }
 }
 </script>
@@ -109,5 +149,22 @@ export default {
 <style>
   .table-striped tbody tr:nth-of-type(2n+1) {
     background-color: rgba(0,0,0,.01);
+  }
+  
+  .page-clicker {
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    display: inline-flex;
+    flex-wrap: wrap;
+  }
+
+  .background-pager-click {
+    position: relative;
+    transform: translate(0, -1rem);
+    background-color: #212529;
+  }
+
+  .link {
+    cursor: pointer;
   }
 </style>

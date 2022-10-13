@@ -1,7 +1,7 @@
 <template>
     <div class="map-form-page-position">
         <div class="map-enemies-table-position">
-            <TableComponent :data="enemies" :fields="enemiesFields" :filterBy="enemyFilter" sortable />
+            <TableComponent :data="enemies" :fields="enemiesFields" :filterBy="enemyFilter" :elementsPerPage="5" sortable />
         </div>
         <div class="map-form-position">
             <form class="map-form" @submit.prevent="submit">

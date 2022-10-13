@@ -22,7 +22,7 @@ import MapFormComponent from '@/components/Maps/MapFormComponent.vue';
         addMap: null,
         difficulties: [{label: 'Easy', value: 'EASY'}, {label: 'Medium', value: 'MEDIUM'}, {label: 'Hard', value: 'HARD'}],
         enemiesFields: ['#', 'Name', 'Attack', 'Health', 'Heal', 'Base Required Experience', 'Difficulty', 'Category'],
-        enemyFilter: 'name'
+        enemyFilter: 'enemyName'
       }
     },
     methods: {
