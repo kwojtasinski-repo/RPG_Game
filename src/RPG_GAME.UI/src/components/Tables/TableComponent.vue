@@ -131,6 +131,7 @@ export default {
         setCellAsMarked(item) {
             if (item && this.markedElement && item.id == this.markedElement.id) {
                 this.markedElement = null;
+                this.$emit("markedElement", this.markedElement);
                 return;
             }
 
@@ -142,7 +143,8 @@ export default {
         this.sortedData = [...this.data];
         this.calculatePages();
         this.setDataOnPage(1);
-    }
+    },
+    emits: ['markedElement']
 }
 </script>
 

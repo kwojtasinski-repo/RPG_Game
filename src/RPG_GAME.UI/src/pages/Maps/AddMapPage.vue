@@ -26,7 +26,9 @@ import MapFormComponent from '@/components/Maps/MapFormComponent.vue';
       }
     },
     methods: {
-
+      cancel() {
+        this.$router.push({ name: 'all-maps' });
+      }
     },
     created() {
       this.enemies = response.enemies.map(e => ({
@@ -39,7 +41,6 @@ import MapFormComponent from '@/components/Maps/MapFormComponent.vue';
           difficulty: e.difficulty,
           category: e.category
         }));
-        console.log(this.enemies)
     }
   }
 

@@ -29,17 +29,17 @@ const routes = [
         component: MapsPage
     },
     {
-        path: '/maps',
+        path: '/maps/add',
         name: 'add-map',
         component: AddMapPage
     },
     {
-        path: '/maps/:mapId',
+        path: '/maps/edit/:mapId',
         name: 'edit-map',
         component: EditMapPage
     },
     {
-        path: '/maps/:mapId',
+        path: '/maps/view/:mapId',
         name: 'view-map',
         component: ViewMapPage
     },
