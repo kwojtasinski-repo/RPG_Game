@@ -30,7 +30,12 @@ export default {
     },
     data() {
         return {
-            enemyQuantity: {
+            enemyQuantity: this.initEnemyQuantity()
+        }
+    },
+    methods: {
+        initEnemyQuantity() {
+            return {
                 value: null,
                 showError: false,
                 error: '',
@@ -39,10 +44,11 @@ export default {
                     v => v.toString().length > 0 || 'Quantity is required',
                     v => v >= 0 || 'Quantity cannot be negative'
                 ]
-            }
-        }
-    },
-    methods: {
+            };
+        },
+        reset() {
+            this.enemyQuantity = this.initEnemyQuantity()
+        },
         onChangeEnemyQantity(value) {
             const isValid = this.validateEnemyQuantity(value);
             if (!isValid) {

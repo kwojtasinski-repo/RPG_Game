@@ -28,6 +28,9 @@ import MapFormComponent from '@/components/Maps/MapFormComponent.vue';
     methods: {
       cancel() {
         this.$router.push({ name: 'all-maps' });
+      },
+      submit(dataToSend) {
+        console.log('From AddMapPage', dataToSend);
       }
     },
     created() {

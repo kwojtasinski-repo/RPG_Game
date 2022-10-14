@@ -1,10 +1,10 @@
 <template>
     <div class="map-form-page-position">
         <div class="map-enemies-table-position">
-            <TableComponent :data="enemies" :fields="enemiesFields" :filterBy="enemyFilter" :elementsPerPage="5" sortable  @markedElement="markedElement" />
+            <TableComponent :data="enemies" :fields="enemiesFields" :filterBy="enemyFilter" :elementsPerPage="5" sortable  @markedElement="markedElement" ref="tableComponentRef" />
         </div>
         <div class="map-add-enemy-position">
-            <AddEnemyToMapComponent :markedEnemy="markedEnemy" @enemyToAdd="addEnemy" />
+            <AddEnemyToMapComponent :markedEnemy="markedEnemy" @enemyToAdd="addEnemy" ref="addEnemyToMapComponentRef" />
         </div>
         <div class="map-form-position">
             <form class="map-form" @submit.prevent="submit">
@@ -261,6 +261,9 @@ export default {
         },
         reset() {
             this.newMap = this.initMap();
+            this.markedEnemy = null;
+            this.$refs.tableComponentRef.markedElement = null;
+            this.$refs.addEnemyToMapComponentRef.reset();
         },
         cancel() {
             this.$emit('cancel');
