@@ -1,7 +1,7 @@
 <template>
-    <div v-if="open===true" class="vue-modal">
-        <div class="vue-modal-inner">
-            <div class="vue-modal-content">
+    <div v-if="open===true" class="popup-window">
+        <div class="popup-window-inner">
+            <div class="popup-window-content">
                 <slot />
             </div>
         </div>
@@ -32,12 +32,12 @@
     *,
     ::before,
     ::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
-    .vue-modal {
+    .popup-window {
         position: fixed;
         top: 0;
         left: 0;
@@ -50,8 +50,8 @@
         text-align: center;
     }
 
-    .vue-modal-inner {
-        max-width: 500px;
+    .popup-window-inner {
+        max-width: 100rem;
         margin: 2rem auto;
         position: absolute;
         left: 50%;
@@ -59,7 +59,7 @@
         transform: translate(-50%, -50%);
     }
 
-    .vue-modal-content {
+    .popup-window-content {
         position: relative;
         background-color: #fff;
         border: 1px solid rgba(0, 0, 0, 0.3);

@@ -7,7 +7,7 @@
                         {{enemy.enemyName}}
                     </div>
                 </div>
-                <div class="card-body text-center m-auto">
+                <div class="card-body text-center">
                     <div class="enemy-prop-info">
                         Properties
                     </div>
@@ -201,7 +201,7 @@
   }
 
   .card-enemy {
-    width: 40rem;
+    width: 45rem;
   }
   
   .card-body-content {

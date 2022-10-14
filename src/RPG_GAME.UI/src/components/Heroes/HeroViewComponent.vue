@@ -7,7 +7,7 @@
                     {{hero.heroName}}
                 </div>
                 </div>
-                <div class="card-body text-center m-auto">
+                <div class="card-body text-center">
                 <div class="hero-prop-info">
                     Properties
                 </div>
@@ -139,7 +139,7 @@
   }
 
   .card-hero {
-    width: 40rem;
+    width: 45rem;
   }
   
   .card-body-content {

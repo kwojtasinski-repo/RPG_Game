@@ -1,7 +1,7 @@
 <template>
     <div class="view-hero-page">
         <div class="mt-2 mb-2 justify-content-start">
-          <RouterButtonComponent :namedRoute="{ name: 'all-heroes' }" :buttonClass="'btn btn-primary'" :buttonText="'Back to menu'" />
+          <RouterButtonComponent :namedRoute="{ name: 'all-heroes' }" :buttonClass="'btn btn-primary'" :buttonText="'Back to heroes'" />
         </div>
         <div class="d-flex justify-content-center">
           <HeroViewComponent :hero="hero" />

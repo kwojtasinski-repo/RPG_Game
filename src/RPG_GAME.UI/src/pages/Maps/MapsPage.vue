@@ -38,21 +38,36 @@
             </tbody>
         </table> 
       </div>
+      <div>
+          <PopupComponent :open="openPopup" @popupClosed="popupClosed">
+              <div>Do you wish to delete map: {{mapToDelete.name}} ?</div>
+              <div v-if="error" className="alert alert-danger mt-2 mb-2">{{error}}</div>
+              <div class="mt-2">
+                  <button class="btn btn-danger me-2" @click="confirmDelete">Yes</button>
+                  <button class="btn btn-secondary" @click="popupClosed">No</button>
+              </div>
+          </PopupComponent>
+      </div>
     </div>
 </template>
 
 <script>
   import RouterButtonComponent from '@/components/RouterButton/RouterButtonComponent.vue'
   import * as response from '@/stubs/maps.json';
+  import PopupComponent from '@/components/Poupup/PopupComponent.vue';
 
   export default {
     name: 'MapsPage',
     components: {
-      RouterButtonComponent
+      RouterButtonComponent,
+      PopupComponent
     },
-    date() {
+    data() {
       return {
-        maps: []
+        maps: [],
+        mapToDelete: null,
+        openPopup: false,
+        error: ''
       }
     },
     methods: {
@@ -60,18 +75,27 @@
           return response.maps;
       },
       onDelete(map) {
-        console.log(map);
-      }
+        this.mapToDelete = map;
+        this.openPopup = true;
+      },
+      confirmDelete() {
+        this.openPopup = false;
+        this.mapToDelete = null;
+      },
+      popupClosed() {
+        this.mapToDelete = null;
+        this.openPopup = false;
+      },
     },
     created() {
-        this.maps = this.fetchMaps();
+      this.maps = this.fetchMaps();
     }
   }
 </script>
 
 <style>
   .maps-page {
-      padding-left: 10%;
-      padding-right: 10%;
+    padding-left: 10%;
+    padding-right: 10%;
   }
 </style>
