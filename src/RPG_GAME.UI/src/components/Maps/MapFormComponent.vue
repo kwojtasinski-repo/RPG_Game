@@ -4,20 +4,7 @@
             <TableComponent :data="enemies" :fields="enemiesFields" :filterBy="enemyFilter" :elementsPerPage="5" sortable  @markedElement="markedElement" />
         </div>
         <div class="map-add-enemy-position">
-            <div class="map-add-container">
-                <div>
-                    <InputComponent :label="'Id'" :type="'text'" :value="markedEnemy?.id" :readonly="true" :class="'map-add-enemt-input'"/>
-                </div>
-                <div>
-                    <InputComponent :label="'Quantity'" :type="'number'" :value="enemyQuantity.value" :class="'map-add-enemt-input'"
-                                v-model="enemyQuantity.value" :showError="enemyQuantity.showError" 
-                                :error="enemyQuantity.error"
-                                @valueChanged="onChangeEnemyQantity($event)" />
-                </div>
-                <div class="mt-2 mb-2">
-                    <button class="btn btn-success" type="button" @click="addEnemy">Add Enemy</button>
-                </div>
-            </div>
+            <AddEnemyToMapComponent :markedEnemy="markedEnemy" @enemyToAdd="addEnemy" />
         </div>
         <div class="map-form-position">
             <form class="map-form" @submit.prevent="submit">
@@ -44,6 +31,9 @@
                                         Id
                                     </th>
                                     <th> 
+                                        Enemy Name
+                                    </th>
+                                    <th> 
                                         Quantity
                                     </th>
                                     <th> 
@@ -54,6 +44,7 @@
                             <tbody class="table-group-divider">
                                 <tr v-for="enemy in newMap.enemies.value" :key="enemy.enemyId" class="table-light">
                                     <td>{{ enemy.enemyId }}</td>
+                                    <td>{{ enemy.enemyName }}</td>
                                     <td>
                                         <div class="d-flex">
                                             <div class="icon" @click="() => addOneEnemy(enemy)">
@@ -98,6 +89,7 @@
 <script>
 import InputComponent from '@/components/Input/InputComponent.vue';
 import TableComponent from '../Tables/TableComponent.vue';
+import AddEnemyToMapComponent from './AddEnemyToMapComponent.vue';
   
 export default {
     name: 'MapFormComponent',
@@ -124,7 +116,8 @@ export default {
     },
     components: {
         InputComponent,
-        TableComponent
+        TableComponent,
+        AddEnemyToMapComponent
     },
     data() {
         return {
@@ -183,53 +176,15 @@ export default {
                 this.enemyQuantity.value = null;
             }
         },
-        validateEnemyQuantity(value) {
-            this.enemyQuantity.error = '';
-            this.enemyQuantity.showError = false;
-
-            if (!this.markedEnemy) {
-                this.enemyQuantity.error = 'Mark enemy to add';
-                this.enemyQuantity.showError = true;
-                this.enemyQuantity.value = null;
-                return false;
-            }
-
-            const rules = this.enemyQuantity.rules;
-            for (const rule of rules) {
-                const valid = rule(value);
-
-                if (valid !== true) {
-                    this.enemyQuantity.error = valid;
-                    this.enemyQuantity.showError = true;
-                    return false;
-                }
-            }
-
-            return true;
-        },
-        onChangeEnemyQantity(value) {
-            const isValid = this.validateEnemyQuantity(value);
-            if (!isValid) {
-                return;
-            }
-
-            this.enemyQuantity.value = Number(value);
-        },
-        addEnemy() {
-            const isValid = this.validateEnemyQuantity(this.enemyQuantity.value);
-
-            if (!isValid) {
-                return;
-            }
-
-            const enemyExists = this.newMap.enemies.value.find(e => e.enemyId === this.markedEnemy.id);
+        addEnemy(enemy, quantity) {
+            const enemyExists = this.newMap.enemies.value.find(e => e.enemyId === enemy.id);
             
             if (enemyExists) {
-                enemyExists.quantity += this.enemyQuantity.value;
+                enemyExists.quantity += quantity;
                 return;
             }
 
-            this.newMap.enemies.value.push({ enemyId: this.markedEnemy.id, quantity: this.enemyQuantity.value });
+            this.newMap.enemies.value.push({ enemyId: enemy.id, enemyName: enemy.enemyName, quantity: quantity });
         },
         addOneEnemy(enemy) {
             const enemyExists = this.newMap.enemies.value.find(e => e.enemyId === enemy.enemyId);
@@ -338,20 +293,11 @@ export default {
         padding-right: 10%;
     }
 
-    .map-add-enemy-position{
+    .map-add-enemy-position {
         padding-left: 10%;
         padding-right: 10%;
         display: flex;
         justify-content: center;
-    }
-
-    .map-add-enemt-input {
-        flex: 1;
-        flex-direction: row;
-    }
-
-    .map-add-container {
-        width: 50%;
     }
 
     .icon {
