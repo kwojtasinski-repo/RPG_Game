@@ -19,6 +19,7 @@ namespace RPG_GAME.Infrastructure
     public static class Extensions
     {
         private const string SectionName = "mongo";
+        private const string CorsPolicy = "cors";
 
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
@@ -54,11 +55,23 @@ namespace RPG_GAME.Infrastructure
             services.AddSwaggerGen();
             services.AddGrpcCommunication();
 
+            services.AddCors(cors =>
+            {
+                cors.AddPolicy(CorsPolicy, policy =>
+                {
+                    policy.WithOrigins("*")
+                          .WithMethods("POST", "PUT", "PATCH", "DELETE")
+                          .WithHeaders("Content-Type", "Authorization")
+                          .WithExposedHeaders("Location");
+                });
+            });
+
             return services;
         }
 
         public static WebApplication UseInfrastructure(this WebApplication app)
         {
+            app.UseCors(CorsPolicy);
             app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseSwagger();
             app.UseSwaggerUI();

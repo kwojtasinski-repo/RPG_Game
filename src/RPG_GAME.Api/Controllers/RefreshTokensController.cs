@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RPG_GAME.Application.DTO.Auth;
 using RPG_GAME.Application.Services;
 
@@ -13,6 +14,7 @@ namespace RPG_GAME.Api.Controllers
             _refreshTokenService = refreshTokenService;
         }
 
+        [AllowAnonymous]
         [HttpPost("use")]
         public async Task<JsonWebToken> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
         {
