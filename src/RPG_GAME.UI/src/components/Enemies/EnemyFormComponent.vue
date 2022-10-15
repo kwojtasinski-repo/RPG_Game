@@ -141,7 +141,20 @@
     
     export default {
         name: 'EnemyFormComponent',
-        props: ['enemy', 'strategiesIncreasing', 'difficulties', 'categories'],
+        props: {
+            enemy: {
+                type: Object
+            },
+            strategiesIncreasing: {
+                type: Array
+            },
+            difficulties: {
+                type: Array
+            },
+            categories: {
+                type: Array
+            }
+        },
         components: {
             InputComponent,
             EnemySkillsFormComponent
@@ -327,11 +340,11 @@
                 const formToSend = {
                     id: this.newEnemy.id.value,
                     enemyName: this.newEnemy.enemyName.value,
-                    health: {
-                        value: Number(this.newEnemy.health.value),
+                    baseHealth: {
+                        value: Number(this.newEnemy.baseHealth.value),
                         increasingState: {
-                            strategyIncreasing: this.newEnemy.healthIncreasingState.value,
-                            value: this.newEnemy.healthIncreasingStateValue.value,
+                            strategyIncreasing: this.newEnemy.baseHealthIncreasingState.value,
+                            value: this.newEnemy.baseHealthIncreasingStateValue.value,
                         }
                     },
                     baseAttack: {

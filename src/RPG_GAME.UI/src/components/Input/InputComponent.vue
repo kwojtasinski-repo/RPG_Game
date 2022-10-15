@@ -73,7 +73,33 @@
 
     export default {
       name: 'InputComponent',
-      props: ['type', 'value', 'label', 'options', 'step', 'error', 'showError', 'readonly'],
+      props: {
+        type: {
+          type: String
+        },
+        value: {
+          required: true
+        },
+        label: {
+          type: String,
+          required: true
+        },
+        options: {
+          type: Array
+        },
+        step: {
+          type: Number
+        },
+        error: {
+          type: String
+        },
+        showError: {
+          type: Boolean
+        },
+        readonly: {
+          type: Boolean
+        }
+      },
       components: {
       },
       methods: {
@@ -108,6 +134,7 @@
           set(v) { this.$emit('input', v) }
         }
       },
+      emits: ['valueChanged', 'input']
     }
 </script>
 

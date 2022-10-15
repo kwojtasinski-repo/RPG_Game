@@ -140,7 +140,6 @@ export default {
         },
         showEnemy() {
             this.enemyFetched = this.fetchEnemy(this.currentEnemyId);
-            console.log('enemyFetched', this.enemyFetched);
             this.openPopup = true;
         },
         fetchEnemy(enemyId) {

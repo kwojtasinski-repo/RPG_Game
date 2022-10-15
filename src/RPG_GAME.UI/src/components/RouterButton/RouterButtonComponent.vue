@@ -16,7 +16,23 @@
 
     export default {
       name: 'RouterButtonComponent',
-      props: [ 'url', 'namedRoute', 'buttonText', 'buttonClass', 'buttonType' ],
+      props: { 
+        url: {
+          type: String
+        },
+        namedRoute: {
+          type: Object
+        },
+        buttonText: {
+          type: String
+        },
+        buttonClass: {
+          type: String
+        },
+        buttonType: {
+          type: String
+        }
+      },
       components: {
       }
     }

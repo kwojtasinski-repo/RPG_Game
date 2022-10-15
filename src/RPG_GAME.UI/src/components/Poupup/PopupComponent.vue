@@ -11,7 +11,12 @@
 <script>
     export default {
         name: 'PopupComponent',
-        props: ['open'],
+        props: {
+            open: {
+                type: Boolean,
+                required: true
+            }
+        },
         methods: {
             close() {
                 this.$emit('popupClosed');

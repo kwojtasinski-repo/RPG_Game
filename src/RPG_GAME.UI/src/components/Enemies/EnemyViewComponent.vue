@@ -181,7 +181,12 @@
 <script>
   export default {
     name: 'EnemyViewComponent',
-    props: ['enemy'],
+    props: {
+        enemy: {
+            type: Object,
+            required: true
+        }
+    },
     components: {
     },
   }

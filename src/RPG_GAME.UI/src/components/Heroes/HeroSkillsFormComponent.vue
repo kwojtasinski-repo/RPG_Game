@@ -21,23 +21,20 @@
                 <div>
                     <InputComponent :label="'Skill base attack'" :type="'number'" :value="skill.baseAttack.value" 
                             v-model="skill.baseAttack.value" :showError="skill.baseAttack.showError" 
-                            :error="skill.baseAttack.error" 
-                            :readonly="readonly"
+                            :error="skill.baseAttack.error"
                             @valueChanged="onChangeInput($event, 'baseAttack', skill.uid)" :step="0.01"/>
                 </div>
                 <div>
                     <InputComponent :label="'Skill base attack strategy increasing'" :type="'select'" :value="skill.baseAttackIncreasingState.value" 
                             v-model="skill.baseAttackIncreasingState.value" :showError="skill.baseAttackIncreasingState.showError" 
                             :error="skill.baseAttackIncreasingState.error" 
-                            :options="strategiesIncreasing" 
-                            :readonly="readonly"
+                            :options="strategiesIncreasing"
                             @valueChanged="onChangeInput($event, 'baseAttackIncreasingState', skill.uid)"/>
                 </div>
                 <div>
                     <InputComponent :label="'Skill base attack strategy increasing value'" :type="'number'" :value="skill.baseAttackIncreasingStateValue.value" 
                             v-model="skill.baseAttackIncreasingStateValue.value" :showError="skill.baseAttackIncreasingStateValue.showError" 
-                            :error="skill.baseAttackIncreasingStateValue.error" 
-                            :readonly="readonly"
+                            :error="skill.baseAttackIncreasingStateValue.error"
                             @valueChanged="onChangeInput($event, 'baseAttackIncreasingStateValue', skill.uid)" :step="0.01"/>
                 </div>
             </div>
@@ -58,7 +55,16 @@
     
     export default {
         name: 'HeroSkillsFormComponent',
-        props: ['skills', 'strategiesIncreasing'],
+        props: {
+            skills: {
+                type: Array,
+                required: true
+            },
+            strategiesIncreasing: {
+                type: Array,
+                required: true
+            }
+        },
         components: {
             InputComponent
         },
@@ -200,7 +206,8 @@
             deleteSkill(uid) {
                 this.newSkills = this.newSkills.filter(s => s.uid !== uid);
             }
-        }
+        },
+        emits: ['saveNewHeroSkills', 'cancelHeroSkills']
     }
 </script>
 

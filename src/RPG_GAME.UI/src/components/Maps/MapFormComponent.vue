@@ -164,10 +164,18 @@ export default {
                     ]
                 },
                 enemies: {
-                    value: this.map?.enemies ?? [],
+                    value: this.initEnemies(),
                     rules: []
                 }
             }
+        },
+        initEnemies() {
+            return this.map?.enemies ?
+                [...this.map.enemies.map(e => ({
+                    enemyId: e.enemyId,
+                    enemyName: e.enemyName,
+                    quantity: e.quantity
+                }))] : []
         },
         markedElement(element) {
             this.markedEnemy = element;

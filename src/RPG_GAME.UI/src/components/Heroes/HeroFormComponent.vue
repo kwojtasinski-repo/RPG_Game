@@ -103,7 +103,15 @@
     
     export default {
         name: 'HeroFormComponent',
-        props: ['hero', 'strategiesIncreasing'],
+        props: {
+            hero: {
+                type: Object
+            },
+            strategiesIncreasing: {
+                type: Array,
+                required: true
+            }
+        },
         components: {
             InputComponent,
             HeroSkillsFormComponent
@@ -305,7 +313,8 @@
             cancel() {
                 this.$emit('cancel');
             }
-        }
+        },
+        emits: ['submitForm', 'cancel']
     }
 </script>
 

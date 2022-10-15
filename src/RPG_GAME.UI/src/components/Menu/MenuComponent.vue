@@ -20,7 +20,11 @@ import MenuItemComponent from './MenuItemComponent.vue'
 
   export default {
     name: 'MenuComponent',
-    props: ["menuItems"],
+    props: {
+        menuItems: {
+            type: Array
+        }
+    },
     components: {
         MenuItemComponent
     },
@@ -33,7 +37,8 @@ import MenuItemComponent from './MenuItemComponent.vue'
         menuItemClicked(menuItem) {
             this.$emit('menuItemClicked', menuItem);
         }
-    }
+    },
+    emits: ['menuItemClicked']
   }
 </script>
   

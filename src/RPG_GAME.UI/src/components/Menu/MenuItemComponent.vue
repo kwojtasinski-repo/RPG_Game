@@ -18,7 +18,17 @@
 <script>  
   export default {
     name: 'MenuItemComponent',
-    props: ["linkClass", "linkActiveClass", "textLink"],
+    props: {
+        linkClass: {
+            type: String
+        },
+        linkActiveClass: {
+            type: String
+        },
+        textLink: {
+            type: String
+        }
+    },
     components: {
     },
     data() {

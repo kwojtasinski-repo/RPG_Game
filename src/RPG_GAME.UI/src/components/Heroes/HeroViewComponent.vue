@@ -119,7 +119,11 @@
 <script>
   export default {
     name: 'HeroViewComponent',
-    props: ['hero'],
+    props: {
+        hero: {
+            type: Object
+        }
+    },
     components: {
     },
   }
