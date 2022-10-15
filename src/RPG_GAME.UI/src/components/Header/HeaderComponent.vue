@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="clock text-primary">
-            user@user.com {{ currentTime }}
+            {{$store.getters.user ? $store.getters.user.email : null}} {{ currentTime }}
         </div>
     </div>
     <div class="justify-content-center align-items-center text-warning">
@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
     export default {
         name: 'HeaderComponent',
         data() {
@@ -29,6 +31,9 @@
         },
         created() {
             this.getTime();
+        },
+        computed: {
+            ...mapGetters(['user'])
         }
     }
 </script>

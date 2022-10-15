@@ -16,13 +16,31 @@
 <script>
 import FooterComponent from './components/Footer/FooterComponent.vue';
 import HeaderComponent from './components/Header/HeaderComponent.vue';
+import authService from './services/AuthService.js';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'App',
   components: {
     HeaderComponent,
     FooterComponent,
-  }
+  },
+  methods: {
+    async verifiedAuthenticated() {
+      setInterval(async () => {
+        const authenticated = await authService.isLogged();
+        if (!authenticated) {
+            this.$router.push('/');
+        }
+      }, 10000);
+    }
+  },
+  async created() {
+    await this.verifiedAuthenticated();
+  },
+  computed: {
+      ...mapGetters(['user'])
+  },
 }
 </script>
 
