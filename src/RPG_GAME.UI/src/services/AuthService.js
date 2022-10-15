@@ -94,6 +94,10 @@ class AuthService {
     
         return null;
     }
+
+    logout() {
+        window.localStorage.removeItem('user-data');
+    }
 }
 
 function mapToUser(decodedToken) {
