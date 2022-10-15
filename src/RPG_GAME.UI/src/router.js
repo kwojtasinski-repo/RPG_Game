@@ -164,13 +164,14 @@ const router = createRouter({
     routes
 });
 
-router.beforeEach((to, from, next) => {
-    const userLoggedIn = authService.isLogged();
+router.beforeEach(async (to, from, next) => {
+    const userLoggedIn = await authService.isLogged();
     if (to.meta.auth && !userLoggedIn) {
       next('/login');
     }
 
     const user = authService.getUser();
+    
     if (to.meta.role && to.meta.role != user.role) {
         next('/forbidden');
     }

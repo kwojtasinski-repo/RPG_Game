@@ -69,7 +69,6 @@ export default {
     methods: {
         sortTable(index) {
             if (!this.sortable) {
-                console.log(index);
                 return;
             }
 

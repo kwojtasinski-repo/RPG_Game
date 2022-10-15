@@ -86,8 +86,7 @@ class AuthService {
     
             if (exception?.response?.status) {
                 if (exception.response.status === 400) {
-                    window.localStorage.removeItem('user-data');
-                    store.dispatch('user', null);
+                    this.logout();
                 }
             }
         }
@@ -96,6 +95,7 @@ class AuthService {
     }
 
     logout() {
+        store.dispatch('user', null);
         window.localStorage.removeItem('user-data');
     }
 }

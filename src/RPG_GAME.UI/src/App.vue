@@ -27,6 +27,7 @@ export default {
   },
   methods: {
     async verifiedAuthenticated() {
+      await authService.isLogged()
       setInterval(async () => {
         const authenticated = await authService.isLogged();
         if (!authenticated) {

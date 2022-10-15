@@ -8,7 +8,7 @@
     </div>
     <div v-else
          @mouseleave="linkActive = false"
-         :class="linkClass && linkActiveClass ? [linkClass, linkActiveClass] : linkClass ? [linkClass, 'bg-dark'] : 'bg-dark'" >
+         :class="linkClass && linkActiveClass ? [linkClass, linkActiveClass, 'menuItemClick'] : linkClass ? [linkClass, 'bg-dark menuItemClick'] : 'bg-dark menuItemClick'" >
         <div>
             {{ textLink ? textLink : '' }}
         </div>
@@ -42,5 +42,8 @@
 </script>
   
 <style>
+    .menuItemClick {
+        cursor: pointer;    
+    }
 </style>
   
