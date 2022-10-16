@@ -10,7 +10,7 @@
 
 <script>
   import HeroFormComponent from '@/components/Heroes/HeroFormComponent.vue';
-  import axios from '@/axios-setup.js'
+  import axios from '@/axios-setup.js';
   import exceptionMapper from '@/mappers/exceptionToMessageMapper.js';
   
   export default {

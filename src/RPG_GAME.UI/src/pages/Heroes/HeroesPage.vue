@@ -56,7 +56,7 @@
   import RouterButtonComponent from '@/components/RouterButton/RouterButtonComponent.vue';
   import PopupComponent from '@/components/Poupup/PopupComponent.vue';
   import LoadingIconComponent from '@/components/LoadingIcon/LoadingIconComponent.vue';
-  import axios from '@/axios-setup.js'
+  import axios from '@/axios-setup.js';
   import exceptionMapper from '@/mappers/exceptionToMessageMapper.js';
 
   export default {
@@ -98,9 +98,8 @@
             try {
                 this.error = '';
                 await axios.delete(`/api/heroes/${this.heroToDelete.id}`);
-                this.fetchHeroes();
-                this.openPopup = false;
-                this.heroToDelete = null;
+                await this.fetchHeroes();
+                this.popupClosed();
             } catch(exception) {
                 const message = exceptionMapper(exception);
                 this.error = message;

@@ -25,7 +25,7 @@
   import HeroViewComponent from '../../components/Heroes/HeroViewComponent.vue';
   import RouterButtonComponent from '@/components/RouterButton/RouterButtonComponent.vue';
   import LoadingIconComponent from '@/components/LoadingIcon/LoadingIconComponent.vue';
-  import axios from '@/axios-setup.js'
+  import axios from '@/axios-setup.js';
   import exceptionMapper from '@/mappers/exceptionToMessageMapper.js';
 
   export default {
@@ -44,22 +44,21 @@
     },
     methods: {
       async fetchHero() {
-          try {
-              const response = await axios.get(`/api/heroes/${this.$route.params.heroId}`);
-              this.hero = {
-                id: response.data.id,
-                heroName: response.data.heroName,
-                health: response.data.health,
-                attack: response.data.attack,
-                baseRequiredExperience: response.data.baseRequiredExperience,
-                skills: response.data.skills
-              };
-          } catch(exception) {
-              const message = exceptionMapper(exception);
-              console.log('message', message);
-              this.error = message;
-              console.log(exception);
-          }
+        try {
+          const response = await axios.get(`/api/heroes/${this.$route.params.heroId}`);
+          this.hero = {
+            id: response.data.id,
+            heroName: response.data.heroName,
+            health: response.data.health,
+            attack: response.data.attack,
+            baseRequiredExperience: response.data.baseRequiredExperience,
+            skills: response.data.skills
+          };
+        } catch(exception) {
+          const message = exceptionMapper(exception);
+          this.error = message;
+          console.log(exception);
+        }
       },
     },
     async created() {

@@ -22,7 +22,7 @@
 
 <script>
   import HeroFormComponent from '@/components/Heroes/HeroFormComponent.vue';
-  import axios from '@/axios-setup.js'
+  import axios from '@/axios-setup.js';
   import exceptionMapper from '@/mappers/exceptionToMessageMapper.js';
   import LoadingIconComponent from '@/components/LoadingIcon/LoadingIconComponent.vue';
   import RouterButtonComponent from '@/components/RouterButton/RouterButtonComponent.vue';
