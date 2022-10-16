@@ -3,6 +3,8 @@ import authService from "./services/AuthService.js"
 import MenuPage from "./pages/Menu/MenuPage.vue"
 import NotFoundPage from "./pages/NotFound/NotFoundPage.vue"
 import ForbiddenPage from "./pages/Forbidden/ForbiddenPage.vue"
+import SignInPage from "./pages/Account/SignInPage"
+import SignUpPage from "./pages/Account/SignUpPage"
 import MapsPage from "./pages/Maps/MapsPage.vue"
 import AddMapPage from "./pages/Maps/AddMapPage.vue"
 import EditMapPage from "./pages/Maps/EditMapPage.vue"
@@ -141,6 +143,18 @@ const routes = [
         meta: {
             auth: true
         }
+    },
+    // --- login page ---
+    {
+        path: '/login',
+        name: 'login',
+        component: SignInPage
+    },
+    // --- register page ---
+    {
+        path: '/register',
+        name: 'register',
+        component: SignUpPage
     },
     // --- forbidden found page ---
     {

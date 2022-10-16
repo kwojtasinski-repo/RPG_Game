@@ -19,8 +19,8 @@ export default {
         let routes = [];
 
         if (!user) {
-          routes.push({ text: 'Login', action: () => this.$router.push({ name: 'menu' }) }) // TODO Add Login page
-          routes.push({ text: 'Register', action: () => this.$router.push({ name: 'menu' }) }) // TODO Add Register page
+          routes.push({ text: 'Login', action: () => this.$router.push({ name: 'login' }) })
+          routes.push({ text: 'Register', action: () => this.$router.push({ name: 'register' }) })
           return routes;
         }
 

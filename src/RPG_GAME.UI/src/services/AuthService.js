@@ -1,6 +1,7 @@
 import jwt_decode from 'jwt-decode';
 import axios from '@/axios-setup.js';
 import store from '@/vuex.js';
+import { notify } from "@kyvg/vue3-notification";
 
 class AuthService {
     constructor(axios) {
@@ -25,6 +26,11 @@ class AuthService {
             password: dto.password
         });
         storeUserToken(response.data);
+        notify({
+             type: "success",
+             title: 'Login',
+             text: 'Successfully login'
+        });
     }
 
     getUser() {
@@ -95,6 +101,11 @@ class AuthService {
     }
 
     logout() {
+        notify({
+             type: "info",
+             title: 'Logout',
+             text: `You've been logged out`
+         });
         store.dispatch('user', null);
         window.localStorage.removeItem('user-data');
     }
