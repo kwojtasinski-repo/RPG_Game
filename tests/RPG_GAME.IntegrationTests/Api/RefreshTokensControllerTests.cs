@@ -61,6 +61,8 @@ namespace RPG_GAME.IntegrationTests.Api
             tokenUpdated.Revoked.ShouldBeTrue();
             tokenUpdated.RevokedAt.ShouldNotBeNull();
             tokenUpdated.RevokedAt.ShouldNotBe(default);
+            tokenAdded.UserId.ShouldBe(user.Id);
+            tokenAdded.RevokedAt.ShouldBeNull();
         }
 
         private async Task<User> AddDefaultUserAsync()

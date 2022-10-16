@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RPG_GAME.Application.DTO.Players;
 using RPG_GAME.Application.Services;
 
 namespace RPG_GAME.Api.Controllers
 {
+    [Authorize]
     public class PlayersController : BaseController
     {
         private readonly IPlayerService _playerService;

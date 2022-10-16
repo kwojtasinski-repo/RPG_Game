@@ -2,6 +2,7 @@
     <h3>
         Add Hero
     </h3>
+    <div v-if="error" className="alert alert-danger">{{error}}</div>
     <div>
         <HeroFormComponent :strategiesIncreasing="strategiesIncreasing" @submitForm="submit" @cancel="cancel" />
     </div>

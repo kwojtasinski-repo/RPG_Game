@@ -84,6 +84,14 @@ namespace RPG_GAME.Infrastructure.Auth
             services.AddSingleton(options);
             services.AddSingleton(tokenValidationParameters);
 
+            services.AddAuthorization(authorization =>
+            {
+                authorization.AddPolicy("is-admin", policy =>
+                {
+                    policy.RequireRole("admin");
+                });
+            });
+
             return services;
         }
     }

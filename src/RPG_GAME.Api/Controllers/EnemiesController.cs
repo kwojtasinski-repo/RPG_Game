@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RPG_GAME.Application.Services;
 using RPG_GAME.Application.DTO.Enemies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RPG_GAME.Api.Controllers
 {
+    [Authorize]
     public class EnemiesController : BaseController
     {
         private readonly IEnemyService _enemyService;
@@ -13,18 +15,21 @@ namespace RPG_GAME.Api.Controllers
             _enemyService = enemyService;
         }
 
+        [Authorize(Policy = "is-admin")]
         [HttpGet]
         public async Task<IEnumerable<EnemyDto>> GetAll()
         {
             return await _enemyService.GetAllAsync();
         }
 
+        [Authorize(Policy = "is-admin")]
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<EnemyDetailsDto>> Get(Guid id)
         {
             return OkOrNotFound(await _enemyService.GetAsync(id));
         }
 
+        [Authorize(Policy = "is-admin")]
         [HttpPost]
         public async Task<ActionResult> Add(EnemyDto enemyDto)
         {
@@ -32,6 +37,7 @@ namespace RPG_GAME.Api.Controllers
             return CreatedAtAction(nameof(Get), new { Id = enemyDto.Id }, default);
         }
 
+        [Authorize(Policy = "is-admin")]
         [HttpPut("{id:guid}")]
         public async Task<ActionResult> Update(Guid id, EnemyDto enemyDto)
         {
@@ -40,6 +46,7 @@ namespace RPG_GAME.Api.Controllers
             return NoContent();
         }
 
+        [Authorize(Policy = "is-admin")]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Delete(Guid id)
         {

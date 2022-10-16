@@ -19,7 +19,7 @@ describe('MenuPage.vue', () => {
         const wrapper = mount(MenuPage, { global: { mocks: { $store: store } } });
 
         const text = wrapper.text();
-        expect(expectedStrings.some(str => text.includes(str))).toBeTruthy();
+        expect(expectedStrings.every(str => text.includes(str))).toBeTruthy();
     })
 
     it('given authorized user should show menu with 4 selections', () => {
@@ -29,7 +29,7 @@ describe('MenuPage.vue', () => {
         const wrapper = mount(MenuPage, { global: { mocks: { $store: store } } });
 
         const text = wrapper.text();
-        expect(expectedStrings.some(str => text.includes(str))).toBeTruthy();
+        expect(expectedStrings.every(str => text.includes(str))).toBeTruthy();
     })
 
     it('given authorized admin should show menu with 6 selections', () => {
@@ -39,6 +39,6 @@ describe('MenuPage.vue', () => {
         const wrapper = mount(MenuPage, { global: { mocks: { $store: store } } });
 
         const text = wrapper.text();
-        expect(expectedStrings.some(str => text.includes(str))).toBeTruthy();
+        expect(expectedStrings.every(str => text.includes(str))).toBeTruthy();
     })
 })

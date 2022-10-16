@@ -10,7 +10,6 @@ namespace RPG_GAME.Infrastructure.Auth
 {
     internal sealed class AuthManager : IAuthManager
     {
-        private static readonly Dictionary<string, IEnumerable<string>> EmptyClaims = new();
         private readonly AuthOptions _options;
         private readonly IClock _clock;
         private readonly SigningCredentials _signingCredentials;
