@@ -25,6 +25,12 @@
                             @valueChanged="onChangeInput($event, 'baseAttack', skill.uid)" :step="0.01"/>
                 </div>
                 <div>
+                    <InputComponent :label="'Probability'" :type="'number'" :value="skill.probability.value" 
+                            v-model="skill.probability.value" :showError="skill.probability.showError" 
+                            :error="skill.probability.error"
+                            @valueChanged="onChangeInput($event, 'probability', skill.uid)" :step="0.01"/>
+                </div>
+                <div>
                     <InputComponent :label="'Skill base attack strategy increasing'" :type="'select'" :value="skill.baseAttackIncreasingState.value" 
                             v-model="skill.baseAttackIncreasingState.value" :showError="skill.baseAttackIncreasingState.showError" 
                             :error="skill.baseAttackIncreasingState.error" 
@@ -158,7 +164,7 @@
                     return;
                 }
 
-                const heroSkillsToSend = this.newSkills.map(
+                const enemySkillsToSend = this.newSkills.map(
                     s => {
                         const skill = {
                             id: s.id.value,
@@ -179,7 +185,7 @@
                     }
                 );
                 
-                this.$emit('saveNewEnemySkills', heroSkillsToSend);
+                this.$emit('saveNewEnemySkills', enemySkillsToSend);
             },
             onChangeInput(value, fieldName, uid) {
                 const skill = this.newSkills.find(s => s.uid === uid);

@@ -27,11 +27,14 @@ export default {
   },
   methods: {
     async verifiedAuthenticated() {
-      await authService.isLogged()
+      await authService.isLogged();
       setInterval(async () => {
+        const user = this.user;
         const authenticated = await authService.isLogged();
         if (!authenticated) {
+          if (user) {
             this.$router.push('/');
+          }
         }
       }, 10000);
     }
@@ -40,7 +43,7 @@ export default {
     await this.verifiedAuthenticated();
   },
   computed: {
-      ...mapGetters(['user'])
+    ...mapGetters(['user'])
   },
 }
 </script>

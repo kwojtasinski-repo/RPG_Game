@@ -119,7 +119,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-2 enemy-prop-info">
+                    <div v-if="enemy.skills.length > 0" class="mt-2 enemy-prop-info">
                         Skills
                     </div>
                     <div v-for="skill in enemy.skills" :key="skill.id">
