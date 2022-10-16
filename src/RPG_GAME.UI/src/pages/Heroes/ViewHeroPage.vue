@@ -1,38 +1,70 @@
 <template>
     <div class="view-hero-page">
+      <div v-if="hero === null && loading === true">
+          <LoadingIconComponent />
+      </div>
+      <div v-else-if="hero === null && loading == false">
+        <h3 class="mb-2 mt-2">View Hero</h3>
+        <div className="alert alert-danger">{{error}}</div>
         <div class="mt-2 mb-2 justify-content-start">
           <RouterButtonComponent :namedRoute="{ name: 'all-heroes' }" :buttonClass="'btn btn-primary'" :buttonText="'Back to heroes'" />
         </div>
-        <div class="d-flex justify-content-center">
-          <HeroViewComponent :hero="hero" />
-        </div>
+      </div>
+      <div v-else>
+          <div class="mt-2 mb-2 justify-content-start">
+            <RouterButtonComponent :namedRoute="{ name: 'all-heroes' }" :buttonClass="'btn btn-primary'" :buttonText="'Back to heroes'" />
+          </div>
+          <div class="d-flex justify-content-center">
+            <HeroViewComponent :hero="hero" />
+          </div>
+      </div>
     </div>
 </template>
 
 <script>
-  import * as response from '@/stubs/heroes.json';
   import HeroViewComponent from '../../components/Heroes/HeroViewComponent.vue';
   import RouterButtonComponent from '@/components/RouterButton/RouterButtonComponent.vue';
+  import LoadingIconComponent from '@/components/LoadingIcon/LoadingIconComponent.vue';
+  import axios from '@/axios-setup.js'
+  import exceptionMapper from '@/mappers/exceptionToMessageMapper.js';
 
   export default {
     name: 'ViewHeroPage',
     components: {
       HeroViewComponent,
-      RouterButtonComponent
+      RouterButtonComponent,
+      LoadingIconComponent
     },
     data() {
       return {
-        hero: null
+        loading: true,
+        hero: null,
+        error: ''
       }
     },
     methods: {
-      fetchHero() {
-            const hero = response.heroes.find(h => h.id == this.$route.params.heroId);
-            return hero;
-        },
+      async fetchHero() {
+          try {
+              const response = await axios.get(`/api/heroes/${this.$route.params.heroId}`);
+              this.hero = {
+                id: response.data.id,
+                heroName: response.data.heroName,
+                health: response.data.health,
+                attack: response.data.attack,
+                baseRequiredExperience: response.data.baseRequiredExperience,
+                skills: response.data.skills
+              };
+          } catch(exception) {
+              const message = exceptionMapper(exception);
+              console.log('message', message);
+              this.error = message;
+              console.log(exception);
+          }
+      },
     },
-    created() {
-        this.hero = this.fetchHero();
+    async created() {
+        await this.fetchHero();
+        this.loading = false;
     }
   }
 </script>

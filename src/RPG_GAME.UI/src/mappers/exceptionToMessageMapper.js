@@ -12,6 +12,10 @@ export default function mapExceptionToMessage(exception) {
         return getMessageFromStatusCode(exception.response.status);
     }
 
+    if (!exception.response.data.message) {
+        return getMessageFromStatusCode(exception.response.status);
+    }
+
     return exception.response.data.message;
 }
 

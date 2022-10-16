@@ -25,9 +25,9 @@ export default {
         }
 
         routes = routes.concat(
-          { text: 'Start fight', action: () => this.$router.push({ name: 'menu' }) },
-          { text: 'Profile', action: () => this.$router.push({ name: 'menu' }) },
-          { text: 'History', action: () => this.$router.push({ name: 'menu' }) }
+          { text: 'Start fight', action: () => this.$router.push({ name: 'menu' }) }, // TODO Add Start fight page
+          { text: 'Profile', action: () => this.$router.push({ name: 'menu' }) }, // TODO Profile page
+          { text: 'History', action: () => this.$router.push({ name: 'menu' }) } // TODO History page
         );
 
         if (user.role.toLowerCase() === 'admin') {

@@ -9,6 +9,8 @@
 
 <script>
   import HeroFormComponent from '@/components/Heroes/HeroFormComponent.vue';
+  import axios from '@/axios-setup.js'
+  import exceptionMapper from '@/mappers/exceptionToMessageMapper.js';
   
   export default {
     name: 'AddHeroPage',
@@ -22,8 +24,16 @@
         }
     },
     methods: {
-        submit(formToSend) {
-            console.log('formToSend', formToSend);
+        async submit(formToSend) {
+            this.error = '';
+            try {
+                await axios.post('/api/heroes', formToSend);
+                this.$router.push({ name: 'all-heroes' });
+            } catch(exception) {
+                const message = exceptionMapper(exception);
+                this.error = message;
+                console.log(exception);
+            }
         },
         cancel() {
             this.$router.push({ name: 'all-heroes' });
