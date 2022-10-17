@@ -172,8 +172,8 @@ export default {
         initEnemies() {
             return this.map?.enemies ?
                 [...this.map.enemies.map(e => ({
-                    enemyId: e.enemyId,
-                    enemyName: e.enemyName,
+                    enemyId: e.enemy.id,
+                    enemyName: e.enemy.enemyName,
                     quantity: e.quantity
                 }))] : []
         },

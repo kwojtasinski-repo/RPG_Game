@@ -1,7 +1,7 @@
 <template>
     <div class="map-add-container">
         <div>
-            <InputComponent :label="'Id'" :type="'text'" :value="markedEnemy?.id" :readonly="true" :class="'add-enemy-input'"/>
+            <InputComponent :label="'Id'" :type="'text'" :value="markedEnemy?.id" :readonly="true" :class="'add-enemy-input'" />
         </div>
         <div>
             <InputComponent :label="'Quantity'" :type="'number'" :value="enemyQuantity.value" :class="'add-enemy-input'"

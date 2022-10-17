@@ -43,9 +43,10 @@ import LoadingIconComponent from '@/components/LoadingIcon/LoadingIconComponent.
             this.enemies = response.data.map(e => ({
                 id: e.id,
                 enemyName: e.enemyName,
-                baseHealth: e.baseHealth,
-                baseAttack: e.baseAttack,
-                experience: e.experience,
+                baseAttack: e.baseAttack.value,
+                baseHealth: e.baseHealth.value,
+                baseHealLvl: e.baseHealLvl.value,
+                experience: e.experience.value,
                 difficulty: e.difficulty,
                 category: e.category
             }));

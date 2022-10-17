@@ -17,6 +17,12 @@
         <div class="d-flex justify-content-center">
           <EnemyViewComponent :enemy="enemy" />
         </div>
+        <div class="mt-2" v-if="enemy.mapsAssignedTo.length > 0 && user.role !== 'user'">
+          <h4>Enemy assigned to maps:</h4>
+          <div v-for="mapId in enemy.mapsAssignedTo" :key="mapId">
+            <RouterButtonComponent :namedRoute="{ name: 'view-map', params: { mapId: mapId } }" :buttonText="`View Map ${mapId}`" :buttonClass="'btn btn-primary mt-2'" :target="'_blank'"/>
+          </div>
+        </div>
       </div>
   </div>
 </template>
@@ -27,6 +33,7 @@
   import LoadingIconComponent from '@/components/LoadingIcon/LoadingIconComponent.vue';
   import axios from '@/axios-setup.js';
   import exceptionMapper from '@/mappers/exceptionToMessageMapper.js';
+  import { mapGetters } from 'vuex';
 
   export default {
     name: 'ViewEnemyPage',
@@ -57,7 +64,10 @@
     async created() {
         await this.fetchEnemy();
         this.loading = false;
-    }
+    },
+    computed: {
+      ...mapGetters(['user'])
+    },
   }
 </script>
 

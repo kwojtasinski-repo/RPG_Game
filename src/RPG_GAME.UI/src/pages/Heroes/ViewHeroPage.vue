@@ -17,6 +17,12 @@
           <div class="d-flex justify-content-center">
             <HeroViewComponent :hero="hero" />
           </div>
+          <div class="mt-2" v-if="hero.PlayersAssignedTo.length > 0 && user.role !== 'user'">
+            <h4>Hero assigned to players:</h4>
+            <div v-for="playerId in hero.PlayersAssignedTo" :key="playerId">
+              <RouterButtonComponent :namedRoute="{ name: 'view-player', params: { playerId: playerId } }" :buttonText="`View Player ${playerId}`" :buttonClass="'btn btn-primary mt-2'" :target="'_blank'"/>
+            </div>
+        </div>
       </div>
     </div>
 </template>

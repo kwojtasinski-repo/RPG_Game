@@ -15,7 +15,7 @@
       </h3>
       <div v-if="error" className="alert alert-danger">{{error}}</div>
       <div>
-          <MapFormComponent :map="editMap" :difficulties="difficulties" :enemies="enemies" :enemiesFields="enemiesFields" :enemyFilter="enemyFilter" @submitForm="submit" @cancel="cancel" />
+          <MapFormComponent :map="map" :difficulties="difficulties" :enemies="enemies" :enemiesFields="enemiesFields" :enemyFilter="enemyFilter" @submitForm="submit" @cancel="cancel" />
       </div>
     </div>
 </template>
@@ -42,7 +42,8 @@ import RouterButtonComponent from '@/components/RouterButton/RouterButtonCompone
         map: null,
         difficulties: [{label: 'Easy', value: 'EASY'}, {label: 'Medium', value: 'MEDIUM'}, {label: 'Hard', value: 'HARD'}],
         enemiesFields: ['#', 'Name', 'Attack', 'Health', 'Heal', 'Base Required Experience', 'Difficulty', 'Category'],
-        enemyFilter: 'enemyName'
+        enemyFilter: 'enemyName',
+        error: ''
       }
     },
     methods: {
@@ -52,9 +53,10 @@ import RouterButtonComponent from '@/components/RouterButton/RouterButtonCompone
           this.enemies = response.data.map(e => ({
               id: e.id,
               enemyName: e.enemyName,
-              baseHealth: e.baseHealth,
-              baseAttack: e.baseAttack,
-              experience: e.experience,
+              baseAttack: e.baseAttack.value,
+              baseHealth: e.baseHealth.value,
+              baseHealLvl: e.baseHealLvl.value,
+              experience: e.experience.value,
               difficulty: e.difficulty,
               category: e.category
           }));
@@ -90,16 +92,6 @@ import RouterButtonComponent from '@/components/RouterButton/RouterButtonCompone
     async created() {
       await this.fetchEnemies();
       await this.fetchMap();
-      this.editMap = {
-        id: this.map.id,
-        name: this.map.name,
-        difficulty: this.map.difficulty,
-        enemies: this.map.enemies.map(e => ({
-          enemyId: e.enemy.id,
-          enemyName: e.enemy.enemyName,
-          quantity: e.quantity
-        }))
-      };
       this.loading = false;
     }
   }

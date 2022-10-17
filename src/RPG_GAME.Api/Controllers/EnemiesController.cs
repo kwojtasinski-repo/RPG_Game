@@ -15,14 +15,12 @@ namespace RPG_GAME.Api.Controllers
             _enemyService = enemyService;
         }
 
-        [Authorize(Policy = "is-admin")]
         [HttpGet]
         public async Task<IEnumerable<EnemyDto>> GetAll()
         {
             return await _enemyService.GetAllAsync();
         }
 
-        [Authorize(Policy = "is-admin")]
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<EnemyDetailsDto>> Get(Guid id)
         {
