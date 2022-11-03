@@ -18,6 +18,7 @@ import EnemiesPage from "./pages/Enemies/EnemiesPage.vue"
 import AddEnemyPage from "./pages/Enemies/AddEnemyPage.vue"
 import EditEnemyPage from "./pages/Enemies/EditEnemyPage.vue"
 import ViewEnemyPage from "./pages/Enemies/ViewEnemyPage.vue"
+import BattleStartPage from "./pages/Battles/BattleStartPage.vue"
 
 const routes = [
     // --- menu ---
@@ -155,6 +156,11 @@ const routes = [
         path: '/register',
         name: 'register',
         component: SignUpPage
+    },
+    {
+        path: '/battles/start',
+        name: 'battle-start',
+        component: BattleStartPage
     },
     // --- forbidden found page ---
     {
