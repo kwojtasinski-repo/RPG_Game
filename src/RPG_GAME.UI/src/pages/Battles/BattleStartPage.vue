@@ -6,13 +6,19 @@
     <div v-if="fired" >
       <img id="magicSpell" src="@/assets/magicspell_spritesheet.png" class=" img-test" />
     </div>
+    <div>
+      <BattleComponent />
+    </div>
   </div>
 </template>
 
 <script>
+import BattleComponent from '@/components/Battles/BattleComponent.vue';
+
   export default {
     name: 'BattleStartPage',
     components: {
+      BattleComponent
     },
     data() {
       return {
