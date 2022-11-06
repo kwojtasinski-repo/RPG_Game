@@ -7,12 +7,13 @@
 import BattleService from "@/services/BattleService.js"
 
     export default {
-        name: 'BattleComponent',
+        name: "BattleComponent",
         data() {
             return {
                 canvasContext: null,
-                battleService: null
-            }
+                battleService: null,
+                requestAnimationId: null
+            };
         },
         methods: {
             startDrawing() {
@@ -23,9 +24,8 @@ import BattleService from "@/services/BattleService.js"
                     lastTime = timeStamp;
                     this.canvasContext.clearRect(0, 0, this.canvasContext.width, this.canvasContext.height);
                     this.battleService.start(this.canvasContext, deltaTime);
-                    requestAnimationFrame(draw);
-                }
-
+                    this.requestAnimationId = requestAnimationFrame(draw);
+                };
                 draw();
             }
         },
@@ -36,6 +36,11 @@ import BattleService from "@/services/BattleService.js"
             this.canvasContext.width = 900;
             this.battleService = new BattleService();
             this.startDrawing();
+        },
+        beforeUnmount() {
+            window.cancelAnimationFrame(this.requestAnimationId);
+            this.battleService.destroy();
+            this.requestAnimationId = null;
         }
     }
 </script>
