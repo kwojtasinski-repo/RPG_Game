@@ -13,14 +13,9 @@ export default class HeroService {
         this.height = 44;
         this.x = 0;
         this.y = 0;
-        document.addEventListener('attack', this.makeAttack);
     }
 
     draw(context) {
         context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width * 3, this.height * 3);
-    }
-
-    makeAttack(event) {
-        console.log('ATTACK!', event.detail);
     }
 }

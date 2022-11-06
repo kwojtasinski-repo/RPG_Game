@@ -1,3 +1,4 @@
+import EnemyService, { actions } from "./EnemyService";
 import HeroService from "./HeroService";
 import HeroStateService from "./HeroStateService";
 
@@ -6,13 +7,22 @@ export default class BattleService {
         this.heroService = new HeroService();
         this.inputHandler = new InputHandler();
         this.heroStateService = new HeroStateService(this);
+        this.enemyService = new EnemyService();
         this.currentKey = null;
         this.allowSelectState = true;
+        document.addEventListener('attack', (e) => this.makeAttack(e, this));
     }
 
     start(context, deltaTime) {
         this.heroStateService.selectState(this.inputHandler.key, deltaTime);
+        this.enemyService.selectAction(deltaTime);
         this.heroService.draw(context);
+        this.enemyService.draw(context);
+    }
+    
+    makeAttack(event, battleService) {
+        console.log('ATTACK!', event.detail);
+        battleService.enemyService.currentAction = actions.fight;
     }
 }
 

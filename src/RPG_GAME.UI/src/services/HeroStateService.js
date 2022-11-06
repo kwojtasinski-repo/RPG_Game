@@ -2,6 +2,7 @@ class BaseState {
     constructor(battleService) {
         this.battleService = battleService;
         this.eventSent = false;
+        this.stateReset = false;
     }
 
     update(deltaTime) {
@@ -18,15 +19,22 @@ class BaseState {
         }
     }
 
-    sendEventAndResetInput(event) {
+    sendEvent(event) {
         if(!this.eventSent) {
+            document.dispatchEvent(event);
+            this.eventSent = true;
+        }
+    }
+
+    resetState() {
+        if(!this.stateReset) {
             setTimeout(() => {
                 this.battleService.currentKey = null;
                 this.battleService.allowSelectState = true;
-                document.dispatchEvent(event);
                 this.eventSent = false;
+                this.stateReset = false;
             }, 1000);
-            this.eventSent = true;
+            this.stateReset = true;
         }
     }
 }
@@ -59,12 +67,13 @@ export default class HeroStateService extends BaseState {
         this.battleService.heroService.frameY = 3;
         this.battleService.heroService.maxFrame = 5;
         this.battleService.allowSelectState = false;
+        this.sendEvent(new CustomEvent('attack', { detail: { name: 'baseAttack' } }));
 
         const nextFrame = this.battleService.heroService.frameX + 1;
         this.update(deltaTime);
 
         if (nextFrame === this.battleService.heroService.maxFrame) {
-            this.sendEventAndResetInput(new CustomEvent('attack', { detail: { name: 'baseAttack' } }));
+            this.resetState();
         }
     }
 
@@ -72,12 +81,13 @@ export default class HeroStateService extends BaseState {
         this.battleService.heroService.frameY = 13;
         this.battleService.heroService.maxFrame = 5;
         this.battleService.allowSelectState = false;
+        this.sendEvent(new CustomEvent('attack', { detail: { name: 'skill' } }));
 
         const nextFrame = this.battleService.heroService.frameX + 1;
         this.update(deltaTime);
 
         if (nextFrame === this.battleService.heroService.maxFrame) {
-            this.sendEventAndResetInput(new CustomEvent('attack', { detail: { name: 'skill' } }));
+            this.resetState();
         }
     }
 
