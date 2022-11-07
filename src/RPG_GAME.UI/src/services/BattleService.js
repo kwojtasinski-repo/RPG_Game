@@ -60,7 +60,6 @@ export default class BattleService {
     }
 
     idleHandler() {
-        console.log('idle');
         service.heroService.currentDamageDealt = null;
         service.enemyService.currentDamageDealt = null;
     }

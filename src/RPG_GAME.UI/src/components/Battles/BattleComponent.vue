@@ -70,6 +70,10 @@ import BattleService from "@/services/BattleService.js"
     .battleInfo {
         position: relative;
         display: inline-block;
+        background-image: url('@/assets/background-fight.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
     }
 
     .statsInfo {
@@ -160,10 +164,12 @@ import BattleService from "@/services/BattleService.js"
 
     #playerName {
         font-family: Bangers;
+        color: #f8f9f6
     }
 
     #enemyName {
         font-family: Bangers;
+        color: #f8f9f6
     }
     
     @font-face {

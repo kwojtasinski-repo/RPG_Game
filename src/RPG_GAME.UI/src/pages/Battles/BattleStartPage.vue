@@ -3,10 +3,7 @@
     <div>BattleStartPage</div>
     <button @click="shake" class="btn btn-primary">Shake</button>
     <button @click="fire" class="btn btn-danger">Fire</button>
-    <div v-if="fired" >
-      <img id="magicSpell" src="@/assets/magicspell_spritesheet.png" class=" img-test" />
-    </div>
-    <div>
+    <div class="mt-2">
       <BattleComponent />
     </div>
   </div>
@@ -18,7 +15,7 @@ import BattleComponent from '@/components/Battles/BattleComponent.vue';
   export default {
     name: 'BattleStartPage',
     components: {
-      BattleComponent
+      BattleComponent,
     },
     data() {
       return {
