@@ -11,8 +11,8 @@ export default class HeroService {
         this.frameTimer = 0;
         this.width = 69;
         this.height = 44;
-        this.x = 0;
-        this.y = 0;
+        this.x = 330;
+        this.y = 150;
     }
 
     draw(context) {

@@ -16,8 +16,8 @@ export default class EnemyService {
         this.frameTimer = 0;
         this.width = 56;
         this.height = 55;
-        this.x = 100;
-        this.y = 0;
+        this.x = 420;
+        this.y = 155;
         this.offsetY = 15;
         this.minFrame = 2;
         this.currentAction = actions.idle;
