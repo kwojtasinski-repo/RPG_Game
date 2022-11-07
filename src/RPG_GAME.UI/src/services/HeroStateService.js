@@ -26,14 +26,14 @@ class BaseState {
         }
     }
 
-    resetState() {
+    resetState(ms) {
         if(!this.stateReset) {
             setTimeout(() => {
                 this.battleService.currentKey = null;
                 this.battleService.allowSelectState = true;
                 this.eventSent = false;
                 this.stateReset = false;
-            }, 1000);
+            }, ms ? ms : 1000);
             this.stateReset = true;
         }
     }
@@ -95,6 +95,8 @@ export default class HeroStateService extends BaseState {
         this.battleService.heroService.frameY = 0;
         this.battleService.heroService.maxFrame = 5;
         this.battleService.allowSelectState = true;
+        this.sendEvent(new CustomEvent('idle'));
+        this.resetState(5);
         this.update(deltaTime);
     }
 }

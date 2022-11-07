@@ -132,7 +132,8 @@ import BattleService from "@/services/BattleService.js"
 
     .enemyHealth {
         background-color: red;
-        height: 30px
+        height: 30px;
+        width: 100%;
     }
 
     .currentEnemyHealth {
