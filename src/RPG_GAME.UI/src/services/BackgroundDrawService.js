@@ -1,8 +1,5 @@
 export default class BackgroundDrawService {
-    constructor() {
-        this.font = '20px Creepster';
-    }
-    
+
     update() {
         this.x += (this.targetX - this.x) * 0.03;
         this.y += (this.targetY - this.y) * 0.03;
@@ -14,7 +11,7 @@ export default class BackgroundDrawService {
     }
     
     drawDamage(context, position, value) {
-        context.font = this.font;
+        context.font = '20px Creepster';
         context.fillStyle = 'red';
         context.fillText(value, position.x, position.y);
         context.fillStyle = 'black';
@@ -22,10 +19,14 @@ export default class BackgroundDrawService {
     }
     
     drawWonGame(context) {
-        context.font = this.font;
+        context.font = '30px Bangers';
+        context.fillStyle = 'white';
+        context.fillText('You Won!', 400, 25);
     }
     
     drawLostGame(context) {
-        context.font = this.font;
+        context.font = '30px Bangers';
+        context.fillStyle = 'white';
+        context.fillText('You Lost!', 400, 25);
     }
 }

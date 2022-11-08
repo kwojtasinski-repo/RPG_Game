@@ -25,8 +25,8 @@ export default class EnemyService {
         this.health = 100;
         this.currentHealth = 100;
         this.attack = {
-            baseAttack: 15,
-            skill: 30
+            baseAttack: 5,
+            skill: 10
         }
         this.currentAction = actions.idle;
         this.actionInvoked = false;
