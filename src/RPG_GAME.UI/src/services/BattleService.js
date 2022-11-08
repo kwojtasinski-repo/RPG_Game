@@ -1,4 +1,4 @@
-import DamageDrawService from "./DamageDrawService";
+import BackgroundDrawService from "./BackgroundDrawService";
 import EnemyService, { actions } from "./EnemyService";
 import HeroService from "./HeroService";
 import HeroStateService from "./HeroStateService";
@@ -11,12 +11,14 @@ export default class BattleService {
         this.inputHandler = new InputHandler();
         this.heroStateService = new HeroStateService(this);
         this.enemyService = new EnemyService();
-        this.damageDrawService = new DamageDrawService();
+        this.backgroundDrawService = new BackgroundDrawService();
         this.currentKey = null;
         this.allowSelectState = true;
+        this.gameState = gameStates.InProgress;
         service = this;
         document.addEventListener('attack', this.makeAttack);
         document.addEventListener('idle', this.idleHandler);
+        document.addEventListener('deadHero', this.deadHeroHandler);
     }
 
     start(context, deltaTime) {
@@ -24,23 +26,38 @@ export default class BattleService {
         this.enemyService.selectAction(deltaTime);
         this.heroService.draw(context);
         this.enemyService.draw(context);
+
         if (this.heroService.currentDamageDealt) {
-            this.damageDrawService.draw(context, { x: this.enemyService.x + 80, y: this.enemyService.y }, this.heroService.currentDamageDealt);
+            this.backgroundDrawService.drawDamage(context, { x: this.enemyService.x + 80, y: this.enemyService.y }, this.heroService.currentDamageDealt);
         }
         if (this.enemyService.currentDamageDealt) {
-            this.damageDrawService.draw(context, { x: this.heroService.x + 80, y: this.heroService.y }, this.enemyService.currentDamageDealt);
+            this.backgroundDrawService.drawDamage(context, { x: this.heroService.x + 80, y: this.heroService.y }, this.enemyService.currentDamageDealt);
+        }
+
+        if (this.gameState === gameStates.Won) {
+            this.backgroundDrawService.drawWonGame(context);
+        } else if (this.gameState === gameStates.Lost) {
+            this.backgroundDrawService.drawLostGame(context);
         }
     }
     
     makeAttack(event) {
         console.log('ATTACK!', event.detail);
         service.enemyService.currentAction = actions.fight;
-        const currentPlayerHealth = service.getPlayerHealthBar().style.width ? Number(service.getPlayerHealthBar().style.width.replace('%','')) : 100;
-        service.heroService.currentDamageDealt = 10;
-        const currentEnemyHealth = service.getEnemyHealthBar().style.width ? Number(service.getEnemyHealthBar().style.width.replace('%','')) : 100;
-        service.enemyService.currentDamageDealt = 10;
-        service.getPlayerHealthBar().style.width = (currentPlayerHealth - 10) + '%';
-        service.getEnemyHealthBar().style.width = (currentEnemyHealth - 10) + '%';
+        service.heroService.currentDamageDealt = service.heroService.attack[event.detail.name];
+        service.enemyService.currentHealth = service.enemyService.currentHealth - service.heroService.currentDamageDealt;
+        service.enemyService.currentDamageDealt = Math.random() === 1 ? service.enemyService.attack.skill : service.enemyService.attack.baseAttack;
+        service.heroService.currentHealth = service.heroService.currentHealth - service.enemyService.currentDamageDealt;
+        const percentageCurrentHeroHealth = (service.heroService.currentHealth / service.heroService.health) * 100;
+        const percentageCurrentEnemyHealth = (service.enemyService.currentHealth / service.enemyService.health) * 100;
+        
+        service.getPlayerHealthBar().style.width = (percentageCurrentHeroHealth > 0 ? percentageCurrentHeroHealth : 0) + '%';
+        service.getEnemyHealthBar().style.width = (percentageCurrentEnemyHealth > 0 ? percentageCurrentEnemyHealth : 0) + '%';
+        
+        if (service.enemyService.isDead()) {
+            service.enemyService.currentAction = actions.deadAnimation;
+            service.deadEnemyHandler();
+        }
     }
 
     getPlayerHealthBar() {
@@ -64,11 +81,28 @@ export default class BattleService {
         service.enemyService.currentDamageDealt = null;
     }
 
+    deadHeroHandler() {
+        // logic pause game, text you lost
+        service.heroService.currentDamageDealt = null;
+        service.enemyService.currentDamageDealt = null;
+        service.gameState = gameStates.Lost;
+    }
+
+    deadEnemyHandler() {
+        // logic get next enemy or won
+        service.heroService.currentDamageDealt = null;
+        service.enemyService.currentDamageDealt = null;
+        service.gameState = gameStates.Won;
+    }
+
     destroy() {
         document.removeEventListener('attack', this.makeAttack);
         document.removeEventListener('idle', this.idleHandler);
+        document.removeEventListener('deadHero', this.deadHeroHandler);
     }
 }
+
+const gameStates = { Won: 'Won', Lost: 'Lost', InProgress: 'InProgress' };
 
 class InputHandler {
     constructor() {

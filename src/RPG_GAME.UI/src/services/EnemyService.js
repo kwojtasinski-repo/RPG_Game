@@ -2,7 +2,9 @@ import enemyKnight from "@/assets/enemy-knight-reverse.png"
 
 export const actions = {
     idle: 1,
-    fight: 2
+    fight: 2,
+    deadAnimation: 3,
+    dead: 4
 }
 
 export default class EnemyService {
@@ -20,6 +22,12 @@ export default class EnemyService {
         this.y = 155;
         this.offsetY = 15;
         this.minFrame = 2;
+        this.health = 100;
+        this.currentHealth = 100;
+        this.attack = {
+            baseAttack: 15,
+            skill: 30
+        }
         this.currentAction = actions.idle;
         this.actionInvoked = false;
     }
@@ -62,6 +70,25 @@ export default class EnemyService {
                     this.actionInvoked = true;
                 }
             }
+        } else if (this.currentAction === actions.deadAnimation) {
+            this.frameY = 6;
+            this.minFrame = 0;
+            this.update(deltaTime);
+            if (!this.actionInvoked) {
+                setTimeout(() => {
+                    this.currentAction = actions.dead;
+                    this.actionInvoked = false;
+                }, 500);
+                this.actionInvoked = true;
+            }
+        } else if (this.currentAction === actions.dead) {
+            this.frameY = 7;
+            this.minFrame = 7;
+            this.update(deltaTime);
         }
+    }
+
+    isDead() {
+        return this.currentHealth <= 0;
     }
 }

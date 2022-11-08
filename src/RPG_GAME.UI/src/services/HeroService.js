@@ -13,9 +13,19 @@ export default class HeroService {
         this.height = 44;
         this.x = 330;
         this.y = 150;
+        this.health = 100;
+        this.currentHealth = 100;
+        this.attack = {
+            baseAttack: 10,
+            skill: 25
+        }
     }
 
     draw(context) {
         context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width * 3, this.height * 3);
+    }
+
+    isDead() {
+        return this.currentHealth <= 0;
     }
 }

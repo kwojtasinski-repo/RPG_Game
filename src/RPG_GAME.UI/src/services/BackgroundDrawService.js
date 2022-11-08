@@ -1,4 +1,4 @@
-export default class DamageDrawService {
+export default class BackgroundDrawService {
     constructor() {
         this.font = '20px Creepster';
     }
@@ -13,11 +13,19 @@ export default class DamageDrawService {
         }
     }
     
-    draw(context, position, value) {
+    drawDamage(context, position, value) {
         context.font = this.font;
         context.fillStyle = 'red';
         context.fillText(value, position.x, position.y);
         context.fillStyle = 'black';
         context.fillText(value, position.x - 2, position.y - 2);
+    }
+    
+    drawWonGame(context) {
+        context.font = this.font;
+    }
+    
+    drawLostGame(context) {
+        context.font = this.font;
     }
 }

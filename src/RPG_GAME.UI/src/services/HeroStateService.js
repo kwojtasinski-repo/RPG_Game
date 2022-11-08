@@ -3,6 +3,7 @@ class BaseState {
         this.battleService = battleService;
         this.eventSent = false;
         this.stateReset = false;
+        this.deadAnimationInvoked = false;
     }
 
     update(deltaTime) {
@@ -58,6 +59,8 @@ export default class HeroStateService extends BaseState {
             this.baseAttack(deltaTime);
         } else if (parseInt(this.battleService.currentKey, 10) === 1) {
             this.skillAttack(deltaTime);
+        } else if (this.battleService.heroService.isDead()) {
+            this.dead(deltaTime);
         } else {
             this.idle(deltaTime);
         }
@@ -98,5 +101,32 @@ export default class HeroStateService extends BaseState {
         this.sendEvent(new CustomEvent('idle'));
         this.resetState(5);
         this.update(deltaTime);
+    }
+
+    dead(deltaTime) {
+        this.battleService.heroService.frameY = 6;
+        this.battleService.heroService.maxFrame = 0;
+
+        if (this.deadAnimationInvoked) {
+            this.battleService.heroService.frameX = 0;
+            return;
+        }
+
+        this.battleService.heroService.frameX = this.battleService.heroService.frameX === 0 ? 5 : this.battleService.heroService.frameX;
+        this.battleService.allowSelectState = false;
+
+        if (this.battleService.heroService.frameTimer > this.battleService.heroService.frameInterval) {
+            this.battleService.heroService.frameTimer = 0;
+
+            if (this.battleService.heroService.frameX > this.battleService.heroService.maxFrame + 1) {
+                this.battleService.heroService.frameX--;
+            } else {
+                this.battleService.heroService.frameX = 0;
+                this.deadAnimationInvoked = true;
+                document.dispatchEvent(new CustomEvent('deadHero'));
+            }
+        } else {
+            this.battleService.heroService.frameTimer += deltaTime;
+        }
     }
 }
