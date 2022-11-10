@@ -73,22 +73,14 @@ namespace RPG_GAME.Infrastructure
 
         public static WebApplication UseInfrastructure(this WebApplication app)
         {
-            app.UseRouting();
-            app.UseGrpcWeb();
             app.UseCors(CorsPolicy);
-            //app.UseGrpc(CorsPolicy);
+            app.UseGrpc(CorsPolicy);
             app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGrpcServices(CorsPolicy);
-                endpoints.MapControllers();
-            });
-            //app.MapControllers();
+            app.MapControllers();
             app.UseMongo();
             return app;
         }

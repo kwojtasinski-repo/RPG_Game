@@ -19,17 +19,11 @@ namespace RPG_GAME.Infrastructure.Grpc
 
         public static WebApplication UseGrpc(this WebApplication app, string corsPolicy)
         {
+            app.UseGrpcWeb();
             app.MapGrpcService<BattleService>()
                 .EnableGrpcWeb()
                 .RequireCors(corsPolicy);
             return app;
-        }
-
-        public static IEndpointRouteBuilder MapGrpcServices(this IEndpointRouteBuilder endpoints, string corsPolicy)
-        {
-            endpoints.MapGrpcService<BattleService>()
-                .EnableGrpcWeb().RequireCors(corsPolicy);
-                return endpoints;
         }
     }
 }
