@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using RPG_GAME.Infrastructure.Grpc.Interceptors;
 using RPG_GAME.Infrastructure.Grpc.Services;
@@ -16,10 +17,19 @@ namespace RPG_GAME.Infrastructure.Grpc
             return services;
         }
 
-        public static WebApplication UseGrpc(this WebApplication app)
+        public static WebApplication UseGrpc(this WebApplication app, string corsPolicy)
         {
-            app.MapGrpcService<BattleService>();
+            app.MapGrpcService<BattleService>()
+                .EnableGrpcWeb()
+                .RequireCors(corsPolicy);
             return app;
+        }
+
+        public static IEndpointRouteBuilder MapGrpcServices(this IEndpointRouteBuilder endpoints, string corsPolicy)
+        {
+            endpoints.MapGrpcService<BattleService>()
+                .EnableGrpcWeb().RequireCors(corsPolicy);
+                return endpoints;
         }
     }
 }

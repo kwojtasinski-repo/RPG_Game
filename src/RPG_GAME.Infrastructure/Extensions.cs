@@ -61,8 +61,10 @@ namespace RPG_GAME.Infrastructure
                 {
                     policy.WithOrigins("*")
                           .WithMethods("POST", "PUT", "PATCH", "DELETE")
-                          .WithHeaders("Content-Type", "Authorization")
-                          .WithExposedHeaders("Location");
+                          //.WithHeaders("Content-Type", "Authorization")
+                          .AllowAnyHeader()
+                          .WithExposedHeaders("Location")
+                          .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
                 });
             });
 
@@ -71,15 +73,23 @@ namespace RPG_GAME.Infrastructure
 
         public static WebApplication UseInfrastructure(this WebApplication app)
         {
+            app.UseRouting();
+            app.UseGrpcWeb();
             app.UseCors(CorsPolicy);
+            //app.UseGrpc(CorsPolicy);
             app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.MapControllers();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcServices(CorsPolicy);
+                endpoints.MapControllers();
+            });
+            //app.MapControllers();
             app.UseMongo();
-            app.UseGrpc();
             return app;
         }
 

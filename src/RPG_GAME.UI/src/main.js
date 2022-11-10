@@ -10,4 +10,11 @@ createApp(App)
             .use(router)
             .use(Notifications)
             .use(store)
-            .mount('#app')
+            .mount('#app');
+
+// app = createApp(App)....
+// app.config.globalProperties.$grpc = {
+//     packageDefinition,
+//     battlePackage,
+//     client
+// };

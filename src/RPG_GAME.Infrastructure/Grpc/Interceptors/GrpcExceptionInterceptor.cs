@@ -1,6 +1,7 @@
 ﻿using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Humanizer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using RPG_GAME.Application.Exceptions;
 using RPG_GAME.Core.Exceptions;
@@ -33,6 +34,8 @@ namespace RPG_GAME.Infrastructure.Grpc.Interceptors
                 var (error, code, grpCode) = Map(exception);
                 httpContext.Response.StatusCode = (int)code;
                 var metadata = new Metadata() { new Metadata.Entry(error.Code, error.Message) };
+                context.Status = new Status(grpCode, error.Message);
+                await context.WriteResponseHeadersAsync(metadata);
                 throw new RpcException(new Status(grpCode, error.Message, exception), metadata);
             }
         }

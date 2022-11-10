@@ -24,6 +24,9 @@
 
 <script>
 import BattleService from "@/services/BattleService.js"
+import { PrepareBattleRequest } from "@/grpc-client/battle_pb.js"
+import { BattlePromiseClient } from "@/grpc-client/battle_grpc_web_pb.js"
+import { SimpleUnaryInterceptor } from "@/grpc-client/grpc-interceptor.js"
 
     export default {
         name: "BattleComponent",
@@ -46,6 +49,23 @@ import BattleService from "@/services/BattleService.js"
                     this.requestAnimationId = requestAnimationFrame(draw);
                 };
                 draw();
+            }
+        },
+        async created() {
+            // eslint-disable-next-line
+            debugger;
+            const prepareBattleRequest = new PrepareBattleRequest();
+            const clientGrpc = new BattlePromiseClient(window._env_?.VUE_APP_BACKEND_GRPC_URL ? window._env_.VUE_APP_BACKEND_GRPC_URL : process.env.VUE_APP_BACKEND_GRPC_URL, null, 
+                {'unaryInterceptors': [new SimpleUnaryInterceptor()]});
+            try {
+                const resp = await clientGrpc.prepareBattle(prepareBattleRequest);
+                console.log('resp', resp);
+            } catch(err) {
+                
+            // eslint-disable-next-line
+                debugger
+                console.error(err);
+                console.error(err.message);
             }
         },
         mounted() {
