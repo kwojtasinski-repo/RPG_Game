@@ -1,5 +1,6 @@
 ﻿using Grpc.Core;
 using Humanizer;
+using Microsoft.AspNetCore.Http;
 using RPG_GAME.Application.Exceptions.Auth;
 using RPG_GAME.Application.Exceptions.Maps;
 using RPG_GAME.Core.Entities.Battles;
@@ -38,7 +39,7 @@ namespace RPG_GAME.IntegrationTests.Grpc
             // Assert
             Assert.NotNull(exception);
             Assert.IsType(expectedException.GetType(), exception);
-            Assert.Equal(expectedException.Message, exception.Message);
+            Assert.Contains($"{StatusCodes.Status400BadRequest}", ((RpcException)exception).Status.Detail);
             Assert.NotNull(headers);
             Assert.NotEmpty(headers);
             Assert.Contains(headers.First().Key, typeof(UserNotFoundException).Name.Underscore());
@@ -63,7 +64,7 @@ namespace RPG_GAME.IntegrationTests.Grpc
             // Assert
             Assert.NotNull(exception);
             Assert.IsType(expectedException.GetType(), exception);
-            Assert.Equal(expectedException.Message, exception.Message);
+            Assert.Contains($"{StatusCodes.Status400BadRequest}", ((RpcException)exception).Status.Detail);
             Assert.NotNull(headers);
             Assert.NotEmpty(headers);
             Assert.Contains(headers.First().Key, typeof(MapNotFoundException).Name.Underscore());

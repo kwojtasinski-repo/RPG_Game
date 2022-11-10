@@ -34,7 +34,7 @@ namespace RPG_GAME.Infrastructure.Grpc.Interceptors
                 var (error, code, grpCode) = Map(exception);
                 httpContext.Response.StatusCode = (int)code;
                 var metadata = new Metadata() { new Metadata.Entry(error.Code, error.Message) };
-                context.Status = new Status(grpCode, error.Message);
+                context.Status = new Status(grpCode, error.Message, exception);
                 await context.WriteResponseHeadersAsync(metadata);
                 throw new RpcException(new Status(grpCode, error.Message, exception), metadata);
             }

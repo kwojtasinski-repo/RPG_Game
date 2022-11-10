@@ -340,3 +340,9 @@ Authorization: Bearer {{accessToken}}
 ###
 DELETE {{api}}/players/{{playerId}}
 Authorization: Bearer {{accessToken}}
+
+###
+POST http://localhost:50000/battle.Battle/PrepareBattle
+Content-Type: application/grpc-web-text
+
+AAAAAAA=
