@@ -102,7 +102,7 @@ export default class BattleService {
     }
 }
 
-const gameStates = { Won: 'Won', Lost: 'Lost', InProgress: 'InProgress' };
+export const gameStates = { Won: 'Won', Lost: 'Lost', InProgress: 'InProgress' };
 
 class InputHandler {
     constructor() {

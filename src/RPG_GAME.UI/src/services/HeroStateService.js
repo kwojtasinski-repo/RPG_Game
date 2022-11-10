@@ -1,3 +1,5 @@
+import { gameStates } from "./BattleService";
+
 class BaseState {
     constructor(battleService) {
         this.battleService = battleService;
@@ -61,6 +63,8 @@ export default class HeroStateService extends BaseState {
             this.skillAttack(deltaTime);
         } else if (this.battleService.heroService.isDead()) {
             this.dead(deltaTime);
+        } else if (this.battleService.gameState === gameStates.Won) {
+            this.won(deltaTime);
         } else {
             this.idle(deltaTime);
         }
@@ -128,5 +132,12 @@ export default class HeroStateService extends BaseState {
         } else {
             this.battleService.heroService.frameTimer += deltaTime;
         }
+    }
+
+    won(deltaTime) {
+        this.battleService.heroService.frameY = 9;
+        this.battleService.heroService.maxFrame = 5;
+        this.battleService.allowSelectState = false;
+        this.update(deltaTime);
     }
 }
