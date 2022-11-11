@@ -25,8 +25,7 @@
 <script>
 import BattleService from "@/services/BattleService.js"
 import { PrepareBattleRequest } from "@/grpc-client/battle_pb.js"
-import { BattlePromiseClient } from "@/grpc-client/battle_grpc_web_pb.js"
-import { SimpleUnaryInterceptor } from "@/grpc-client/grpc-interceptor.js"
+import clientGrpc from "@/grpc-client/grpc-client-setup"
 
     export default {
         name: "BattleComponent",
@@ -55,8 +54,6 @@ import { SimpleUnaryInterceptor } from "@/grpc-client/grpc-interceptor.js"
             // eslint-disable-next-line
             debugger;
             const prepareBattleRequest = new PrepareBattleRequest();
-            const clientGrpc = new BattlePromiseClient(window._env_?.VUE_APP_BACKEND_GRPC_URL ? window._env_.VUE_APP_BACKEND_GRPC_URL : process.env.VUE_APP_BACKEND_GRPC_URL, null, 
-                {'unaryInterceptors': [new SimpleUnaryInterceptor()]});
             try {
                 const resp = await clientGrpc.prepareBattle(prepareBattleRequest);
                 console.log('resp', resp);

@@ -90,8 +90,11 @@ export default class BattleService {
 
     deadEnemyHandler() {
         // logic get next enemy or won
-        service.heroService.currentDamageDealt = null;
-        service.enemyService.currentDamageDealt = null;
+        // if every enemy was killed disable input for battle and set state game as won
+        setTimeout(() => {
+            service.heroService.currentDamageDealt = null;
+            service.enemyService.currentDamageDealt = null;
+        }, 500);
         service.gameState = gameStates.Won;
     }
 
