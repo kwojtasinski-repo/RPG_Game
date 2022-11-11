@@ -1,7 +1,6 @@
 ﻿using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Humanizer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using RPG_GAME.Application.Exceptions;
 using RPG_GAME.Core.Exceptions;

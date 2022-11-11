@@ -19,7 +19,8 @@ namespace RPG_GAME.Infrastructure
     public static class Extensions
     {
         private const string SectionName = "mongo";
-        private const string CorsPolicy = "cors";
+        private const string WebCorsPolicy = "webCors";
+        private const string GrpcWebCorsPolicy = "gRPCWebCors";
 
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
@@ -53,18 +54,16 @@ namespace RPG_GAME.Infrastructure
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
-            services.AddGrpcCommunication();
+            services.AddGrpcCommunication(GrpcWebCorsPolicy);
 
             services.AddCors(cors =>
             {
-                cors.AddPolicy(CorsPolicy, policy =>
+                cors.AddPolicy(WebCorsPolicy, policy =>
                 {
                     policy.WithOrigins("*")
                           .WithMethods("POST", "PUT", "PATCH", "DELETE")
-                          //.WithHeaders("Content-Type", "Authorization")
-                          .AllowAnyHeader()
-                          .WithExposedHeaders("Location")
-                          .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
+                          .WithHeaders("Content-Type", "Authorization")
+                          .WithExposedHeaders("Location");
                 });
             });
 
@@ -73,8 +72,8 @@ namespace RPG_GAME.Infrastructure
 
         public static WebApplication UseInfrastructure(this WebApplication app)
         {
-            app.UseCors(CorsPolicy);
-            app.UseGrpc(CorsPolicy);
+            app.UseCors(WebCorsPolicy);
+            app.UseGrpc(GrpcWebCorsPolicy);
             app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseSwagger();
             app.UseSwaggerUI();

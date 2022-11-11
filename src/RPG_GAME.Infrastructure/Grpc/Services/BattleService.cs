@@ -4,6 +4,7 @@ using RPG_GAME.Infrastructure.Commands;
 using RPG_GAME.Infrastructure.Grpc.Protos;
 using RPG_GAME.Infrastructure.Grpc.Mappings;
 using RPG_GAME.Core.ValueObjects;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RPG_GAME.Infrastructure.Grpc.Services
 {
@@ -16,6 +17,7 @@ namespace RPG_GAME.Infrastructure.Grpc.Services
             _commandDispatcher = commandDispatcher;
         }
 
+        [Authorize]
         public override async Task<BattleResponse> PrepareBattle(PrepareBattleRequest request, ServerCallContext context)
         {
             var mapId = new MapId(request.MapId);
