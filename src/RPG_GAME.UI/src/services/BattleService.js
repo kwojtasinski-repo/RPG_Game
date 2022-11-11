@@ -6,7 +6,7 @@ import HeroStateService from "./HeroStateService";
 let service = null;
 
 export default class BattleService {
-    constructor() {
+    constructor(storyService) {
         this.heroService = new HeroService();
         this.inputHandler = new InputHandler();
         this.heroStateService = new HeroStateService(this);
@@ -15,6 +15,7 @@ export default class BattleService {
         this.currentKey = null;
         this.allowSelectState = true;
         this.gameState = gameStates.InProgress;
+        this.storyService = storyService;
         service = this;
         document.addEventListener('attack', this.makeAttack);
         document.addEventListener('idle', this.idleHandler);
@@ -22,6 +23,13 @@ export default class BattleService {
     }
 
     start(context, deltaTime) {
+        this.storyService.showStoryText(context);
+        if (!this.storyService.storyTextShow.includes(this.storyService.storyState)) {
+            this.allowSelectState = false;
+        } else if (!this.currentKey && this.gameState === gameStates.InProgress) {
+            this.allowSelectState = true;
+        }
+
         this.heroStateService.selectState(this.inputHandler.key, deltaTime);
         this.enemyService.selectAction(deltaTime);
         this.heroService.draw(context);

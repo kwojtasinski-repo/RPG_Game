@@ -18,8 +18,8 @@ export default class EnemyService {
         this.frameTimer = 0;
         this.width = 56;
         this.height = 55;
-        this.x = 420;
-        this.y = 155;
+        this.x = 520;
+        this.y = 255;
         this.offsetY = 15;
         this.minFrame = 2;
         this.health = 100;

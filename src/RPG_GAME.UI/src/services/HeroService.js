@@ -11,8 +11,8 @@ export default class HeroService {
         this.frameTimer = 0;
         this.width = 69;
         this.height = 44;
-        this.x = 330;
-        this.y = 150;
+        this.x = 430;
+        this.y = 250;
         this.health = 100;
         this.currentHealth = 100;
         this.attack = {

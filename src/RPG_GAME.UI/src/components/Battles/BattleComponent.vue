@@ -24,8 +24,9 @@
 
 <script>
 import BattleService from "@/services/BattleService.js"
-import { PrepareBattleRequest } from "@/grpc-client/battle_pb.js"
-import clientGrpc from "@/grpc-client/grpc-client-setup"
+// import { PrepareBattleRequest } from "@/grpc-client/battle_pb.js"
+// import clientGrpc from "@/grpc-client/grpc-client-setup"
+import StoryService from "@/services/StoryService";
 
     export default {
         name: "BattleComponent",
@@ -52,27 +53,27 @@ import clientGrpc from "@/grpc-client/grpc-client-setup"
         },
         async created() {
             // eslint-disable-next-line
-            debugger;
-            const prepareBattleRequest = new PrepareBattleRequest();
-            try {
-                const resp = await clientGrpc.prepareBattle(prepareBattleRequest);
-                console.log('resp', resp);
-            } catch(err) {
+            // debugger;
+            // const prepareBattleRequest = new PrepareBattleRequest();
+            // try {
+            //     const resp = await clientGrpc.prepareBattle(prepareBattleRequest);
+            //     console.log('resp', resp);
+            // } catch(err) {
                 
-            // eslint-disable-next-line
-                debugger
-                console.error(err);
-                console.error(err.message);
-            }
+            // // eslint-disable-next-line
+            //     debugger
+            //     console.error(err);
+            //     console.error(err.message);
+            // }
         },
         mounted() {
             const context = document.getElementById("battle");
             this.canvasContext = context.getContext("2d");
-            this.canvasContext.height = 300;
-            this.canvasContext.width = 900;
+            this.canvasContext.height = 400;
+            this.canvasContext.width = 1100;
             context.width = this.canvasContext.width;
             context.height = this.canvasContext.height;
-            this.battleService = new BattleService();
+            this.battleService = new BattleService(new StoryService([{ id: 'guid', name: 'Archer#1', category: 'Archer', difficulty: 'EASY', quantity: 2 }], []));
             this.startDrawing();
         },
         beforeUnmount() {

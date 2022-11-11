@@ -21,12 +21,14 @@ export default class BackgroundDrawService {
     drawWonGame(context) {
         context.font = '30px Bangers';
         context.fillStyle = 'white';
-        context.fillText('You Won!', 400, 25);
+        const text = 'You Won!';
+        context.fillText(text, context.width/2 - text.length * 7, 25);
     }
     
     drawLostGame(context) {
         context.font = '30px Bangers';
         context.fillStyle = 'white';
-        context.fillText('You Lost!', 400, 25);
+        const text = 'You Lost!';
+        context.fillText(text, context.width / 2 - text.length * 7, 25);
     }
 }

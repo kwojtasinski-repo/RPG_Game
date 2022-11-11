@@ -52,11 +52,6 @@ export default class HeroStateService extends BaseState {
             this.battleService.currentKey = key;
         }
 
-        if (key === 'Esc') {
-            // pause
-            this.battleService.allowSelectState = false;
-        }
-
         if (this.battleService.currentKey === 'Enter') {
             this.baseAttack(deltaTime);
         } else if (parseInt(this.battleService.currentKey, 10) === 1) {
@@ -110,6 +105,7 @@ export default class HeroStateService extends BaseState {
     dead(deltaTime) {
         this.battleService.heroService.frameY = 6;
         this.battleService.heroService.maxFrame = 0;
+        this.battleService.allowSelectState = false;
 
         if (this.deadAnimationInvoked) {
             this.battleService.heroService.frameX = 0;
