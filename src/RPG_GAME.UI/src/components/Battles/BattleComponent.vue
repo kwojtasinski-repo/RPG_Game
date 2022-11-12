@@ -1,7 +1,17 @@
 <template>
     <div class="battleInfo">
-        <div class="positionNames">
-            <div id="playerName">TestPlayer</div>
+        <div class="playerInfo bg-dark">
+            <div class="d-flex justify-content-center">
+                <div class="me-4">Level</div>
+                <div>{{$store.getters.player.level}}</div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="me-4">Experience:</div>
+                <div>{{$store.getters.player.currentExp}}/{{$store.getters.player.requiredExp}}</div>
+            </div>
+        </div>
+        <div class="positionNames bg-dark">
+            <div id="playerName">{{$store.getters.player.name}}</div>
             <div id="enemyName">TestEnemy</div>
         </div>
         <div class="statsInfo">
@@ -27,6 +37,7 @@ import BattleService from "@/services/BattleService.js"
 // import { PrepareBattleRequest } from "@/grpc-client/battle_pb.js"
 // import clientGrpc from "@/grpc-client/grpc-client-setup"
 import StoryService from "@/services/StoryService";
+import { mapGetters } from 'vuex';
 
     export default {
         name: "BattleComponent",
@@ -65,6 +76,13 @@ import StoryService from "@/services/StoryService";
             //     console.error(err);
             //     console.error(err.message);
             // }
+            this.$store.dispatch('player', {
+                id: 'guid',
+                name: 'Player#1',
+                level: 1,
+                currentExp: 100,
+                requiredExp: 1000
+            });
         },
         mounted() {
             const context = document.getElementById("battle");
@@ -80,6 +98,9 @@ import StoryService from "@/services/StoryService";
             window.cancelAnimationFrame(this.requestAnimationId);
             this.battleService.destroy();
             this.requestAnimationId = null;
+        },
+        computed: {
+            ...mapGetters(['player'])
         }
     }
 </script>
@@ -198,5 +219,11 @@ import StoryService from "@/services/StoryService";
     @font-face {
         font-family: 'Creepster';
         src: url('@/assets/Creepster-Regular.ttf') format('truetype');
+    }
+
+    .playerInfo {
+        font-family: Creepster;
+        font-size: 20px;
+        color: #f8f9f6
     }
 </style>
