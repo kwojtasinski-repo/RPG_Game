@@ -17,14 +17,18 @@
         <div class="statsInfo">
             <!-- player health -->
             <div class="playerHealthBorder">
-                <div class="playerHealth"></div>
+                <div class="playerHealth">
+                    <div id="playerHealthValue"></div>
+                </div>
                 <div id="playerHealth" class="currentPlayerHealth"></div>
             </div>
             <!-- timer -->
             <div id="timer">1000</div>
             <!-- enemy health -->
             <div class="enemyHealthBorder">
-                <div class="enemyHealth"></div>
+                <div class="enemyHealth">
+                    <div id="enemyHealthValue"></div>
+                </div>
                 <div id="enemyHealth" class="currentEnemyHealth"></div>
             </div>
         </div>
@@ -225,5 +229,22 @@ import { mapGetters } from 'vuex';
         font-family: Creepster;
         font-size: 20px;
         color: #f8f9f6
+    }
+
+    #playerHealthValue {
+        z-index: 1;
+        margin-left: 50%;
+        font-family: Bangers;
+        font-size: 20px;
+        color: black;
+    }
+
+    #enemyHealthValue {
+        z-index: 1;
+        margin-left: 50%;
+        position: absolute;
+        font-family: Bangers;
+        font-size: 20px;
+        color: black;
     }
 </style>

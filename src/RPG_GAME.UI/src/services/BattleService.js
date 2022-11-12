@@ -34,6 +34,8 @@ export default class BattleService {
         this.enemyService.selectAction(deltaTime);
         this.heroService.draw(context);
         this.enemyService.draw(context);
+        this.setPlayerHealthBarValue(`${this.heroService.currentHealth} / ${this.heroService.health}`);
+        this.setEnemyHealthBarValue(`${this.enemyService.currentHealth} / ${this.enemyService.health}`);
 
         if (this.heroService.currentDamageDealt) {
             this.backgroundDrawService.drawDamage(context, { x: this.enemyService.x + 80, y: this.enemyService.y }, this.heroService.currentDamageDealt);
@@ -61,7 +63,7 @@ export default class BattleService {
         
         service.getPlayerHealthBar().style.width = (percentageCurrentHeroHealth > 0 ? percentageCurrentHeroHealth : 0) + '%';
         service.getEnemyHealthBar().style.width = (percentageCurrentEnemyHealth > 0 ? percentageCurrentEnemyHealth : 0) + '%';
-        
+                
         if (service.enemyService.isDead()) {
             service.enemyService.currentAction = actions.deadAnimation;
             service.deadEnemyHandler();
@@ -76,12 +78,22 @@ export default class BattleService {
         return this.playerHealthBar;
     }
 
+    setPlayerHealthBarValue(value) {
+        const healthBarValue = document.querySelector('#playerHealthValue');
+        healthBarValue.innerHTML = value;
+    }
+
     getEnemyHealthBar() {
         if (!this.enemyHealthBar) {
             this.enemyHealthBar = document.querySelector('#enemyHealth');
         }
 
         return this.enemyHealthBar;
+    }
+
+    setEnemyHealthBarValue(value) {
+        const healthBarValue = document.querySelector('#enemyHealthValue');
+        healthBarValue.innerHTML = value;
     }
 
     idleHandler() {
