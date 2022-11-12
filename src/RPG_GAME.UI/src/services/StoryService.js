@@ -2,6 +2,7 @@ export default class StoryService {
     constructor(enemies, enemiesKilled) {
         this.enemies = enemies; // enemy -> quantity, name, category, id, difficulty
         this.enemiesKilled = enemiesKilled; // enemyKilled -> quantity, name, category, id, difficulty
+        this.currentEnemy = null;
         this.storyState = storyStates.Archer;
         this.selectStoryState();
         this.storyTextShow = [];
@@ -9,7 +10,21 @@ export default class StoryService {
     }
 
     addEnemyKilled(enemy) {
-        this.enemiesKilled.push(enemy);
+        let enemyExists = this.enemiesKilled.find(e => e.category === enemy.category);
+
+        if (!enemyExists) {
+            enemyExists = this.enemies.find(e => e.category === enemy.category);
+            
+            if (!enemyExists) {
+                throw new Error(`Enemy with id ${enemy.id} and category ${enemy.category} doesnt exists`);
+            }
+
+            this.enemiesKilled.push({ ...enemyExists, quantity: 1 });
+            return;
+        } else {
+            enemyExists.quantity++;
+        }
+
         this.selectStoryState();
     }
 
@@ -19,30 +34,33 @@ export default class StoryService {
                 return;
             }
 
-            const text = begin(this.enemies, this.enemiesKilled.filter(e => e.category === 'Archer'));
+            const text = begin(this.enemies, this.enemiesKilled.find(e => e.category === 'Archer'));
             drawBubble(context, text);
             if (this.inputHandler.key === 'Escape') {
                 this.storyTextShow.push(storyStates.Archer);
+                document.dispatchEvent(new CustomEvent('storyAccepted', { detail: this.storyState }));
             }
         } else if (this.storyState === storyStates.Knight) {
             if (this.storyTextShow.find(s => s === storyStates.Knight)) {
                 return;
             }
 
-            const text = afterArchers(this.enemies, this.enemiesKilled.filter(e => e.category === 'Knight'));
+            const text = afterArchers(this.enemies, this.enemiesKilled.find(e => e.category === 'Knight'));
             drawBubble(context, text);
             if (this.inputHandler.key === 'Escape') {
                 this.storyTextShow.push(storyStates.Knight);
+                document.dispatchEvent(new CustomEvent('storyAccepted', { detail: this.storyState }));
             }
         } else if (this.storyState === storyStates.Dragon) {
             if (this.storyTextShow.find(s => s === storyStates.Dragon)) {
                 return;
             }
 
-            const text = afterKnights(this.enemies, this.enemiesKilled.filter(e => e.category === 'Dragon'));
+            const text = afterKnights(this.enemies, this.enemiesKilled.find(e => e.category === 'Dragon'));
             drawBubble(context, text);
             if (this.inputHandler.key === 'Escape') {
                 this.storyTextShow.push(storyStates.Dragon);
+                document.dispatchEvent(new CustomEvent('storyAccepted', { detail: this.storyState }));
             }
         } else if (this.storyState === storyStates.End) {
             if (this.storyTextShow.find(s => s === storyStates.End)) {
@@ -59,7 +77,7 @@ export default class StoryService {
             this.archers = this.enemies.filter(e => e.category === 'Archer');
         }
 
-        return this.archers;
+        return this.archers[0];
     }
 
     getKnights() {
@@ -67,7 +85,7 @@ export default class StoryService {
             this.knights = this.enemies.filter(e => e.category === 'Knight');
         }
 
-        return this.knights;
+        return this.knights[0];
     }
 
     getDragons() {
@@ -75,54 +93,123 @@ export default class StoryService {
             this.dragons = this.enemies.filter(e => e.category === 'Dragon');
         }
 
-        return this.dragons;
+        return this.dragons[0];
     }
 
     selectStoryState() {
         // eslint-disable-next-line
         debugger;
-        const archers = this.getArchers().length;
-        const archersKilled = this.enemiesKilled.filter(e => e.category === 'Archers').length;
-
-        if (archersKilled >= archers) {
-            this.storyState = storyStates.Knight;
-        } else {
-            this.storyState = storyStates.Archer;
-            return;
-        }
-
-        const knights = this.getKnights().length;
-        const knightsKilled = this.enemiesKilled.filter(e => e.category === 'Knight').length;
-
-        if (knightsKilled >= knights) {
-            this.storyState = storyStates.Dragon;
-        } else {
-            this.storyState = storyStates.Knight;
-            return;
-        }
-
-        const dragons = this.getDragons().length;
-        const dragonsKilled = this.enemiesKilled.filter(e => e.category === 'Dragon').length;
+        const archers = this.getArchers();
         
-        if (dragonsKilled >= dragons) {
-            this.storyState = storyStates.End;
+        if (archers) {
+            const archersQuantity = archers.quantity;
+            const archersKilledQuantity = this.enemiesKilled.find(e => e.category === 'Archer')?.quantity ?? 0;
+
+            if (archersKilledQuantity >= archersQuantity) {
+                this.storyState = storyStates.Knight;
+            } else {
+                this.storyState = storyStates.Archer;
+                return;
+            }
+        }
+
+        const knights = this.getKnights();
+
+        if (knights) {
+            const knightsQuantity = knights.quantity;
+            const knightsKilledQuantity = this.enemiesKilled.find(e => e.category === 'Knight')?.quantity ?? 0;
+
+            if (knightsKilledQuantity >= knightsQuantity) {
+                this.storyState = storyStates.Dragon;
+            } else {
+                this.storyState = storyStates.Knight;
+                return;
+            }
+        }
+
+        const dragons = this.getDragons();
+
+        if (dragons) {
+            const dragonsQuantity = dragons.quantity;
+            const dragonsKilledQuantity = this.enemiesKilled.find(e => e.category === 'Dragon')?.quantity ?? 0;
+            
+            if (dragonsKilledQuantity >= dragonsQuantity) {
+                this.storyState = storyStates.End;
+            } else {
+                this.storyState = storyStates.Dragon;
+                return;
+            }
         } else {
-            this.storyState = storyStates.Dragon;
-            return;
+            this.storyState = storyStates.End;
         }
     }
+
+    getNextEnemy() {
+        if (this.enemiesKilled.length === 0) {
+            this.currentEnemy = this.enemies.find(e => e.category === 'Archer');
+            setEnemyName(this.currentEnemy.name);
+            return this.currentEnemy;
+        }
+
+        switch (this.storyState) {
+            case storyStates.Archer: {
+                const archers = this.getArchers();
+                const archersKilled = this.enemiesKilled.find(e => e.category === 'Archer')?.quantity ?? 0;
+
+                if (archers.quantity === archersKilled.quantity) {
+                    throw new Error(`There is no new enemies for state ${this.storyState}`);
+                }
+
+                this.currentEnemy = archers;
+                setEnemyName(this.currentEnemy.name);
+                return this.currentEnemy;
+            }
+            case storyStates.Knight: {
+                const knights = this.getKnights();
+                const knightsKilled = this.enemiesKilled.find(e => e.category === 'Knight')?.quantity ?? 0;
+
+                if (knights.quantity === knightsKilled.quantity) {
+                    throw new Error(`There is no new enemies for state ${this.storyState}`);
+                }
+
+                this.currentEnemy = knights;
+                setEnemyName(this.currentEnemy.name);
+                return this.currentEnemy;
+            }
+            case storyStates.Dragon: {
+                // eslint-disable-next-line
+                debugger
+                const dragons = this.getDragons();
+                const dragonsKilled = this.enemiesKilled.find(e => e.category === 'Dragon')?.quantity ?? 0;
+
+                if (dragons.quantity === dragonsKilled.quantity) {
+                    throw new Error(`There is no new enemies for state ${this.storyState}`);
+                }
+
+                this.currentEnemy = dragons;
+                setEnemyName(this.currentEnemy.name);
+                return this.currentEnemy;
+            }
+            default: {
+                throw new Error(`There is no new enemies for state ${this.storyState}`);
+            }
+        }
+    }
+}
+
+const setEnemyName = (name) => {
+    document.querySelector('#enemyName').innerHTML = name;
 }
 
 const begin = (enemies, enemiesKilled) => {
     const text = [];
     text.push('You are the best hero who is on the way to kill the dragon\n');
     text.push('Dragon wants to destroy your kingdom\n');
-    text.push(`On your way to the lairs of the dragons, there are couple of archers ${enemies.filter(e => e.category === 'Archer').length}\n`);
+    text.push(`On your way to the lairs of the dragons, there are couple of archers ${enemies.find(e => e.category === 'Archer').quantity}\n`);
     text.push('And they dont want to let you go without a fight\n');
     
-    if (enemiesKilled.length > 0) {
-        const archersKilled = enemiesKilled.filter(e => e.category === 'Archer').length;
-        text.push(`You killed ${archersKilled} Archers \n`);
+    if (enemiesKilled) {
+        text.push(`You killed ${enemiesKilled.quantity} Archers \n`);
     }
     
     text.push('Press Escape to continue ...');
@@ -134,12 +221,11 @@ const afterArchers = (enemies, enemiesKilled) => {
     text.push('Archers dont want to duel you. Well Done! You continue on to the dragons lair!\n');
     text.push('However the dragons hired some knights to defense their lairs from people like you\n');
     text.push('Watch out!\n');
-    text.push(`There are ${enemies.filter(e => e.category === 'Knight').length} of them that have found out about your quest.\n`);
+    text.push(`There are ${enemies.find(e => e.category === 'Knight').quantity} of them that have found out about your quest.\n`);
     text.push('And they dont want to let you go without a fight\n');
     
-    if (enemiesKilled.length > 0) {
-        const knightsKilled = enemiesKilled.filter(e => e.category === 'Knight').length;
-        text.push(`You killed ${knightsKilled} Knights\n`);
+    if (enemiesKilled) {
+        text.push(`You killed ${enemiesKilled.quantity} Knights\n`);
     }
 
     text.push('Press Escape to continue ...');
@@ -151,12 +237,11 @@ const afterKnights = (enemies, enemiesKilled) => {
     text.push('Congrats you killed them, you continue on your journey!\n');
     text.push('You are close to the dragon lairs.\n');
     text.push("It's hot and dangerous in there.\n");
-    text.push(`There are ${enemies.filter(e => e.category === 'Dragon').length} dragons.\n`);
+    text.push(`There are ${enemies.find(e => e.category === 'Dragon').quantity} dragons.\n`);
     text.push('The time has come to end the dragons rampage!\n');
     
-    if (enemiesKilled.length > 0) {
-        const dragonsKilled = enemiesKilled.filter(e => e.category === 'Dragon').length;
-        text.push(`You killed ${dragonsKilled} Knights\n`);
+    if (enemiesKilled) {
+        text.push(`You killed ${enemiesKilled.quantity} Dragons\n`);
     }
 
     text.push('Press Escape to continue ...');
@@ -210,7 +295,7 @@ const drawBubble = (context, text) => {
     }
 }
 
-const storyStates = { Knight: 'Knight', Archer: 'Archer', Dragon: 'Dragon', End: 'End' };
+export const storyStates = { Knight: 'Knight', Archer: 'Archer', Dragon: 'Dragon', End: 'End' };
 
 class InputHandler {
     constructor() {

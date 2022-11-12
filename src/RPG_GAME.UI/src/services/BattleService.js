@@ -2,6 +2,7 @@ import BackgroundDrawService from "./BackgroundDrawService";
 import EnemyService, { actions } from "./EnemyService";
 import HeroService from "./HeroService";
 import HeroStateService from "./HeroStateService";
+import { storyStates } from "./StoryService";
 
 let service = null;
 
@@ -10,24 +11,25 @@ export default class BattleService {
         this.heroService = new HeroService();
         this.inputHandler = new InputHandler();
         this.heroStateService = new HeroStateService(this);
-        this.enemyService = new EnemyService();
+        this.enemyService = new EnemyService(storyService.getNextEnemy().category);
         this.backgroundDrawService = new BackgroundDrawService();
         this.currentKey = null;
         this.allowSelectState = true;
         this.gameState = gameStates.InProgress;
         this.storyService = storyService;
+        this.respawnNewEnemy = false;
         service = this;
         document.addEventListener('attack', this.makeAttack);
         document.addEventListener('idle', this.idleHandler);
         document.addEventListener('deadHero', this.deadHeroHandler);
+        document.addEventListener('storyAccepted', this.storyAcceptedHandler);
+        document.addEventListener('respawnNewEnemy', this.respawnNewEnemyHandler);
     }
 
     start(context, deltaTime) {
         this.storyService.showStoryText(context);
         if (!this.storyService.storyTextShow.includes(this.storyService.storyState)) {
-            this.allowSelectState = false;
-        } else if (!this.currentKey && this.gameState === gameStates.InProgress) {
-            this.allowSelectState = true;
+            this.setAllowSelectState(false);
         }
 
         this.heroStateService.selectState(this.inputHandler.key, deltaTime);
@@ -58,11 +60,6 @@ export default class BattleService {
         service.enemyService.currentHealth = service.enemyService.currentHealth - service.heroService.currentDamageDealt;
         service.enemyService.currentDamageDealt = Math.random() === 1 ? service.enemyService.attack.skill : service.enemyService.attack.baseAttack;
         service.heroService.currentHealth = service.heroService.currentHealth - service.enemyService.currentDamageDealt;
-        const percentageCurrentHeroHealth = (service.heroService.currentHealth / service.heroService.health) * 100;
-        const percentageCurrentEnemyHealth = (service.enemyService.currentHealth / service.enemyService.health) * 100;
-        
-        service.getPlayerHealthBar().style.width = (percentageCurrentHeroHealth > 0 ? percentageCurrentHeroHealth : 0) + '%';
-        service.getEnemyHealthBar().style.width = (percentageCurrentEnemyHealth > 0 ? percentageCurrentEnemyHealth : 0) + '%';
                 
         if (service.enemyService.isDead()) {
             service.enemyService.currentAction = actions.deadAnimation;
@@ -81,6 +78,8 @@ export default class BattleService {
     setPlayerHealthBarValue(value) {
         const healthBarValue = document.querySelector('#playerHealthValue');
         healthBarValue.innerHTML = value;
+        const percentageCurrentHeroHealth = (service.heroService.currentHealth / service.heroService.health) * 100;
+        this.getPlayerHealthBar().style.width = (percentageCurrentHeroHealth > 0 ? percentageCurrentHeroHealth : 0) + '%';
     }
 
     getEnemyHealthBar() {
@@ -94,6 +93,8 @@ export default class BattleService {
     setEnemyHealthBarValue(value) {
         const healthBarValue = document.querySelector('#enemyHealthValue');
         healthBarValue.innerHTML = value;
+        const percentageCurrentEnemyHealth = (service.enemyService.currentHealth / service.enemyService.health) * 100;
+        this.getEnemyHealthBar().style.width = (percentageCurrentEnemyHealth > 0 ? percentageCurrentEnemyHealth : 0) + '%';
     }
 
     idleHandler() {
@@ -111,17 +112,48 @@ export default class BattleService {
     deadEnemyHandler() {
         // logic get next enemy or won
         // if every enemy was killed disable input for battle and set state game as won
+        this.storyService.addEnemyKilled(service.storyService.currentEnemy);
         setTimeout(() => {
-            service.heroService.currentDamageDealt = null;
-            service.enemyService.currentDamageDealt = null;
+            this.heroService.currentDamageDealt = null;
+            this.enemyService.currentDamageDealt = null;
         }, 500);
-        service.gameState = gameStates.Won;
+
+        this.storyService.selectStoryState();
+
+        if (this.storyService.storyState === storyStates.End && this.heroService.currentHealth > 0) {
+            service.gameState = gameStates.Won;
+            return;
+        }
+
+        this.respawnNewEnemy = true;
+        const nextEnemy = this.storyService.getNextEnemy();
+        this.enemyService.setEnemy(nextEnemy.category);
+    }
+
+    setAllowSelectState(allowSelectState) {
+        if (this.respawnNewEnemy) {
+            this.allowSelectState = false;
+            return;
+        }
+
+        this.allowSelectState = allowSelectState;
+    }
+
+    storyAcceptedHandler() {
+        service.setAllowSelectState(true);
+    }
+
+    respawnNewEnemyHandler() {
+        service.respawnNewEnemy = false;
+        service.setAllowSelectState(true);
     }
 
     destroy() {
         document.removeEventListener('attack', this.makeAttack);
         document.removeEventListener('idle', this.idleHandler);
         document.removeEventListener('deadHero', this.deadHeroHandler);
+        document.removeEventListener('storyAccepted', this.storyAcceptedHandler);
+        document.removeEventListener('respawnNewEnemy', this.respawnNewEnemyHandler);
     }
 }
 

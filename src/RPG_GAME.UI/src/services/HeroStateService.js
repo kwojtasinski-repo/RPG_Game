@@ -33,7 +33,7 @@ class BaseState {
         if(!this.stateReset) {
             setTimeout(() => {
                 this.battleService.currentKey = null;
-                this.battleService.allowSelectState = true;
+                this.battleService.setAllowSelectState(true);
                 this.eventSent = false;
                 this.stateReset = false;
             }, ms ? ms : 1000);
@@ -68,7 +68,7 @@ export default class HeroStateService extends BaseState {
     baseAttack(deltaTime) {
         this.battleService.heroService.frameY = 3;
         this.battleService.heroService.maxFrame = 5;
-        this.battleService.allowSelectState = false;
+        this.battleService.setAllowSelectState(false);
         this.sendEvent(new CustomEvent('attack', { detail: { name: 'baseAttack' } }));
 
         const nextFrame = this.battleService.heroService.frameX + 1;
@@ -82,7 +82,7 @@ export default class HeroStateService extends BaseState {
     skillAttack(deltaTime) {
         this.battleService.heroService.frameY = 13;
         this.battleService.heroService.maxFrame = 5;
-        this.battleService.allowSelectState = false;
+        this.battleService.setAllowSelectState(false);
         this.sendEvent(new CustomEvent('attack', { detail: { name: 'skill' } }));
 
         const nextFrame = this.battleService.heroService.frameX + 1;
@@ -96,7 +96,11 @@ export default class HeroStateService extends BaseState {
     idle(deltaTime) {
         this.battleService.heroService.frameY = 0;
         this.battleService.heroService.maxFrame = 5;
-        this.battleService.allowSelectState = true;
+        
+        if (!this.battleService.respawnNewEnemy) {
+            this.battleService.setAllowSelectState(true);
+        }
+
         this.sendEvent(new CustomEvent('idle'));
         this.resetState(5);
         this.update(deltaTime);
@@ -105,7 +109,7 @@ export default class HeroStateService extends BaseState {
     dead(deltaTime) {
         this.battleService.heroService.frameY = 6;
         this.battleService.heroService.maxFrame = 0;
-        this.battleService.allowSelectState = false;
+        this.battleService.setAllowSelectState(false);
 
         if (this.deadAnimationInvoked) {
             this.battleService.heroService.frameX = 0;
@@ -113,7 +117,7 @@ export default class HeroStateService extends BaseState {
         }
 
         this.battleService.heroService.frameX = this.battleService.heroService.frameX === 0 ? 5 : this.battleService.heroService.frameX;
-        this.battleService.allowSelectState = false;
+        this.battleService.setAllowSelectState(false);
 
         if (this.battleService.heroService.frameTimer > this.battleService.heroService.frameInterval) {
             this.battleService.heroService.frameTimer = 0;
@@ -133,7 +137,7 @@ export default class HeroStateService extends BaseState {
     won(deltaTime) {
         this.battleService.heroService.frameY = 9;
         this.battleService.heroService.maxFrame = 5;
-        this.battleService.allowSelectState = false;
+        this.battleService.setAllowSelectState(false);
         this.update(deltaTime);
     }
 }

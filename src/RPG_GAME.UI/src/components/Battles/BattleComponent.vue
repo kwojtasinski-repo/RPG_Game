@@ -49,7 +49,9 @@ import { mapGetters } from 'vuex';
             return {
                 canvasContext: null,
                 battleService: null,
-                requestAnimationId: null
+                requestAnimationId: null,
+                enemies: [],
+                enemiesKilled: []
             };
         },
         methods: {
@@ -87,6 +89,8 @@ import { mapGetters } from 'vuex';
                 currentExp: 100,
                 requiredExp: 1000
             });
+            this.enemies = [{ id: 'guid', name: 'Archer#1', category: 'Archer', difficulty: 'EASY', quantity: 2 }, {id: 'guid2', name: 'Knight#1', category: 'Knight', difficulty: 'EASY', quantity: 1 }, {id: 'guid3', name: 'Dragon#1', category: 'Dragon', difficulty: 'EASY', quantity: 1 }];
+            this.enemiesKilled = [];
         },
         mounted() {
             const context = document.getElementById("battle");
@@ -95,7 +99,7 @@ import { mapGetters } from 'vuex';
             this.canvasContext.width = 1100;
             context.width = this.canvasContext.width;
             context.height = this.canvasContext.height;
-            this.battleService = new BattleService(new StoryService([{ id: 'guid', name: 'Archer#1', category: 'Archer', difficulty: 'EASY', quantity: 2 }], []));
+            this.battleService = new BattleService(new StoryService(this.enemies, this.enemiesKilled));
             this.startDrawing();
         },
         beforeUnmount() {
