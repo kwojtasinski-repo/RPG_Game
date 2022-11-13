@@ -40,7 +40,7 @@ export default class BattleService {
         this.setEnemyHealthBarValue(`${this.enemyService.currentHealth} / ${this.enemyService.health}`);
 
         if (this.heroService.currentDamageDealt) {
-            this.backgroundDrawService.drawDamage(context, { x: this.enemyService.x + 80, y: this.enemyService.y }, this.heroService.currentDamageDealt);
+            this.backgroundDrawService.drawDamage(context, { x: this.enemyService.enemy.x + 80, y: this.enemyService.enemy.y }, this.heroService.currentDamageDealt);
         }
         if (this.enemyService.currentDamageDealt) {
             this.backgroundDrawService.drawDamage(context, { x: this.heroService.x + 80, y: this.heroService.y }, this.enemyService.currentDamageDealt);
@@ -55,14 +55,14 @@ export default class BattleService {
     
     makeAttack(event) {
         console.log('ATTACK!', event.detail);
-        service.enemyService.currentAction = actions.fight;
+        service.enemyService.setCurrentAction(actions.fight);
         service.heroService.currentDamageDealt = service.heroService.attack[event.detail.name];
         service.enemyService.currentHealth = service.enemyService.currentHealth - service.heroService.currentDamageDealt;
         service.enemyService.currentDamageDealt = Math.random() === 1 ? service.enemyService.attack.skill : service.enemyService.attack.baseAttack;
         service.heroService.currentHealth = service.heroService.currentHealth - service.enemyService.currentDamageDealt;
                 
         if (service.enemyService.isDead()) {
-            service.enemyService.currentAction = actions.deadAnimation;
+            service.enemyService.setCurrentAction(actions.deadAnimation);
             service.deadEnemyHandler();
         }
     }
