@@ -367,6 +367,9 @@ namespace RPG_GAME.Application.Mappings
             { 
                 Id = battleEvent.Id,
                 Action = battleEvent.Action.AsDto(),
+                Level = battleEvent.Level,
+                CurrentExp = battleEvent.CurrentExp,
+                RequiredExp = battleEvent.RequiredExp,
                 BattleId = battleEvent.BattleId,
                 Created = battleEvent.Created
             };

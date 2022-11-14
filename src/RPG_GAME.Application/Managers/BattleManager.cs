@@ -127,6 +127,7 @@ namespace RPG_GAME.Application.Managers
                 return new BattleEvent(Guid.NewGuid(), battle.Id,
                 new FightAction(enemyId, CharacterType.ENEMY.ToString(),
                         currentEnemyAssignInBattle.EnemyName, 0, currentBattleState.EnemyHealth, FightAction.FIGHT_ACTION_ENEMY_IS_DEAD),
+                        player.Level, player.CurrentExp, player.RequiredExp,
                         _clock.CurrentDate());
             }
 
@@ -141,7 +142,9 @@ namespace RPG_GAME.Application.Managers
             return new BattleEvent(Guid.NewGuid(), battle.Id,
                 new FightAction(currentEnemyAssignInBattle.Id,
                         CharacterType.ENEMY.ToString(), currentEnemyAssignInBattle.EnemyName,
-                        currentBattleState.EnemyDamageDealt, currentBattleState.EnemyHealth, currentBattleState.EnemyAttackName), _clock.CurrentDate());
+                        currentBattleState.EnemyDamageDealt, currentBattleState.EnemyHealth, currentBattleState.EnemyAttackName),
+                        player.Level, player.CurrentExp, player.RequiredExp,
+                        _clock.CurrentDate());
         }
 
         public async Task<CurrentBattleState> StrikeAsync(Player player, EnemyAssign enemyAssign, Guid battleId, string action)

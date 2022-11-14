@@ -377,6 +377,9 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
             {
                 Id = battleEvent.Id,
                 BattleId = battleEvent.BattleId,
+                Level = battleEvent.Level,
+                CurrentExp = battleEvent.CurrentExp,
+                RequiredExp = battleEvent.RequiredExp,
                 Created = battleEvent.Created,
                 Action = battleEvent.Action.AsDocument()
             };
@@ -413,6 +416,7 @@ namespace RPG_GAME.Infrastructure.Mongo.Mappings
         public static BattleEvent AsEntity(this BattleEventDocument battleEventDocument)
         {
             return new BattleEvent(battleEventDocument.Id, battleEventDocument.BattleId, battleEventDocument.Action.AsEntity(),
+                battleEventDocument.Level, battleEventDocument.CurrentExp, battleEventDocument.RequiredExp,
                 battleEventDocument.Created);
         }
 

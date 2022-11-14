@@ -114,7 +114,7 @@ namespace RPG_GAME.UnitTests.Commands
 
         private BattleEvent CreateDefaultBattleEvent(Guid battleId)
         {
-            return new BattleEvent(Guid.NewGuid(), battleId, new FightAction(Guid.NewGuid(), CharacterType.ENEMY.ToString(), "name", 100, 100, "attack"), DateTime.UtcNow);
+            return new BattleEvent(Guid.NewGuid(), battleId, new FightAction(Guid.NewGuid(), CharacterType.ENEMY.ToString(), "name", 100, 100, "attack"), 1, 100, 1000, DateTime.UtcNow);
         }
 
         private Player AddDefaultPlayer()

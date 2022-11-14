@@ -7,6 +7,9 @@ namespace RPG_GAME.Infrastructure.Mongo.Documents.Battles
         public Guid Id { get; set; }
         public Guid BattleId { get; set; }
         public FightActionDocument Action { get; set; }
+        public int Level { get; set; }
+        public decimal CurrentExp { get; set; }
+        public decimal RequiredExp { get; set; }
         public DateTime Created { get; set; }
     }
 }
