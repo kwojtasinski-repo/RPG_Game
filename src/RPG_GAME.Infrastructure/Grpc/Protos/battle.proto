@@ -111,6 +111,9 @@ message AddBattleEventResponse {
     string battleId = 2;
     FightAction action = 3;
     google.protobuf.Timestamp created = 4;
+    int32 level = 5;
+    DecimalValue currentExp = 6;
+    DecimalValue requiredExp = 7;
 }
 
 message FightAction {
@@ -120,6 +123,7 @@ message FightAction {
     int32 damageDealt = 4;
     int32 health = 5;
     string attackInfo = 6;
+
 }
 
 // Example: 12345.6789 -> { units = 12345, nanos = 678900000 }

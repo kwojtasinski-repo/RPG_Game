@@ -24,7 +24,7 @@ namespace RPG_GAME.Infrastructure.Grpc.Mappings
                         Difficulty = enemies.Enemy.Difficulty,
                         HealLvl = enemies.Enemy.BaseHealLvl,
                         Health = enemies.Enemy.BaseHealth,
-                        Experience = new DecimalValue { Units = long.Parse(enemies.Enemy.Experience.ToString("0.0000000", CultureInfo.InvariantCulture).Split('.')[0]), Nanos = int.Parse(enemies.Enemy.Experience.ToString("0.0000000", CultureInfo.InvariantCulture).Split('.')[1]) },
+                        Experience = enemies.Enemy.Experience.AsDecimalValue(),
                     },
                     Quantity = enemies.Quantity
                 };
@@ -36,7 +36,7 @@ namespace RPG_GAME.Infrastructure.Grpc.Mappings
                         Id = skill.Id.ToString(),
                         Name = skill.Name,
                         Attack = skill.BaseAttack,
-                        Probability = new DecimalValue { Units = long.Parse(skill.Probability.ToString("0.0000000", CultureInfo.InvariantCulture).Split('.')[0]), Nanos = int.Parse(skill.Probability.ToString("0.0000000", CultureInfo.InvariantCulture).Split('.')[1]) }
+                        Probability = skill.Probability.AsDecimalValue()
                     });
                 }
 
@@ -64,8 +64,8 @@ namespace RPG_GAME.Infrastructure.Grpc.Mappings
                         Name = battle.Player.Name,
                         UserId = battle.Player.UserId.ToString(),
                         Level = battle.Player.Level,
-                        CurrentExp = new DecimalValue { Units = long.Parse(battle.Player.CurrentExp.ToString("0.0000000", CultureInfo.InvariantCulture).Split('.')[0]), Nanos = int.Parse(battle.Player.CurrentExp.ToString("0.0000000", CultureInfo.InvariantCulture).Split('.')[1]) },
-                        RequiredExp = new DecimalValue { Units = long.Parse(battle.Player.RequiredExp.ToString("0.0000000", CultureInfo.InvariantCulture).Split('.')[0]), Nanos = int.Parse(battle.Player.RequiredExp.ToString("0.0000000", CultureInfo.InvariantCulture).Split('.')[1]) },
+                        CurrentExp = battle.Player.CurrentExp.AsDecimalValue(),
+                        RequiredExp =battle.Player.RequiredExp.AsDecimalValue(),
                         Hero = new HeroAssign
                         {
                             Id = battle.Player.Hero.Id.ToString(),
@@ -107,10 +107,19 @@ namespace RPG_GAME.Infrastructure.Grpc.Mappings
                     Health = battleEventDto.Action.Health
                 },
                 BattleId = battleEventDto.BattleId.ToString(),
+                Level = battleEventDto.Level,
+                CurrentExp = battleEventDto.CurrentExp.AsDecimalValue(),
+                RequiredExp = battleEventDto.RequiredExp.AsDecimalValue(),
                 Created = Timestamp.FromDateTime(battleEventDto.Created),
             };
 
             return response;
+        }
+
+        public static DecimalValue AsDecimalValue(this decimal value)
+        {
+            var stringValue = value.ToString("0.0000000", CultureInfo.InvariantCulture).Split('.');
+            return new DecimalValue { Units = long.Parse(stringValue[0]), Nanos = int.Parse(stringValue[1]) };
         }
     }
 }

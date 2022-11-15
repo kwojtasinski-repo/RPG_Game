@@ -179,6 +179,9 @@ namespace RPG_GAME.IntegrationTests.Grpc
             // Assert
             var id = Guid.Parse(response.Id);
             Assert.NotEqual(Guid.Empty, id);
+            Assert.True(response.Level != default);
+            Assert.True(response.CurrentExp != default);
+            Assert.True(response.RequiredExp != default);
             var battle = await repository.GetAsync(battleId);
             Assert.NotNull(battle);
             var battleEvent = await battleEventRepository.GetAsync(id);
@@ -208,6 +211,7 @@ namespace RPG_GAME.IntegrationTests.Grpc
             // Assert
             var id = Guid.Parse(response.Id);
             Assert.NotEqual(Guid.Empty, id);
+            Assert.True(response.Level > 1);
             var battle = await repository.GetAsync(battleId);
             Assert.Equal(BattleInfo.Won, battle.BattleInfo);
             Assert.True(battle.BattleStates.Count() == 3);
