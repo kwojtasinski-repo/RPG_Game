@@ -67,7 +67,7 @@
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
-                        <tr v-for="enemy in map.enemies" :key="enemy.enemy.id" :class="currentEnemyId ? 'bg-secondary' : null"  @click="() => enemyMarked(enemy.enemy.id)">
+                        <tr v-for="enemy in map.enemies" :key="enemy.enemy.id" :class="enemy.enemy.id === currentEnemyId ? 'bg-secondary' : null"  @click="() => enemyMarked(enemy.enemy.id)">
                             <td>
                                 {{enemy.enemy.id}}
                             </td>
@@ -84,7 +84,7 @@
                                 {{enemy.quantity}}
                             </td>
                             <td>
-                                <button class="btn btn-primary" :disabled="!currentEnemyId" @click="showEnemy">Show enemy</button>
+                                <button class="btn btn-primary" :disabled="enemy.enemy.id !== currentEnemyId" @click="showEnemy">Show enemy</button>
                             </td>
                         </tr>
                     </tbody>
@@ -105,9 +105,10 @@
 </template>
 
 <script>
-import * as response from '@/stubs/enemies.json';
+import axios from "@/axios-setup.js"
 import PopupComponent from '../Poupup/PopupComponent.vue';
 import EnemyViewComponent from '../Enemies/EnemyViewComponent.vue';
+import exceptionMapper from '@/mappers/exceptionToMessageMapper.js';
 
 export default {
     name: "MapFormComponent",
@@ -138,13 +139,19 @@ export default {
             this.currentEnemyId = null;
             this.enemyFetched = null;
         },
-        showEnemy() {
-            this.enemyFetched = this.fetchEnemy(this.currentEnemyId);
+        async showEnemy() {
+            await this.fetchEnemy(this.currentEnemyId);
             this.openPopup = true;
         },
-        fetchEnemy(enemyId) {
-            const enemy = response.enemies.find(e => e.id == enemyId);
-            return enemy;
+        async fetchEnemy(enemyId) {
+            try {
+                const response = await axios.get(`/api/enemies/${enemyId}`);
+                this.enemyFetched = response.data;
+            } catch(exception) {
+                const message = exceptionMapper(exception);
+                console.error(message);
+                console.log(exception);
+            }
         },
     },
     components: { PopupComponent, EnemyViewComponent }

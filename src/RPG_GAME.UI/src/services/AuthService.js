@@ -59,7 +59,8 @@ class AuthService {
             return false;
         }
         
-        const tokenExpiryDate = new Date(user.tokenExpiry);
+        const MS_PER_MINUTE = 60000;
+        const tokenExpiryDate = new Date(user.tokenExpiry - MS_PER_MINUTE * 5);
         const currentDate = new Date();
         
         if (tokenExpiryDate < currentDate) {

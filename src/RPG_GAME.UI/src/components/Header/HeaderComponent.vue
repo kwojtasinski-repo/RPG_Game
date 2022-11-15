@@ -41,7 +41,7 @@ import { mapGetters } from 'vuex';
 <style>
     .header {
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
         margin-right: 1rem;
     }
 

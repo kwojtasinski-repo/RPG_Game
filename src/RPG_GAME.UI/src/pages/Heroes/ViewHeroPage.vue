@@ -17,9 +17,9 @@
           <div class="d-flex justify-content-center">
             <HeroViewComponent :hero="hero" />
           </div>
-          <div class="mt-2" v-if="hero.PlayersAssignedTo.length > 0 && user.role !== 'user'">
+          <div class="mt-2" v-if="hero.playersAssignedTo.length > 0 && user.role !== 'user'">
             <h4>Hero assigned to players:</h4>
-            <div v-for="playerId in hero.PlayersAssignedTo" :key="playerId">
+            <div v-for="playerId in hero.playersAssignedTo" :key="playerId">
               <RouterButtonComponent :namedRoute="{ name: 'view-player', params: { playerId: playerId } }" :buttonText="`View Player ${playerId}`" :buttonClass="'btn btn-primary mt-2'" :target="'_blank'"/>
             </div>
         </div>
@@ -58,7 +58,8 @@
             health: response.data.health,
             attack: response.data.attack,
             baseRequiredExperience: response.data.baseRequiredExperience,
-            skills: response.data.skills
+            skills: response.data.skills,
+            playersAssignedTo: response.data.playersAssignedTo
           };
         } catch(exception) {
           const message = exceptionMapper(exception);

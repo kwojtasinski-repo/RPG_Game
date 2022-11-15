@@ -7,7 +7,7 @@ function getToken() {
 
 const instance = axios.create({
     baseURL: window._env_?.VUE_APP_BACKEND_URL ? window._env_.VUE_APP_BACKEND_URL : process.env.VUE_APP_BACKEND_URL,
-    timeout: 5000
+    timeout: 30000
 });
 
 instance.interceptors.request.use((req) => {

@@ -36,7 +36,7 @@ export default {
             this.$router.push('/');
           }
         }
-      }, 10000);
+      }, 60000);
     }
   },
   async created() {
