@@ -3753,7 +3753,10 @@ proto.battle.AddBattleEventResponse.toObject = function(includeInstance, msg) {
     id: jspb.Message.getFieldWithDefault(msg, 1, ""),
     battleid: jspb.Message.getFieldWithDefault(msg, 2, ""),
     action: (f = msg.getAction()) && proto.battle.FightAction.toObject(includeInstance, f),
-    created: (f = msg.getCreated()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+    created: (f = msg.getCreated()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    level: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    currentexp: (f = msg.getCurrentexp()) && proto.battle.DecimalValue.toObject(includeInstance, f),
+    requiredexp: (f = msg.getRequiredexp()) && proto.battle.DecimalValue.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -3807,6 +3810,20 @@ proto.battle.AddBattleEventResponse.deserializeBinaryFromReader = function(msg, 
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setCreated(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setLevel(value);
+      break;
+    case 6:
+      var value = new proto.battle.DecimalValue;
+      reader.readMessage(value,proto.battle.DecimalValue.deserializeBinaryFromReader);
+      msg.setCurrentexp(value);
+      break;
+    case 7:
+      var value = new proto.battle.DecimalValue;
+      reader.readMessage(value,proto.battle.DecimalValue.deserializeBinaryFromReader);
+      msg.setRequiredexp(value);
       break;
     default:
       reader.skipField();
@@ -3865,6 +3882,29 @@ proto.battle.AddBattleEventResponse.serializeBinaryToWriter = function(message, 
       4,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getLevel();
+  if (f !== 0) {
+    writer.writeInt32(
+      5,
+      f
+    );
+  }
+  f = message.getCurrentexp();
+  if (f != null) {
+    writer.writeMessage(
+      6,
+      f,
+      proto.battle.DecimalValue.serializeBinaryToWriter
+    );
+  }
+  f = message.getRequiredexp();
+  if (f != null) {
+    writer.writeMessage(
+      7,
+      f,
+      proto.battle.DecimalValue.serializeBinaryToWriter
     );
   }
 };
@@ -3977,6 +4017,98 @@ proto.battle.AddBattleEventResponse.prototype.clearCreated = function() {
  */
 proto.battle.AddBattleEventResponse.prototype.hasCreated = function() {
   return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional int32 level = 5;
+ * @return {number}
+ */
+proto.battle.AddBattleEventResponse.prototype.getLevel = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.battle.AddBattleEventResponse} returns this
+ */
+proto.battle.AddBattleEventResponse.prototype.setLevel = function(value) {
+  return jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
+/**
+ * optional DecimalValue currentExp = 6;
+ * @return {?proto.battle.DecimalValue}
+ */
+proto.battle.AddBattleEventResponse.prototype.getCurrentexp = function() {
+  return /** @type{?proto.battle.DecimalValue} */ (
+    jspb.Message.getWrapperField(this, proto.battle.DecimalValue, 6));
+};
+
+
+/**
+ * @param {?proto.battle.DecimalValue|undefined} value
+ * @return {!proto.battle.AddBattleEventResponse} returns this
+*/
+proto.battle.AddBattleEventResponse.prototype.setCurrentexp = function(value) {
+  return jspb.Message.setWrapperField(this, 6, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.battle.AddBattleEventResponse} returns this
+ */
+proto.battle.AddBattleEventResponse.prototype.clearCurrentexp = function() {
+  return this.setCurrentexp(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.battle.AddBattleEventResponse.prototype.hasCurrentexp = function() {
+  return jspb.Message.getField(this, 6) != null;
+};
+
+
+/**
+ * optional DecimalValue requiredExp = 7;
+ * @return {?proto.battle.DecimalValue}
+ */
+proto.battle.AddBattleEventResponse.prototype.getRequiredexp = function() {
+  return /** @type{?proto.battle.DecimalValue} */ (
+    jspb.Message.getWrapperField(this, proto.battle.DecimalValue, 7));
+};
+
+
+/**
+ * @param {?proto.battle.DecimalValue|undefined} value
+ * @return {!proto.battle.AddBattleEventResponse} returns this
+*/
+proto.battle.AddBattleEventResponse.prototype.setRequiredexp = function(value) {
+  return jspb.Message.setWrapperField(this, 7, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.battle.AddBattleEventResponse} returns this
+ */
+proto.battle.AddBattleEventResponse.prototype.clearRequiredexp = function() {
+  return this.setRequiredexp(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.battle.AddBattleEventResponse.prototype.hasRequiredexp = function() {
+  return jspb.Message.getField(this, 7) != null;
 };
 
 
