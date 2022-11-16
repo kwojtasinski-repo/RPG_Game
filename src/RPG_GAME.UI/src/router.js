@@ -19,6 +19,7 @@ import AddEnemyPage from "./pages/Enemies/AddEnemyPage.vue"
 import EditEnemyPage from "./pages/Enemies/EditEnemyPage.vue"
 import ViewEnemyPage from "./pages/Enemies/ViewEnemyPage.vue"
 import BattleStartPage from "./pages/Battles/BattleStartPage.vue"
+import StartFightPage from "./pages/Fights/StartFightPage.vue"
 
 const routes = [
     // --- menu ---
@@ -156,6 +157,15 @@ const routes = [
         path: '/register',
         name: 'register',
         component: SignUpPage
+    },
+    // --- fight pages ---
+    {
+        path: '/fights/start',
+        name: 'fight-start',
+        component: StartFightPage,
+        meta: {
+            auth: true
+        }
     },
     {
         path: '/battles/start',

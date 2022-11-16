@@ -25,7 +25,7 @@ export default {
         }
 
         routes = routes.concat(
-          { text: 'Start fight', action: () => this.$router.push({ name: 'menu' }) }, // TODO Add Start fight page
+          { text: 'Start fight', action: () => this.$router.push({ name: 'fight-start' }) },
           { text: 'Profile', action: () => this.$router.push({ name: 'menu' }) }, // TODO Profile page
           { text: 'History', action: () => this.$router.push({ name: 'menu' }) } // TODO History page
         );
