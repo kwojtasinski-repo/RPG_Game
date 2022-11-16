@@ -109,5 +109,11 @@ namespace RPG_GAME.Application.Services
             var players = await _playerRepository.GetAllAsync();
             return players.Select(p => p.AsDto());
         }
+
+        public async Task<PlayerDto> GetByUserAsync(Guid userId)
+        {
+            var player = await _playerRepository.GetByUserId(userId);
+            return player?.AsDto();
+        }
     }
 }

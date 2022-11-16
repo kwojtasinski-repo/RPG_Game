@@ -8,6 +8,7 @@ namespace RPG_GAME.Application.Services
         Task RemoveAsync(Guid id);
         Task UpdateAsync(UpdatePlayerDto playerDto);
         Task<PlayerDto> GetAsync(Guid id);
+        Task<PlayerDto> GetByUserAsync(Guid userId);
         Task<IEnumerable<PlayerDto>> GetAllAsync();
     }
 }

@@ -27,6 +27,12 @@ namespace RPG_GAME.Api.Controllers
             return OkOrNotFound(await _playerService.GetAsync(id));
         }
 
+        [HttpGet("by-user")]
+        public async Task<ActionResult<PlayerDto>> GetByUserId([FromQuery] Guid userId)
+        {
+            return OkOrNotFound(await _playerService.GetAsync(userId));
+        }
+
         [HttpPost]
         public async Task<ActionResult> Add(AddPlayerDto playerDto)
         {
