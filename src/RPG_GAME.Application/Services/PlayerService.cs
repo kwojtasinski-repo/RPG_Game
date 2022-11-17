@@ -42,6 +42,13 @@ namespace RPG_GAME.Application.Services
                 throw new UserNotFoundException(playerDto.UserId);
             }
 
+            var playerExists = await _playerRepository.ExistsAsync(playerDto.UserId);
+
+            if (playerExists)
+            {
+                throw new PlayerAlreadyExistsException(playerDto.UserId);
+            }
+
             var heroAssing = hero.AsAssign();
             var player = Player.Create(playerDto.Name, heroAssing, hero.BaseRequiredExperience.Value, playerDto.UserId);
             await _playerRepository.AddAsync(player);

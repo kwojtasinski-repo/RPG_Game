@@ -30,7 +30,7 @@ namespace RPG_GAME.Api.Controllers
         [HttpGet("by-user")]
         public async Task<ActionResult<PlayerDto>> GetByUserId([FromQuery] Guid userId)
         {
-            return OkOrNotFound(await _playerService.GetAsync(userId));
+            return OkOrNotFound(await _playerService.GetByUserAsync(userId));
         }
 
         [HttpPost]

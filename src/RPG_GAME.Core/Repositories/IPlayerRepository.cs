@@ -14,5 +14,6 @@ namespace RPG_GAME.Core.Repositories
         Task<IEnumerable<Player>> GetAllAsync();
         Task<IEnumerable<Player>> GetAllPlayersByHeroId(Guid heroId);
         Task<Player> GetByUserId(Guid userId);
+        Task<bool> ExistsAsync(Guid userId);
     }
 }

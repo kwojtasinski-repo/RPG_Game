@@ -57,5 +57,10 @@ namespace RPG_GAME.Infrastructure.Mongo.Repositories
                 .AsQueryable()
                 .SingleOrDefaultAsync(u => u.UserId == userId)).AsEntity();
         }
+
+        public Task<bool> ExistsAsync(Guid userId)
+        {
+            return _repository.Collection.AsQueryable().AnyAsync(p => p.UserId == userId);
+        }
     }
 }

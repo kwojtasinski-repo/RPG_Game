@@ -23,6 +23,11 @@ namespace RPG_GAME.UnitTests.Stubs
             return Task.CompletedTask;
         }
 
+        public Task<bool> ExistsAsync(Guid userId)
+        {
+            return Task.FromResult(_players.Any(p => p.UserId == userId));
+        }
+
         public Task<IEnumerable<Player>> GetAllAsync()
         {
             return Task.FromResult<IEnumerable<Player>>(_players);
