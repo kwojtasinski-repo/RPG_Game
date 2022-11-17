@@ -27,16 +27,22 @@ export default {
   },
   methods: {
     async verifiedAuthenticated() {
-      await authService.isLogged();
-      setInterval(async () => {
-        const user = this.user;
+      try {
         const authenticated = await authService.isLogged();
         if (!authenticated) {
-          if (user) {
+          const currentRoute = this.$router.currentRoute.value;
+          if (this.user) {
+            authService.logout();
+          }
+          
+          if (currentRoute.meta.auth && currentRoute.meta.auth === true) {
             this.$router.push('/');
           }
         }
-      }, 60000);
+      } catch (exception) {
+        console.error(exception);
+      }
+      setTimeout(this.verifiedAuthenticated, 60000);
     }
   },
   async created() {

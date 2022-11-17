@@ -1,26 +1,17 @@
 <template>
-    <div class="page">
-        StartFight
-        <div v-if="loading">
-            <LoadingIconComponent />
+    <div v-if="loading">
+        <LoadingIconComponent />
+    </div>
+    <div v-else>
+        Profile
+        <div v-if="!player">
+            <RouterButtonComponent :namedRoute="{ name: 'create-profile' }" :buttonText="'Create Hero'" :buttonClass="'btn btn-success'" />
         </div>
         <div v-else>
-            <div v-if="error">
-                {{error}}
-            </div>
-
-            <div v-if="maps.length === 0">
-                There are no maps available, the battle cannot be started
-            </div>
-            <div v-else-if="!player">
-                You have to choose hero. Click on this button and then go back to start fight
-                <RouterButtonComponent :namedRoute="{ name: 'create-profile' }" :buttonText="'Choose hero'" :buttonClass="'btn btn-success'" />
-            </div>
-            <div v-else-if="player">
-                <PlayerViewComponent :player="player" />
-                <button class="btn btn-primary" @click="showHero">Show hero details</button>
-            </div>
+            <PlayerViewComponent :player="player" />
+            <button class="btn btn-primary" @click="showHero">Show hero details</button>
         </div>
+        <RouterButtonComponent :url="'/'" :buttonText="'Back to menu'" />
     </div>
     <div>
         <PopupComponent :open="openPopup" @popupClosed="popupClosed">
@@ -35,28 +26,25 @@
 </template>
 
 <script>
-import axios from '@/axios-setup.js';
-import HeroViewComponent from '@/components/Heroes/HeroViewComponent.vue';
-import LoadingIconComponent from '@/components/LoadingIcon/LoadingIconComponent.vue';
 import PlayerViewComponent from '@/components/Players/PlayerViewComponent.vue';
 import PopupComponent from '@/components/Poupup/PopupComponent.vue';
-import RouterButtonComponent from '@/components/RouterButton/RouterButtonComponent.vue';
-import mapExceptionToMessage from '@/mappers/exceptionToMessageMapper';
+import RouterButtonComponent from '@/components/RouterButton/RouterButtonComponent.vue'
+import mapExceptionToMessage from '@/mappers/exceptionToMessageMapper.js';
+import axios from '@/axios-setup.js';
 import { mapGetters } from 'vuex';
+import LoadingIconComponent from '@/components/LoadingIcon/LoadingIconComponent.vue';
 
   export default {
-    name: 'StartFightPage',
+    name: 'ProfilePage',
     components: {
-        LoadingIconComponent,
+        RouterButtonComponent,
         PlayerViewComponent,
         PopupComponent,
-        HeroViewComponent,
-        RouterButtonComponent
+        LoadingIconComponent
     },
     data() {
         return {
             player: null,
-            maps: [],
             loading: true,
             error: '',
             heroFetched: null,
@@ -66,7 +54,8 @@ import { mapGetters } from 'vuex';
     methods: {
         async fetchPlayer() {
             try {
-                this.player = await axios.get(`/api/players/by-user?userId=${this.user.id}`);
+                const response = await axios.get(`/api/players/by-user?userId=${this.user.id}`);
+                this.player = response.data;
             } catch (exception) {
                 if (exception?.response?.status === 404) {
                     console.error(exception);
@@ -74,14 +63,6 @@ import { mapGetters } from 'vuex';
                     this.error = mapExceptionToMessage(exception);
                     console.error(exception);
                 }
-            }
-        },
-        async fetchMaps() {
-            try {
-                this.maps = await axios.get('/api/maps');
-            } catch (exception) {
-                this.error = mapExceptionToMessage(exception);
-                console.error(exception);
             }
         },
         async showHero() {
@@ -105,7 +86,7 @@ import { mapGetters } from 'vuex';
     },
     async created() {
         await this.fetchPlayer();
-        await this.fetchMaps();
+        console.log(this.player);
         this.loading = false;
     },
     computed: {
@@ -115,4 +96,5 @@ import { mapGetters } from 'vuex';
 </script>
 
 <style>
+    
 </style>

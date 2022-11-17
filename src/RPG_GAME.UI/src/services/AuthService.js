@@ -90,12 +90,6 @@ class AuthService {
             return response.data;
         } catch(exception) {
             console.log(exception);
-    
-            if (exception?.response?.status) {
-                if (exception.response.status === 400) {
-                    this.logout();
-                }
-            }
         }
     
         return null;

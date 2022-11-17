@@ -20,6 +20,8 @@ import EditEnemyPage from "./pages/Enemies/EditEnemyPage.vue"
 import ViewEnemyPage from "./pages/Enemies/ViewEnemyPage.vue"
 import BattleStartPage from "./pages/Battles/BattleStartPage.vue"
 import StartFightPage from "./pages/Fights/StartFightPage.vue"
+import ProfilePage from "./pages/Profiles/ProfilePage.vue"
+import CreateProfilePage from "./pages/Profiles/CreateProfilePage.vue"
 
 const routes = [
     // --- menu ---
@@ -157,6 +159,23 @@ const routes = [
         path: '/register',
         name: 'register',
         component: SignUpPage
+    },
+    // --- profile ---
+    {
+        path: '/profile',
+        name: 'profile',
+        component: ProfilePage,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/profile/create',
+        name: 'create-profile',
+        component: CreateProfilePage,
+        meta: {
+            auth: true
+        }
     },
     // --- fight pages ---
     {
