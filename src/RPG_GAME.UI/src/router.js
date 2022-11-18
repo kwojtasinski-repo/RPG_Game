@@ -22,6 +22,8 @@ import BattleStartPage from "./pages/Battles/BattleStartPage.vue"
 import StartFightPage from "./pages/Fights/StartFightPage.vue"
 import ProfilePage from "./pages/Profiles/ProfilePage.vue"
 import CreateProfilePage from "./pages/Profiles/CreateProfilePage.vue"
+import EditProfilePage from "./pages/Profiles/EditProfilePage.vue"
+import BattleHistoryPage from "./pages/Battles/BattleHistoryPage.vue"
 
 const routes = [
     // --- menu ---
@@ -177,6 +179,16 @@ const routes = [
             auth: true
         }
     },
+    // --- player page (admin) ---
+    {
+        path: '/profile/edit/:playerId',
+        name: 'edit-profile',
+        component: EditProfilePage,
+        meta: {
+            auth: true,
+            role: 'admin'
+        }
+    },
     // --- fight pages ---
     {
         path: '/fights/start',
@@ -190,6 +202,14 @@ const routes = [
         path: '/battles/start',
         name: 'battle-start',
         component: BattleStartPage
+    },
+    {
+        path: '/histories',
+        name: 'battle-histories',
+        component: BattleHistoryPage,
+        meta: {
+            auth: true
+        }
     },
     // --- forbidden found page ---
     {

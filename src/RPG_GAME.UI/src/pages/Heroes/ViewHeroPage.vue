@@ -20,7 +20,7 @@
           <div class="mt-2" v-if="hero.playersAssignedTo.length > 0 && user.role !== 'user'">
             <h4>Hero assigned to players:</h4>
             <div v-for="playerId in hero.playersAssignedTo" :key="playerId">
-              <RouterButtonComponent :namedRoute="{ name: 'view-player', params: { playerId: playerId } }" :buttonText="`View Player ${playerId}`" :buttonClass="'btn btn-primary mt-2'" :target="'_blank'"/>
+              <RouterButtonComponent :namedRoute="{ name: 'edit-profile', params: { playerId: playerId } }" :buttonText="`View Player ${playerId}`" :buttonClass="'btn btn-primary mt-2'" :target="'_blank'"/>
             </div>
         </div>
       </div>
@@ -33,6 +33,7 @@
   import LoadingIconComponent from '@/components/LoadingIcon/LoadingIconComponent.vue';
   import axios from '@/axios-setup.js';
   import exceptionMapper from '@/mappers/exceptionToMessageMapper.js';
+  import { mapGetters } from 'vuex';  
 
   export default {
     name: 'ViewHeroPage',
@@ -71,6 +72,9 @@
     async created() {
         await this.fetchHero();
         this.loading = false;
+    },
+    computed: {
+        ...mapGetters(['user'])
     }
   }
 </script>

@@ -141,7 +141,6 @@ import warriorImage from '@/assets/Warrior.png';
     created() {
         this.heroImage = new Image();
         this.heroImage.src = warriorImage;
-        console.log(this.heroImage);
     }
   }
 </script>
