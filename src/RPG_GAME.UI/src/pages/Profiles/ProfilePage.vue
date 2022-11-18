@@ -3,15 +3,23 @@
         <LoadingIconComponent />
     </div>
     <div v-else>
-        Profile
-        <div v-if="!player">
+        <div class="text-profile">
+            Profile
+        </div>
+        <div v-if="!player" class="mt-2">
             <RouterButtonComponent :namedRoute="{ name: 'create-profile' }" :buttonText="'Create Hero'" :buttonClass="'btn btn-success'" />
         </div>
-        <div v-else>
-            <PlayerViewComponent :player="player" />
-            <button class="btn btn-primary" @click="showHero">Show hero details</button>
+        <div v-else class="profile-player">
+            <div class="profile-position">
+                <PlayerViewComponent :player="player" />
+            </div>
+            <div class="show-hero-details">
+                <button class="btn btn-primary mt-2" @click="showHero">Show hero details</button>
+            </div>
         </div>
-        <RouterButtonComponent :url="'/'" :buttonText="'Back to menu'" />
+        <div class="mt-2">
+            <RouterButtonComponent :url="'/'" :buttonText="'Back to menu'" />
+        </div>
     </div>
     <div>
         <PopupComponent :open="openPopup" @popupClosed="popupClosed">
@@ -33,6 +41,7 @@ import mapExceptionToMessage from '@/mappers/exceptionToMessageMapper.js';
 import axios from '@/axios-setup.js';
 import { mapGetters } from 'vuex';
 import LoadingIconComponent from '@/components/LoadingIcon/LoadingIconComponent.vue';
+import HeroViewComponent from '@/components/Heroes/HeroViewComponent.vue';
 
   export default {
     name: 'ProfilePage',
@@ -40,7 +49,8 @@ import LoadingIconComponent from '@/components/LoadingIcon/LoadingIconComponent.
         RouterButtonComponent,
         PlayerViewComponent,
         PopupComponent,
-        LoadingIconComponent
+        LoadingIconComponent,
+        HeroViewComponent
     },
     data() {
         return {
@@ -86,7 +96,6 @@ import LoadingIconComponent from '@/components/LoadingIcon/LoadingIconComponent.
     },
     async created() {
         await this.fetchPlayer();
-        console.log(this.player);
         this.loading = false;
     },
     computed: {
@@ -96,5 +105,25 @@ import LoadingIconComponent from '@/components/LoadingIcon/LoadingIconComponent.
 </script>
 
 <style>
-    
+    .text-profile {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .profile-player {
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+        flex-direction: column;
+    }
+
+    .profile-position {
+        display: flex;
+        justify-content: center;
+    }
+
+    .show-hero-details {
+        display: flex;
+        justify-content: center;
+    }
 </style>
