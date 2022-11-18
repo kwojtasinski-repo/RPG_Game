@@ -4,7 +4,12 @@
             <div class="card card-hero">
                 <div class="card-header">
                 <div class="hero-title mt-2 mb-2">
-                    {{hero.heroName}}
+                    <div>
+                        {{hero.heroName}}
+                    </div>
+                    <div class="image-warrior">
+                        <img :src="heroImage.src" class="image-content"/>
+                    </div>
                 </div>
                 </div>
                 <div class="card-body text-center">
@@ -117,6 +122,8 @@
 </template>
 
 <script>
+import warriorImage from '@/assets/Warrior.png';
+
   export default {
     name: 'HeroViewComponent',
     props: {
@@ -126,6 +133,16 @@
     },
     components: {
     },
+    data() {
+        return {
+            heroImage: null
+        }
+    },
+    created() {
+        this.heroImage = new Image();
+        this.heroImage.src = warriorImage;
+        console.log(this.heroImage);
+    }
   }
 </script>
 
@@ -140,6 +157,17 @@
 
   .hero-title {
     font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .image-warrior {
+    transform: scale(1.5,1.5) translateY(-21%);
+  }
+
+  .image-content {
+    clip: rect(0px,60px,50px,0px);
+    position: absolute;
   }
 
   .card-hero {

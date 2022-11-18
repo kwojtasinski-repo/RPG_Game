@@ -3,8 +3,13 @@
         <div class="enemy-view">
             <div class="card card-enemy">
                 <div class="card-header">
-                    <div class="enemy-title mt-2 mb-2">
-                        {{enemy.enemyName}}
+                    <div class="enemy-title mt-2 mb-2 me-2">
+                        <div>
+                            {{enemy.enemyName}}
+                        </div>
+                        <div class="image-enemy ms-2">
+                            <img :src="enemyImage"/>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body text-center">
@@ -179,6 +184,10 @@
 </template>
 
 <script>
+import archerImage from '@/assets/archer/archer-img.png'
+import knightImage from '@/assets/enemy-knight-img.png';
+import dragonImage from '@/assets/dragon/dragon-knight-img.png'
+
   export default {
     name: 'EnemyViewComponent',
     props: {
@@ -189,6 +198,26 @@
     },
     components: {
     },
+    data() {
+        return {
+            enemyImage: null
+        }
+    },
+    created() {
+        switch (this.enemy.category) {
+            case 'Archer':
+                this.enemyImage = archerImage;
+                break;
+            case 'Knight':
+                this.enemyImage = knightImage;
+                break;
+            case 'Dragon':
+                this.enemyImage = dragonImage;
+                break;
+            default:
+                throw new Error(`There is no enemy with category ${this.enemy.category}`);
+        }
+    }
   }
 </script>
 
@@ -203,6 +232,12 @@
 
   .enemy-title {
     font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .image-enemy {
+    transform: scale(1.5,1.5) translateX(15%);
   }
 
   .card-enemy {
