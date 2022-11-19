@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using RPG_GAME.Application.DTO.Battles;
+using RPG_GAME.Application.DTO.Players;
 using RPG_GAME.Infrastructure.Grpc.Protos;
 using System.Globalization;
 
@@ -58,22 +59,7 @@ namespace RPG_GAME.Infrastructure.Grpc.Mappings
                     BattleId = battle.BattleId.ToString(),
                     BattleStatus = battle.BattleStatus,
                     Created = Timestamp.FromDateTime(battle.Created),
-                    Player = new Player
-                    {
-                        Id = battle.Player.Id.ToString(),
-                        Name = battle.Player.Name,
-                        UserId = battle.Player.UserId.ToString(),
-                        Level = battle.Player.Level,
-                        CurrentExp = battle.Player.CurrentExp.AsDecimalValue(),
-                        RequiredExp =battle.Player.RequiredExp.AsDecimalValue(),
-                        Hero = new HeroAssign
-                        {
-                            Id = battle.Player.Hero.Id.ToString(),
-                            HeroName = battle.Player.Hero.HeroName,
-                            Attack = battle.Player.Hero.Attack,
-                            Health = battle.Player.Hero.Health
-                        }
-                    }
+                    Player = battle.Player.AsResponse()
                 };
 
                 foreach (var skill in battle.Player.Hero.Skills)
@@ -114,6 +100,63 @@ namespace RPG_GAME.Infrastructure.Grpc.Mappings
             };
 
             return response;
+        }
+
+        public static GetCurrentBattlesResponse AsResponse(this IEnumerable<Application.DTO.Battles.BattleDto> dtos)
+        {
+            var response = new GetCurrentBattlesResponse();
+            
+            foreach(var battle in dtos)
+            {
+                response.Battles.Add(battle.AsResponse());
+            }
+
+            return response;
+        }
+
+        public static Protos.BattleDto AsResponse(this Application.DTO.Battles.BattleDto dto)
+        {
+            return new Protos.BattleDto
+            {
+                Id = dto.Id.ToString(),
+                BattleInfo = dto.BattleInfo.ToString(),
+                StartDate = Timestamp.FromDateTime(dto.StartDate),
+                EndDate = dto.EndDate.HasValue ? Timestamp.FromDateTime(dto.EndDate.Value) : null,
+                UserId = dto.UserId.ToString()
+            };
+        }
+
+        public static GetBattleStateResponse AsResponse(this BattleStateDto dto)
+        {
+            return new GetBattleStateResponse
+            {
+                Id = dto.Id.ToString(),
+                BattleStatus = dto.BattleStatus,
+                BattleId = dto.BattleId.ToString(),
+                Created = Timestamp.FromDateTime(dto.Created),
+                Modified = dto.Modified.HasValue ? Timestamp.FromDateTime(dto.Modified.Value) : null,
+                Player = dto.Player.AsResponse()
+            };
+        }
+
+        public static Player AsResponse(this PlayerDto dto)
+        {
+            return new Player
+            {
+                Id = dto.Id.ToString(),
+                Name = dto.Name,
+                UserId = dto.UserId.ToString(),
+                Level = dto.Level,
+                CurrentExp = dto.CurrentExp.AsDecimalValue(),
+                RequiredExp = dto.RequiredExp.AsDecimalValue(),
+                Hero = new HeroAssign
+                {
+                    Id = dto.Hero.Id.ToString(),
+                    HeroName = dto.Hero.HeroName,
+                    Attack = dto.Hero.Attack,
+                    Health = dto.Hero.Health
+                }
+            };
         }
 
         public static DecimalValue AsDecimalValue(this decimal value)

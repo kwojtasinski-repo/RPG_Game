@@ -5,16 +5,20 @@ using RPG_GAME.Infrastructure.Grpc.Protos;
 using RPG_GAME.Infrastructure.Grpc.Mappings;
 using RPG_GAME.Core.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
+using RPG_GAME.Infrastructure.Queries;
+using RPG_GAME.Application.Queries.Battles;
 
 namespace RPG_GAME.Infrastructure.Grpc.Services
 {
     internal sealed class BattleService : Battle.BattleBase
     {
         private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IQueryDispatcher _queryDispatcher;
 
-        public BattleService(ICommandDispatcher commandDispatcher)
+        public BattleService(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
             _commandDispatcher = commandDispatcher;
+            _queryDispatcher = queryDispatcher;
         }
 
         [Authorize]
@@ -53,6 +57,20 @@ namespace RPG_GAME.Infrastructure.Grpc.Services
             var battleEvent = await _commandDispatcher.SendAsync(new AddBattleEvent { BattleId = battleId, PlayerId = playerId, EnemyId = enemyId, Action = request.Action });
             var response = battleEvent.AsResponse();
             return response;
+        }
+
+        public override async Task<GetCurrentBattlesResponse> GetCurrentBattles(GetCurrentBattlesRequest request, ServerCallContext context)
+        {
+            var userId = new UserId(request.UserId);
+            var battles = await _queryDispatcher.QueryAsync(new GetCurrentBattles() { UserId = userId });
+            return battles.AsResponse();
+        }
+
+        public override async Task<GetBattleStateResponse> GetBattleState(GetBattleStateRequest request, ServerCallContext context)
+        {
+            var battleId = new BattleId(request.BattleId);
+            var battle = await _queryDispatcher.QueryAsync(new GetBattleState() { BattleId = battleId });
+            return battle.AsResponse();
         }
     }
 }

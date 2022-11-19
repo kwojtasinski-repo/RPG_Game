@@ -26,7 +26,13 @@ namespace RPG_GAME.UnitTests.Stubs
         public async Task<IEnumerable<Battle>> GetByUserIdAsync(Guid userId)
         {
             await Task.CompletedTask;
-            return _battles.Where(e => e.UserId == userId).ToList();
+            return _battles.Where(b => b.UserId == userId).ToList();
+        }
+
+        public async Task<IEnumerable<Battle>> GetByUserIdAsync(Guid userId, BattleInfo battleInfo)
+        {
+            await Task.CompletedTask;
+            return _battles.Where(b => b.UserId == userId && b.BattleInfo.ToString() == battleInfo.ToString());
         }
 
         public Task UpdateAsync(Battle battle)

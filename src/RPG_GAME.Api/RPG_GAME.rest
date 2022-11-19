@@ -357,3 +357,15 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/grpc-web-text
 
 AAAAAAA=
+
+###
+POST {{grpcApi}}/GetCurrentBattles
+Content-Type: application/grpc-web-text
+
+AAAAACYKJDU1NWY5NWE0LTlhNjItNDJmYS05MjQxLWMwYTliNjZkNDEyOQ==
+
+###
+POST {{grpcApi}}/GetBattleState
+Content-Type: application/grpc-web-text
+
+AAAAACYKJDU1NWY5NWE0LTlhNjItNDJmYS05MjQxLWMwYTliNjZkNDEyOQ==

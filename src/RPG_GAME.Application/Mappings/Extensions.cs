@@ -387,5 +387,17 @@ namespace RPG_GAME.Application.Mappings
                 Health = fightAction.Health
             };
         }
+
+        public static BattleDto AsDto(this Battle battle)
+        {
+            return new BattleDto
+            {
+                Id = battle.Id,
+                BattleInfo = battle.BattleInfo.ToString(),
+                EndDate = battle.EndDate,
+                StartDate = battle.StartDate,
+                UserId = battle.UserId,
+            };
+        }
     }
 }

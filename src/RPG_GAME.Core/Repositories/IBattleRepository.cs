@@ -11,5 +11,6 @@ namespace RPG_GAME.Core.Repositories
         Task UpdateAsync(Battle battle);
         Task<Battle> GetAsync(Guid id);
         Task<IEnumerable<Battle>> GetByUserIdAsync(Guid userId);
+        Task<IEnumerable<Battle>> GetByUserIdAsync(Guid userId, BattleInfo battleInfo);
     }
 }

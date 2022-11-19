@@ -34,6 +34,13 @@ namespace RPG_GAME.Infrastructure.Mongo.Repositories
             return battles.Select(b => b.AsEntity());
         }
 
+        public async Task<IEnumerable<Battle>> GetByUserIdAsync(Guid userId, Core.Entities.Battles.BattleInfo battleInfo)
+        {
+            var battleInfoParsed = Enum.Parse<Documents.Battles.BattleInfo>(battleInfo.ToString());
+            var battles = await _repository.Collection.AsQueryable().Where(b => b.UserId == userId && b.BattleInfo == battleInfoParsed).ToListAsync();
+            return battles.Select(b => b.AsEntity());
+        }
+
         public async Task UpdateAsync(Battle battle)
         {
             var document = battle.AsDocument();
