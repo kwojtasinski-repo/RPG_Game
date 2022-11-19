@@ -320,5 +320,127 @@ proto.battle.BattlePromiseClient.prototype.addBattleEvent =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.battle.GetCurrentBattlesRequest,
+ *   !proto.battle.GetCurrentBattlesResponse>}
+ */
+const methodDescriptor_Battle_GetCurrentBattles = new grpc.web.MethodDescriptor(
+  '/battle.Battle/GetCurrentBattles',
+  grpc.web.MethodType.UNARY,
+  proto.battle.GetCurrentBattlesRequest,
+  proto.battle.GetCurrentBattlesResponse,
+  /**
+   * @param {!proto.battle.GetCurrentBattlesRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.battle.GetCurrentBattlesResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.battle.GetCurrentBattlesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.battle.GetCurrentBattlesResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.battle.GetCurrentBattlesResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.battle.BattleClient.prototype.getCurrentBattles =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/battle.Battle/GetCurrentBattles',
+      request,
+      metadata || {},
+      methodDescriptor_Battle_GetCurrentBattles,
+      callback);
+};
+
+
+/**
+ * @param {!proto.battle.GetCurrentBattlesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.battle.GetCurrentBattlesResponse>}
+ *     Promise that resolves to the response
+ */
+proto.battle.BattlePromiseClient.prototype.getCurrentBattles =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/battle.Battle/GetCurrentBattles',
+      request,
+      metadata || {},
+      methodDescriptor_Battle_GetCurrentBattles);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.battle.GetBattleStateRequest,
+ *   !proto.battle.GetBattleStateResponse>}
+ */
+const methodDescriptor_Battle_GetBattleState = new grpc.web.MethodDescriptor(
+  '/battle.Battle/GetBattleState',
+  grpc.web.MethodType.UNARY,
+  proto.battle.GetBattleStateRequest,
+  proto.battle.GetBattleStateResponse,
+  /**
+   * @param {!proto.battle.GetBattleStateRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.battle.GetBattleStateResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.battle.GetBattleStateRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.battle.GetBattleStateResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.battle.GetBattleStateResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.battle.BattleClient.prototype.getBattleState =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/battle.Battle/GetBattleState',
+      request,
+      metadata || {},
+      methodDescriptor_Battle_GetBattleState,
+      callback);
+};
+
+
+/**
+ * @param {!proto.battle.GetBattleStateRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.battle.GetBattleStateResponse>}
+ *     Promise that resolves to the response
+ */
+proto.battle.BattlePromiseClient.prototype.getBattleState =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/battle.Battle/GetBattleState',
+      request,
+      metadata || {},
+      methodDescriptor_Battle_GetBattleState);
+};
+
+
 module.exports = proto.battle;
 

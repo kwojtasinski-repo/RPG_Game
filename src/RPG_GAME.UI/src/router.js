@@ -24,6 +24,7 @@ import ProfilePage from "./pages/Profiles/ProfilePage.vue"
 import CreateProfilePage from "./pages/Profiles/CreateProfilePage.vue"
 import EditProfilePage from "./pages/Profiles/EditProfilePage.vue"
 import BattleHistoryPage from "./pages/Battles/BattleHistoryPage.vue"
+import BattlePage from "./pages/Battles/BattlePage.vue"
 
 const routes = [
     // --- menu ---
@@ -191,6 +192,14 @@ const routes = [
     },
     // --- fight pages ---
     {
+        path: '/battles',
+        name: 'battle-page',
+        component: BattlePage,
+        meta: {
+            auth: true
+        }
+    },
+    {
         path: '/fights/start',
         name: 'fight-start',
         component: StartFightPage,
@@ -201,7 +210,10 @@ const routes = [
     {
         path: '/battles/start',
         name: 'battle-start',
-        component: BattleStartPage
+        component: BattleStartPage,
+        meta: {
+            auth: true
+        }
     },
     {
         path: '/histories',

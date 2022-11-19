@@ -1,24 +1,39 @@
 <template>
-    <div class="page">
-        StartFight
+    <div>
+        <div class="mb-2">
+            <h3>Start Fight</h3>
+        </div>
         <div v-if="loading">
             <LoadingIconComponent />
         </div>
         <div v-else>
-            <div v-if="error">
-                {{error}}
-            </div>
-
+            <div v-if="error" className="alert alert-danger">{{error}}</div>
             <div v-if="maps.length === 0">
-                There are no maps available, the battle cannot be started
+                <div class="text-info">
+                    There are no maps available, the battle cannot be started
+                </div>
+                <div class="action-button">
+                    <RouterButtonComponent url="/" :buttonText="'Back to menu'" :buttonClass="'btn btn-primary'" />
+                </div>
             </div>
             <div v-else-if="!player">
-                You have to choose hero. Click on this button and then go back to start fight
-                <RouterButtonComponent :namedRoute="{ name: 'create-profile' }" :buttonText="'Choose hero'" :buttonClass="'btn btn-success'" />
+                <div class="text-info">
+                    You have to choose hero. Click on this button and then go back to start fight
+                </div>
+                <div class="action-buttons">
+                    <RouterButtonComponent :namedRoute="{ name: 'create-profile' }" :buttonText="'Choose hero'" :buttonClass="'btn btn-success'" />
+                    <RouterButtonComponent url="/" :buttonText="'Back to menu'" :buttonClass="'btn btn-primary'" />
+                </div>
             </div>
             <div v-else-if="player">
-                <PlayerViewComponent :player="player" />
-                <button class="btn btn-primary" @click="showHero">Show hero details</button>
+                <div class="player-info-position">
+                    <PlayerViewComponent :player="player" />
+                </div>
+                <div class="action-buttons">
+                    <RouterButtonComponent :namedRoute="{ name: 'battle-start' }" :buttonText="'Start battle'" :buttonClass="'btn btn-success me-2'" />
+                    <button class="btn btn-primary me-2" @click="showHero">Show hero details</button>
+                    <RouterButtonComponent url="/" :buttonText="'Back to menu'" :buttonClass="'btn btn-primary'" />
+                </div>
             </div>
         </div>
     </div>
@@ -66,7 +81,8 @@ import { mapGetters } from 'vuex';
     methods: {
         async fetchPlayer() {
             try {
-                this.player = await axios.get(`/api/players/by-user?userId=${this.user.id}`);
+                const response = await axios.get(`/api/players/by-user?userId=${this.user.id}`);
+                this.player = response.data;
             } catch (exception) {
                 if (exception?.response?.status === 404) {
                     console.error(exception);
@@ -115,4 +131,25 @@ import { mapGetters } from 'vuex';
 </script>
 
 <style>
+    .text-info {
+        font-size: 20px;
+        margin-bottom: 1rem;
+    }
+
+    .action-button {
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    
+    .player-info-position {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .postion-buttons {
+        display: flex;
+        justify-content: center;
+    }
 </style>

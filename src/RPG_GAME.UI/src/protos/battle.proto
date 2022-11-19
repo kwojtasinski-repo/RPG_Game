@@ -9,6 +9,8 @@ service Battle {
 	rpc StartBattle (BattleRequest) returns (StartBattleResponse);
 	rpc CompleteBattle (BattleRequest) returns (BattleResponse);
 	rpc AddBattleEvent (AddBattleEventRequest) returns (AddBattleEventResponse);
+    rpc GetCurrentBattles (GetCurrentBattlesRequest) returns (GetCurrentBattlesResponse);
+    rpc GetBattleState (GetBattleStateRequest) returns (GetBattleStateResponse);
 }
 
 message PrepareBattleRequest {
@@ -150,4 +152,33 @@ message StartBattleResponse {
     int32 playerHealth = 3;
     string enemyId = 4;
     int32 enemyHealth = 5;
+}
+
+message GetCurrentBattlesRequest {
+    string userId = 1;
+}
+
+message GetCurrentBattlesResponse {
+    repeated BattleDto battles = 1;
+}
+
+message BattleDto {
+    string id = 1;
+    google.protobuf.Timestamp StartDate = 2;
+    string userId = 3;
+    string BattleInfo = 4;
+    google.protobuf.Timestamp EndDate = 5;
+}
+
+message GetBattleStateRequest {
+    string battleId = 1;
+}
+
+message GetBattleStateResponse {
+    string Id = 1;
+    string BattleId = 2;
+    string BattleStatus = 3;
+    Player Player = 4;
+    google.protobuf.Timestamp Created = 5;
+    google.protobuf.Timestamp Modified = 6;
 }

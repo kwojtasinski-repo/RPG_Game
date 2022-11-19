@@ -4,9 +4,9 @@
             <div class="justify-content-center align-items-center"
                 v-for="menuItem of menuItems" :key="menuItem">
                 <div>
-                    <div @click="menuItem.action()">
-                        <MenuItemComponent :linkClass="'menuElement text-primary mt-2 mb-2'"
-                            :linkActiveClass="'menuElementActive bg-dark'"
+                    <div @click="!menuItem.disabled ? menuItem.action() : () => {}">
+                        <MenuItemComponent :linkClass="!menuItem.disabled ? 'menuElement text-primary mt-2 mb-2' : 'menuElement text-primary mt-2 mb-2 disabled'"
+                            :linkActiveClass="!menuItem.disabled ? 'menuElementActive bg-dark' : ''"
                             :textLink="menuItem.text" />
                     </div>
                 </div>
@@ -60,6 +60,11 @@ import MenuItemComponent from './MenuItemComponent.vue'
 
     .menuElementActive {
         background-size: 120% !important;
+    }
+    
+    .disabled {
+        pointer-events: none;
+        opacity: 0.4;
     }
 </style>
   
