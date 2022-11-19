@@ -29,13 +29,11 @@ import { mapGetters } from 'vuex';
         if (this.battles.length > 0) {
             activeBattleRoute = { text: 'Resume', action: () => this.$router.push({ name: 'battle-resume' }) };
         }
-
-        const routes = [
+        return [
           { text: 'Start fight', action: () => this.$router.push({ name: 'fight-start' }) },
           activeBattleRoute,
           { text: 'Back to menu', action: () => this.$router.push('/') },
         ];
-        return routes;
       }
     },
     async created() {

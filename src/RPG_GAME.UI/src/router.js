@@ -208,7 +208,7 @@ const routes = [
         }
     },
     {
-        path: '/battles/start',
+        path: '/battles/start/:battleId',
         name: 'battle-start',
         component: BattleStartPage,
         meta: {
