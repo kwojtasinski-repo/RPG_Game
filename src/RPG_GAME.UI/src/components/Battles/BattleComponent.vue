@@ -37,21 +37,26 @@
 </template>
 
 <script>
-import BattleService from "@/services/BattleService.js"
-// import { PrepareBattleRequest } from "@/grpc-client/battle_pb.js"
-// import clientGrpc from "@/grpc-client/grpc-client-setup"
+import BattleService from "@/services/BattleService.js";
 import StoryService from "@/services/StoryService";
 import { mapGetters } from 'vuex';
 
     export default {
         name: "BattleComponent",
+        props: { 
+            enemies: {
+                type: Array
+            },
+            enemiesKilled: {
+                type: Array
+            }
+        },
         data() {
             return {
                 canvasContext: null,
                 battleService: null,
                 requestAnimationId: null,
-                enemies: [],
-                enemiesKilled: []
+                enemiesKilledInBattle: []
             };
         },
         methods: {
@@ -68,30 +73,6 @@ import { mapGetters } from 'vuex';
                 draw();
             }
         },
-        async created() {
-            // eslint-disable-next-line
-            // debugger;
-            // const prepareBattleRequest = new PrepareBattleRequest();
-            // try {
-            //     const resp = await clientGrpc.prepareBattle(prepareBattleRequest);
-            //     console.log('resp', resp);
-            // } catch(err) {
-                
-            // // eslint-disable-next-line
-            //     debugger
-            //     console.error(err);
-            //     console.error(err.message);
-            // }
-            this.$store.dispatch('player', {
-                id: 'guid',
-                name: 'Player#1',
-                level: 1,
-                currentExp: 100,
-                requiredExp: 1000
-            });
-            this.enemies = [{ id: 'guid', name: 'Archer#1', category: 'Archer', difficulty: 'EASY', quantity: 2 }, {id: 'guid2', name: 'Knight#1', category: 'Knight', difficulty: 'EASY', quantity: 1 }, {id: 'guid3', name: 'Dragon#1', category: 'Dragon', difficulty: 'EASY', quantity: 1 }];
-            this.enemiesKilled = [];
-        },
         mounted() {
             const context = document.getElementById("battle");
             this.canvasContext = context.getContext("2d");
@@ -99,7 +80,8 @@ import { mapGetters } from 'vuex';
             this.canvasContext.width = 1100;
             context.width = this.canvasContext.width;
             context.height = this.canvasContext.height;
-            this.battleService = new BattleService(new StoryService(this.enemies, this.enemiesKilled));
+            this.enemiesKilledAtBattle = this.enemiesKilled;
+            this.battleService = new BattleService(new StoryService(this.enemies, this.enemiesKilledAtBattle));
             this.startDrawing();
         },
         beforeUnmount() {

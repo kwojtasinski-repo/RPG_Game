@@ -74,7 +74,7 @@ export default class StoryService {
 
     getArchers() {
         if (!this.archers) {
-            this.archers = this.enemies.filter(e => e.category === 'Archer');
+            this.archers = this.enemies.filter(e => e.enemy.category === 'Archer');
         }
 
         return this.archers[0];
@@ -82,7 +82,7 @@ export default class StoryService {
 
     getKnights() {
         if (!this.knights) {
-            this.knights = this.enemies.filter(e => e.category === 'Knight');
+            this.knights = this.enemies.filter(e => e.enemy.category === 'Knight');
         }
 
         return this.knights[0];
@@ -90,7 +90,7 @@ export default class StoryService {
 
     getDragons() {
         if (!this.dragons) {
-            this.dragons = this.enemies.filter(e => e.category === 'Dragon');
+            this.dragons = this.enemies.filter(e => e.enemy.category === 'Dragon');
         }
 
         return this.dragons[0];
@@ -146,8 +146,9 @@ export default class StoryService {
 
     getNextEnemy() {
         if (this.enemiesKilled.length === 0) {
-            this.currentEnemy = this.enemies.find(e => e.category === 'Archer');
-            setEnemyName(this.currentEnemy.name);
+            this.currentEnemy = this.enemies.find(e => e.enemy.category === 'Archer');
+            console.log(this.currentEnemy)
+            setEnemyName(this.currentEnemy.enemy.name);
             return this.currentEnemy;
         }
 
@@ -205,7 +206,7 @@ const begin = (enemies, enemiesKilled) => {
     const text = [];
     text.push('You are the best hero who is on the way to kill the dragon\n');
     text.push('Dragon wants to destroy your kingdom\n');
-    text.push(`On your way to the lairs of the dragons, there are couple of archers ${enemies.find(e => e.category === 'Archer').quantity}\n`);
+    text.push(`On your way to the lairs of the dragons, there are couple of archers ${enemies.find(e => e.enemy.category === 'Archer').quantity}\n`);
     text.push('And they dont want to let you go without a fight\n');
     
     if (enemiesKilled) {
@@ -221,7 +222,7 @@ const afterArchers = (enemies, enemiesKilled) => {
     text.push('Archers dont want to duel you. Well Done! You continue on to the dragons lair!\n');
     text.push('However the dragons hired some knights to defense their lairs from people like you\n');
     text.push('Watch out!\n');
-    text.push(`There are ${enemies.find(e => e.category === 'Knight').quantity} of them that have found out about your quest.\n`);
+    text.push(`There are ${enemies.find(e => e.enemy.category === 'Knight').quantity} of them that have found out about your quest.\n`);
     text.push('And they dont want to let you go without a fight\n');
     
     if (enemiesKilled) {
@@ -237,7 +238,7 @@ const afterKnights = (enemies, enemiesKilled) => {
     text.push('Congrats you killed them, you continue on your journey!\n');
     text.push('You are close to the dragon lairs.\n');
     text.push("It's hot and dangerous in there.\n");
-    text.push(`There are ${enemies.find(e => e.category === 'Dragon').quantity} dragons.\n`);
+    text.push(`There are ${enemies.find(e => e.enemy.category === 'Dragon').quantity} dragons.\n`);
     text.push('The time has come to end the dragons rampage!\n');
     
     if (enemiesKilled) {

@@ -11,7 +11,7 @@ export default class BattleService {
         this.heroService = new HeroService();
         this.inputHandler = new InputHandler();
         this.heroStateService = new HeroStateService(this);
-        this.enemyService = new EnemyService(storyService.getNextEnemy().category);
+        this.enemyService = new EnemyService(storyService.getNextEnemy().enemy.category);
         this.backgroundDrawService = new BackgroundDrawService();
         this.currentKey = null;
         this.allowSelectState = true;

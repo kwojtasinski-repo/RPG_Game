@@ -5,11 +5,13 @@ const store = createStore({
         return {
             user: null,
             player: null,
+            battle: null,
         }
     },
     getters: {
         user: (state) => { return state.user; },
-        player: (state) => { return state.player; }
+        player: (state) => { return state.player; },
+        battle: (state) => { return state.battle; }
     },
     actions: {
         user(context, user) {
@@ -17,6 +19,9 @@ const store = createStore({
         },
         player(context, player) {
             context.commit('player', player);
+        },
+        battle(context, battle) {
+            context.commit('battle', battle);
         }
     },
     mutations: {
@@ -25,6 +30,9 @@ const store = createStore({
         },
         player(state, player) {
             state.player = player;
+        },
+        battle(state, battle) {
+            state.battle = battle;
         }
     }
 });

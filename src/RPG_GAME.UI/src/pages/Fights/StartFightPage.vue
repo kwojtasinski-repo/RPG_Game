@@ -136,6 +136,32 @@ import { PrepareBattleRequest } from '@/grpc-client/battle_pb.js';
         async startBattleHandler() {
             try {
                 const battle = await grpcClient.prepareBattle(new PrepareBattleRequest([this.user.id, this.markedMapId]));
+                this.$store.dispatch('battle', {
+                    id: battle.getId(),
+                    battleInfo: battle.getBattleinfo(),
+                    map: {
+                        id: battle.getMap().getId(),
+                        name: battle.getMap().getName(),
+                        difficulty: battle.getMap().getDifficulty(),
+                        enemies: battle.getMap().getEnemiesList().map(e => ({ enemy: {
+                            id: e.getEnemy().getId(),
+                            name: e.getEnemy().getName(),
+                            attack: e.getEnemy().getAttack(),
+                            health: e.getEnemy().getHealth(),
+                            healLvl: e.getEnemy().getHeallvl(),
+                            category: e.getEnemy().getCategory(),
+                            experience: Number(e.getEnemy().getExperience().getUnits() + '.' + e.getEnemy().getExperience().getNanos()),
+                            skills: e.getEnemy().getSkillsList().map(s => ({
+                                id: s.getId(),
+                                name: s.getName(),
+                                probability: Number(s.getProbability().getUnits() + '.' + s.getProbability().getNanos())
+                            }))
+                        } , quantity: e.getQuantity()} ))
+                    },
+                    startDate: battle.getStartdate(),
+                    userId: battle.getUserid(),
+                    enemiesKilled: battle.getEnemieskilledList()
+                });
                 this.$router.push({ name: 'battle-start', params: { battleId: battle.getId() } });
             } catch (exception) {
                 console.error(exception);
