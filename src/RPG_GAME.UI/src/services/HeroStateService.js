@@ -69,7 +69,7 @@ export default class HeroStateService extends BaseState {
         this.battleService.heroService.frameY = 3;
         this.battleService.heroService.maxFrame = 5;
         this.battleService.setAllowSelectState(false);
-        this.sendEvent(new CustomEvent('attack', { detail: { name: 'baseAttack' } }));
+        this.sendEvent(new CustomEvent('attack', { detail: { name: this.battleService.heroService.attacks.baseAttack } }));
 
         const nextFrame = this.battleService.heroService.frameX + 1;
         this.update(deltaTime);
@@ -80,10 +80,17 @@ export default class HeroStateService extends BaseState {
     }
 
     skillAttack(deltaTime) {
+        const skill = this.battleService.heroService.attacks.skills[parseInt(this.battleService.currentKey, 10)];
+
+        if (!skill) {
+            this.resetState(5);
+            return;
+        }
+
         this.battleService.heroService.frameY = 13;
         this.battleService.heroService.maxFrame = 5;
         this.battleService.setAllowSelectState(false);
-        this.sendEvent(new CustomEvent('attack', { detail: { name: 'skill' } }));
+        this.sendEvent(new CustomEvent('attack', { detail: { name: skill } }));
 
         const nextFrame = this.battleService.heroService.frameX + 1;
         this.update(deltaTime);

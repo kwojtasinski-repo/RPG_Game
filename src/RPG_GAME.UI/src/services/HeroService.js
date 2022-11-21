@@ -1,7 +1,7 @@
 import warriorImage from "@/assets/Warrior.png"
 
 export default class HeroService {
-    constructor() {
+    constructor(hero) {
         this.frameX = 0;
         this.frameY = 0;
         this.image = new Image();
@@ -13,11 +13,11 @@ export default class HeroService {
         this.height = 44;
         this.x = 430;
         this.y = 250;
-        this.health = 100;
-        this.currentHealth = 100;
-        this.attack = {
-            baseAttack: 10,
-            skill: 25
+        this.health = hero.health;
+        this.currentHealth = hero.health;
+        this.attacks = {
+            baseAttack: 'attack',
+            skills: initSkills(hero)
         }
     }
 
@@ -28,4 +28,8 @@ export default class HeroService {
     isDead() {
         return this.currentHealth <= 0;
     }
+}
+
+function initSkills(hero) {
+    return hero.skills.map(s => s.name);
 }

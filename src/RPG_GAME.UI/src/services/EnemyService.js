@@ -14,15 +14,16 @@ export const actions = {
 }
 
 export default class EnemyService {
-    constructor(category) {
-        this.category = category;
-        this.enemy = selectEnemy(category);
-        this.health = 100;
-        this.currentHealth = 100;
-        this.attack = {
-            baseAttack: 5,
-            skill: 10
-        }
+    constructor(enemy) {
+        this.initEnemy(enemy);
+        this.enemy = getEnemyKind(enemy.category);
+    }
+
+    initEnemy(enemy) {
+        console.log(enemy);
+        this.id = enemy.id;
+        this.health = enemy.health;
+        this.currentHealth = enemy.health
     }
 
     draw(context) {
@@ -41,27 +42,21 @@ export default class EnemyService {
         return this.currentHealth <= 0;
     }
 
-    setEnemy(category) {
+    setEnemy(enemy) {
         // depends on category Archer, Knight, Dragon
         setTimeout(() => {
-            assignBaseStats(this, category);
+            assignBaseStats(this, enemy);
             document.dispatchEvent(new CustomEvent('respawnNewEnemy', { detail: { enemy: this } }));
         }, 1500);
     }
 }
 
-const assignBaseStats = (enemyTarget, category) => {
-    enemyTarget.category = category;
-    enemyTarget.enemy = selectEnemy(category);
-    enemyTarget.health = 100;
-    enemyTarget.currentHealth = 100;
-    enemyTarget.attack = {
-        baseAttack: 5,
-        skill: 10
-    }
+const assignBaseStats = (enemyTarget, enemy) => {
+    enemyTarget.initEnemy(enemy);
+    enemyTarget.enemy = getEnemyKind(enemy.category);
 }
 
-const selectEnemy = (category) => {
+const getEnemyKind = (category) => {
     switch (category) {
         case 'Archer': 
             return new Archer();

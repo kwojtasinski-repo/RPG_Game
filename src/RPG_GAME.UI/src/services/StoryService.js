@@ -10,10 +10,12 @@ export default class StoryService {
     }
 
     addEnemyKilled(enemy) {
-        let enemyExists = this.enemiesKilled.find(e => e.category === enemy.category);
+        // eslint-disable-next-line
+        debugger;
+        let enemyExists = this.enemiesKilled.find(e => e.enemy.category === enemy.category);
 
         if (!enemyExists) {
-            enemyExists = this.enemies.find(e => e.category === enemy.category);
+            enemyExists = this.enemies.find(e => e.enemy.category === enemy.category);
             
             if (!enemyExists) {
                 throw new Error(`Enemy with id ${enemy.id} and category ${enemy.category} doesnt exists`);
@@ -103,7 +105,7 @@ export default class StoryService {
         
         if (archers) {
             const archersQuantity = archers.quantity;
-            const archersKilledQuantity = this.enemiesKilled.find(e => e.category === 'Archer')?.quantity ?? 0;
+            const archersKilledQuantity = this.enemiesKilled.find(e => e.enemy.category === 'Archer')?.quantity ?? 0;
 
             if (archersKilledQuantity >= archersQuantity) {
                 this.storyState = storyStates.Knight;
@@ -117,7 +119,7 @@ export default class StoryService {
 
         if (knights) {
             const knightsQuantity = knights.quantity;
-            const knightsKilledQuantity = this.enemiesKilled.find(e => e.category === 'Knight')?.quantity ?? 0;
+            const knightsKilledQuantity = this.enemiesKilled.find(e => e.enemy.category === 'Knight')?.quantity ?? 0;
 
             if (knightsKilledQuantity >= knightsQuantity) {
                 this.storyState = storyStates.Dragon;
@@ -131,7 +133,7 @@ export default class StoryService {
 
         if (dragons) {
             const dragonsQuantity = dragons.quantity;
-            const dragonsKilledQuantity = this.enemiesKilled.find(e => e.category === 'Dragon')?.quantity ?? 0;
+            const dragonsKilledQuantity = this.enemiesKilled.find(e => e.enemy.category === 'Dragon')?.quantity ?? 0;
             
             if (dragonsKilledQuantity >= dragonsQuantity) {
                 this.storyState = storyStates.End;
