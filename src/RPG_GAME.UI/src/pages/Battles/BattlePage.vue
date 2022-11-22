@@ -39,8 +39,13 @@ import { mapGetters } from 'vuex';
     async created() {
       const request = new GetCurrentBattlesRequest([this.user.id]);
       try {
-        const response = await grpcClient.getBattleState(request);
-        this.battles = response.data; // TODO: check how to get data
+        const response = await grpcClient.getCurrentBattles(request);
+        this.battles = response.getBattlesList().map(b => ({
+          id: b.getId(),
+          battleInfo: b.getBattleinfo(),
+          startDate: b.getStartdate().toDate(),
+          userId: b.getUserid()
+        }));
       } catch (exception) {
         console.error(exception);
       }

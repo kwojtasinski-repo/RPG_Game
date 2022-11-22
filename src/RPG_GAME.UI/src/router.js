@@ -25,6 +25,7 @@ import CreateProfilePage from "./pages/Profiles/CreateProfilePage.vue"
 import EditProfilePage from "./pages/Profiles/EditProfilePage.vue"
 import BattleHistoryPage from "./pages/Battles/BattleHistoryPage.vue"
 import BattlePage from "./pages/Battles/BattlePage.vue"
+import BattleResumePage from "./pages/Battles/BattleResumePage.vue"
 
 const routes = [
     // --- menu ---
@@ -211,6 +212,14 @@ const routes = [
         path: '/battles/start/:battleId',
         name: 'battle-start',
         component: BattleStartPage,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/battles/resume',
+        name: 'battle-resume',
+        component: BattleResumePage,
         meta: {
             auth: true
         }

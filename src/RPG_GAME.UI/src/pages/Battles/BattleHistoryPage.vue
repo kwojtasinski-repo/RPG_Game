@@ -1,5 +1,5 @@
 <template>
-    <!-- TODO think how to display and what to display -->
+    <!-- TODO think how to display and what to display maybe use gRPC Web to send history? -->
     <div>
         <div>
             Battle History

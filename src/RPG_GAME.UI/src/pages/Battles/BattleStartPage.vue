@@ -5,7 +5,7 @@
     <div v-if="error" className="alert alert-danger mt-2 mb-2">
       {{error}}
     </div>
-    <div v-else class="mt-2">
+    <div v-else class="mt-2 mb-2">
       <BattleComponent :enemies="battle.map.enemies" :enemiesKilled="[]" />
     </div>
     <RouterButtonComponent url="/" buttonText="Back to menu" />
@@ -54,8 +54,6 @@ import { mapGetters } from 'vuex';
         try {
           const request = new GetBattleStateRequest([this.$route.params.battleId]);
           const response = await grpcClient.getBattleState(request);
-          // eslint-disable-next-line
-          debugger;
           this.battleState = {
             id: response.getId(),
             battleId: response.getBattleid(),

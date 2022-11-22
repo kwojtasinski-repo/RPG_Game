@@ -10,15 +10,13 @@ export default class StoryService {
     }
 
     addEnemyKilled(enemy) {
-        // eslint-disable-next-line
-        debugger;
-        let enemyExists = this.enemiesKilled.find(e => e.enemy.category === enemy.category);
+        let enemyExists = this.enemiesKilled.find(e => e.enemy.id === enemy.id);
 
         if (!enemyExists) {
-            enemyExists = this.enemies.find(e => e.enemy.category === enemy.category);
+            enemyExists = this.enemies.find(e => e.enemy.id === enemy.id);
             
             if (!enemyExists) {
-                throw new Error(`Enemy with id ${enemy.id} and category ${enemy.category} doesnt exists`);
+                throw new Error(`Enemy with id ${enemy.id} doesnt exists`);
             }
 
             this.enemiesKilled.push({ ...enemyExists, quantity: 1 });
@@ -99,8 +97,6 @@ export default class StoryService {
     }
 
     selectStoryState() {
-        // eslint-disable-next-line
-        debugger;
         const archers = this.getArchers();
         
         if (archers) {
@@ -149,54 +145,25 @@ export default class StoryService {
     getNextEnemy() {
         if (this.enemiesKilled.length === 0) {
             this.currentEnemy = this.enemies.find(e => e.enemy.category === 'Archer');
-            console.log(this.currentEnemy)
             setEnemyName(this.currentEnemy.enemy.name);
             return this.currentEnemy;
         }
 
-        switch (this.storyState) {
-            case storyStates.Archer: {
-                const archers = this.getArchers();
-                const archersKilled = this.enemiesKilled.find(e => e.category === 'Archer')?.quantity ?? 0;
-
-                if (archers.quantity === archersKilled.quantity) {
-                    throw new Error(`There is no new enemies for state ${this.storyState}`);
-                }
-
-                this.currentEnemy = archers;
-                setEnemyName(this.currentEnemy.name);
-                return this.currentEnemy;
-            }
-            case storyStates.Knight: {
-                const knights = this.getKnights();
-                const knightsKilled = this.enemiesKilled.find(e => e.category === 'Knight')?.quantity ?? 0;
-
-                if (knights.quantity === knightsKilled.quantity) {
-                    throw new Error(`There is no new enemies for state ${this.storyState}`);
-                }
-
-                this.currentEnemy = knights;
-                setEnemyName(this.currentEnemy.name);
-                return this.currentEnemy;
-            }
-            case storyStates.Dragon: {
-                // eslint-disable-next-line
-                debugger
-                const dragons = this.getDragons();
-                const dragonsKilled = this.enemiesKilled.find(e => e.category === 'Dragon')?.quantity ?? 0;
-
-                if (dragons.quantity === dragonsKilled.quantity) {
-                    throw new Error(`There is no new enemies for state ${this.storyState}`);
-                }
-
-                this.currentEnemy = dragons;
-                setEnemyName(this.currentEnemy.name);
-                return this.currentEnemy;
-            }
-            default: {
-                throw new Error(`There is no new enemies for state ${this.storyState}`);
-            }
+        const enemyKilled = this.enemiesKilled.find(ek => ek.enemy.id === this.currentEnemy.enemy.id);
+        console.log(enemyKilled,this.currentEnemy, this.enemiesKilled);
+        if (enemyKilled.quantity < this.currentEnemy.quantity) {
+            return this.currentEnemy;
         }
+        
+        const nextEnemy = this.enemies.find(e => this.enemiesKilled.every(ek => ek.enemy.id !== e.enemy.id) && e.enemy.category === this.storyState);
+        this.currentEnemy = nextEnemy;
+        setEnemyName(nextEnemy.enemy.name);
+
+        if (!nextEnemy) {
+            throw new Error(`There is no new enemies for state ${this.storyState}`);
+        }
+
+        return nextEnemy;
     }
 }
 
